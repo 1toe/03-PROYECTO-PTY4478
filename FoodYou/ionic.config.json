@@ -1,0 +1,7 @@
+{
+  "name": "FoodYou",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
