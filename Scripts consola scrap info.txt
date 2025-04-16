@@ -1,0 +1,57 @@
+// 1. Selecciona todos los elementos 'li' que representan productos.
+const productItems = document.querySelectorAll('li.ais-Hits-item');
+
+// 2. Crea un array para almacenar la información de cada producto.
+const productsData = [];
+
+// 3. Itera sobre cada elemento de producto encontrado.
+productItems.forEach(item => {
+    // --- Funciones auxiliares para obtener datos de forma segura ---
+    const safeGetText = (selector) => {
+        const element = item.querySelector(selector);
+        // Devuelve el texto o 'No encontrado' si el elemento no existe.
+        return element ? element.textContent.trim() : 'No encontrado';
+    };
+    const safeGetAttribute = (selector, attribute) => {
+        const element = item.querySelector(selector);
+        // Devuelve el valor del atributo o 'No encontrado'
+        return element ? element.getAttribute(attribute) : 'No encontrado';
+    };
+
+    // --- Extracción de datos específicos ---
+    const id = safeGetAttribute('.product-card__image-area', 'id');
+    const link = safeGetAttribute('a[data-testid="product-card-nav-test-id"]', 'href');
+    const imageUrl = safeGetAttribute('img#lazy-img', 'src');
+
+    // Obtener título completo (marca + descripción)
+    const titleElement = item.querySelector('h2.product-description');
+    const fullTitle = titleElement ? titleElement.textContent.trim().replace(/\s+/g, ' ') : 'No encontrado'; // Limpia espacios extra
+
+    // Alternativa: Obtener marca y descripción por separado (puede ser más frágil si cambia el estilo)
+    const brand = safeGetText('h2 span[style*="font-weight: bold"]');
+    const namePart = safeGetText('h2 span:not([style*="font-weight: bold"])'); // Span sin negrita
+
+    const salePrice = safeGetText('.product-card__sale-price span');
+    const regularPrice = safeGetText('.regular-unit-price__price-product-card span'); // Solo el precio dentro del span
+    const buttonText = safeGetText('.product-card-button__container button');
+
+    // 4. Guarda la información extraída en un objeto.
+    productsData.push({
+        id: id,
+        tituloCompleto: fullTitle,
+        // marca: brand,       // Descomenta si prefieres separados
+        // nombreParcial: namePart, // Descomenta si prefieres separados
+        linkProducto: link.startsWith('/') ? window.location.origin + link : link, // Completa la URL si es relativa
+        urlImagen: imageUrl,
+        precioOferta: salePrice,
+        precioRegular: regularPrice,
+        textoBoton: buttonText
+    });
+});
+
+// 5. Muestra los datos extraídos en la consola en formato de tabla (más legible).
+console.log(`Se encontraron ${productsData.length} productos.`);
+console.table(productsData);
+
+// Opcional: Si quieres copiar los datos como JSON
+// console.log(JSON.stringify(productsData, null, 2));
