@@ -16,17 +16,12 @@ const Home: React.FC = () => {
     <IonPage>
       <IonHeader>
       <IonToolbar className="custom-toolbar">
-          <IonTitle>Bienvenido home</IonTitle>
+          <IonTitle>Bienvenido mapa</IonTitle>
         </IonToolbar>
       </IonHeader>
 
       <IonContent fullscreen className="ion-padding">
-        {/* Botón "Mis Listas" */}
-        <div className="listas-button-container">
-          <IonButton expand="block" color="primary" className="listas-button">
-            Mis Listas
-          </IonButton>
-        </div>
+       
 
         {/* Contenedor central vacío */}
         <div className="middle-container"></div>

@@ -16,7 +16,7 @@ const Home: React.FC = () => {
     <IonPage>
       <IonHeader>
       <IonToolbar className="custom-toolbar">
-          <IonTitle>Bienvenido home</IonTitle>
+          <IonTitle>Bienvenido perfil</IonTitle>
         </IonToolbar>
       </IonHeader>
 
@@ -24,7 +24,7 @@ const Home: React.FC = () => {
         {/* Botón "Mis Listas" */}
         <div className="listas-button-container">
           <IonButton expand="block" color="primary" className="listas-button">
-            Mis Listas
+            algo de perfil no se
           </IonButton>
         </div>
 
