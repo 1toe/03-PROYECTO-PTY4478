@@ -1,0 +1,155 @@
+,,,,
+Historia de Usuario,,,,
+,,,,
+Identificador (ID) de la historia,Registro y acceso de usuarios,,,
+,Rol,Característica / Funcionalidad,Razón / Resultado,Criterio de aceptación 
+E01-H01,Como usuario general,Quiero registrarme en la aplicación usando mi correo electrónico y una contraseña segura,Para poder acceder a mi perfil y empezar a  usar la App,El sistema debe permitir el registro con  correo electrónico y contraseña
+,,,,Debe validar el correo electrónico y mostrar un mensaje de error si el formato es incorrecto
+,,,,El usuario debe recibir un correo de confirmación al registrarse
+,,,,
+,,,,
+,,,,
+,,,,
+Identificador (ID) de la historia,Acceso para administradores,,,
+,Rol,Característica / Funcionalidad,Razón / Resultado,Criterio de aceptación 
+E01-H02,Como administrador,Quiero iniciar sesión con mi cuenta de administrador,"Para gestionar usuarios, productos y funciones avanzadas de la aplicación.",El administrador debe poder acceder a un panel de control diferente al de un usuario normal.
+,,,,El acceso debe estar protegido por autenticación segura (usuario / contraseña)
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+Identificador (ID) de la historia,Visualización del catálogo de productos,,,
+,Rol,Característica / Funcionalidad,Razón / Resultado,Criterio de aceptación 
+E02-H03,Como usuario,Quiero visualizar un catálogo de productos disponibles,Para explorar opciones que se ajusten a mis necesidades alimenticias,El catálogo debe mostrar productos organizados por tienda.
+,,,,Debe ser fácil navegar por las categorías de productos.
+,,,,La información nutricional de cada producto debe ser accesible al hacer clic sobre él.
+,,,,
+,,,,
+,,,,
+,,,,
+Identificador (ID) de la historia,Filtro por cantidad de sellos nutricionales / composición nutricional,,,
+,Rol,Característica / Funcionalidad,Razón / Resultado,Criterio de aceptación 
+E02-H04,Como usuario,Quiero filtrar los productos por su composición nutricional,Para encontrar productos que cumplan con mis criterios aplicados,El sistema debe permitir seleccionar un filtro basado en valores nutricionales o sellos nutricionales.
+,,,,Los productos deben mostrarse según los filtros aplicados.
+,,,,El usuario debe poder aplicar múltiples filtros.
+,,,,
+,,,,
+,,,,
+,,,,
+Identificador (ID) de la historia,Mapa de supermercados cercanos,,,
+,Rol,Característica / Funcionalidad,Razón / Resultado,Criterio de aceptación 
+E03-H05,Como usuario,Quiero ver un mapa con supermercados cercanos a mi ubicación,Para encontrar el supermercado más cercano y sus productos disponibles,El sistema debe usar mi ubicación actual para mostrar supermercados cercanos en el mapa.
+,,,,Los supermercados deben estar marcados con un ícono.
+,,,,El usuario debe poder hacer clic en cada supermercado para ver más detalles.
+,,,,
+,,,,
+,,,,
+,,,,
+Identificador (ID) de la historia,Ver detalles de un supermercado,,,
+,Rol,Característica / Funcionalidad,Razón / Resultado,Criterio de aceptación 
+E03-H06,Como usuario,Quiero ver detalles de cada supermercado al hacer clic sobre su ícono en el mapa.,Para obtener más información sobre productos y servicios disponibles.,"Al hacer clic en un supermercado, debe mostrar su dirección, horario de apertura y productos más populares."
+,,,,"Al apretar los productos, debe de redirijir a la seccion de productos."
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+Identificador (ID) de la historia,Gestión de lista de compras,,,
+,Rol,Característica / Funcionalidad,Razón / Resultado,Criterio de aceptación 
+E04-H07,Como usuario,Quiero crear una lista personalizada de compras.,Para tener una referencia rápida de los productos que quiero comprar.,El usuario debe poder añadir productos a listar desde el catálogo.
+,,,,La lista debe permitir editar la cantidad de productos o eliminar productos no deseados.
+,,,,El usuario debe poder ver un resumen de lista antes de finalizarlo.
+,,,,
+,,,,
+,,,,
+,,,,
+Identificador (ID) de la historia,Ver detalles de lista de compras,,,
+,Rol,Característica / Funcionalidad,Razón / Resultado,Criterio de aceptación 
+E04-H08,Como usuario,Quiero ver detalles sobre cada producto en mi lista.,Para revisar la información nutricional y el precio.,"Cada producto en la lista debe mostrar el nombre, precio, cantidad y valor nutricional."
+,,,,Cada producto debe de mostrar si esta disponible en algun supermercado
+,,,,Cada producto debe mostrar sus precios en relacion a otras cadenas de supermercados
+,,,,
+,,,,
+,,,,
+Identificador (ID) de la historia,Recomendaciones de menus saludables,,,
+,Rol,Característica / Funcionalidad,Razón / Resultado,Criterio de aceptación 
+E05-H09,Como usuario ,Quiero recibir recomendaciones personalizadas de menús saludables.,Para mejorar mi alimentación según mis objetivos nutricionales.,El sistema debe permitir al usuario ingresar sus objetivos nutricionales.
+,,,,El sistema debe sugerir menús o colaciones basados en estos objetivos.
+,,,,Las recomendaciones deben actualizarse cada vez que el usuario actualize sus preferencias.
+,,,,
+,,,,
+,,,,
+,,,,
+Identificador (ID) de la historia,Recomendación de productos según preferencias,,,
+,Rol,Característica / Funcionalidad,Razón / Resultado,Criterio de aceptación 
+E05-H10,Como usuario,Quiero recibir recomendaciones de productos saludables según mis preferencias alimenticias.,Para mejorar mi salud eligiendo los productos más adecuados para mí.,"El sistema debe recomendar productos basados en mis datos nutricionales, alergias y preferencias alimenticias."
+,,,,Las recomendaciones deben estar alineadas con mis metas nutricionales.
+,,,,
+,,,,
+,,,,
+,,,,
+Identificador (ID) de la historia,Registro de datos nutricionales,,,
+,Rol,Característica / Funcionalidad,Razón / Resultado,Criterio de aceptación 
+E06-H11,Como usuario,Quiero registrar mis datos nutricionales para personalizar las recomendaciones.,Para que las recomendaciones sean más precisas y ajustadas a mi estado de salud.,"El sistema debe permirir ingresar datos como peso, alturar, edad y objetivos de salud."
+,,,,Los datos deben ser almacenados de manera segura y privada.
+,,,,El usuario debe poder actualizar estos datos en cualquier momento.
+,,,,
+,,,,
+Identificador (ID) de la historia,Actualización de datos nutricionales,,,
+,Rol,Característica / Funcionalidad,Razón / Resultado,Criterio de aceptación 
+E06-H12,Como usuario,Quiero actualizar mis datos nutricionales cuando cambien.,Para mantener mis recomendaciones actualizadas según mi progreso o cambio de objetivos.,"El sistema debe permitir actualizar el peso, la edad y los objetivos de salud."
+,,,,Las actualizaciones deben reflejarse inmediatamente en las recomendaciones de menús y productos.
+,,,,
+,,,,
+,,,,
+Identificador (ID) de la historia,Busqueda avanzada de productos por nombre,,,
+,Rol,Característica / Funcionalidad,Razón / Resultado,Criterio de aceptación 
+E07-H13,Como usuario,Quiero realizar una búsqueda avanzada de productos por nombre.,Para encontrar productos específicos rápidamente.,El sistema debe permitir buscar productos por nombre en el catálogo.
+,,,,La búsqueda debe ser rápida y mostrar productos relevantes.
+,,,,El usuario debe poder combinar la búsqueda por nombre con otros filtros.
+,,,,
+,,,,
+Identificador (ID) de la historia,Filtro avanzado por valor nutricional,,,
+,Rol,Característica / Funcionalidad,Razón / Resultado,Criterio de aceptación 
+E07-H14,Como usuario,Quiero filtrar productos por su valor nutricional.,Para encontrar productos que se ajusten a mis necesidades nutricionales.,"El sistema debe permitir filtrar productos por valores específicos (ej: calorías, grasas)."
+,,,,Los resultados deben actualizarse al instante.
+,,,,El usuario debe poder aplicar múltiples filtros simultáneamente.
+,,,,
+,,,,
+Identificador (ID) de la historia,Navegación fluida con menús desplegables,,,
+,Rol,Característica / Funcionalidad,Razón / Resultado,Criterio de aceptación 
+E08-H15,Como usuario,Quiero navegar fácilmente por la aplicación utilizando menús desplegables.,Para encontrar rápidamente las secciones y funcionalidades que necesito.,"Los menús deben utlizar un lenguaje simple, con un máximo de 10 palabras por opción, sin tecnicismos ni abreviaciones poco comunes."
+,,,,Los usuarios deben poder acceder a todas las funcionalidades importantes desde el menú principal.
+,,,,"La navegación debe ser intuitiva, sin necesidad de instrucciones adicionales."
+,,,,
+Identificador (ID) de la historia,Botones accesibles en la interfaz,,,
+,Rol,Característica / Funcionalidad,Razón / Resultado,Criterio de aceptación 
+E08-H16,Como usuario,Quiero que los botones sean fáciles de identificar y usar.,Para tener una experiencia fluida y cómodo al interactuar con la aplicación.,Los botones deben ser visibles y responder rápidamente al ser tocados.
+,,,,La estructura debe ser simple y los botones deben estar en lugares lógicos para facilitar el acceso.
+,,,,
+,,,,
+Identificador (ID) de la historia,Guardar historial de compras,,,
+,Rol,Característica / Funcionalidad,Razón / Resultado,Criterio de aceptación 
+E09-H17,Como usuario,Quiero que la aplicación guarde mi historial de compras.,Para poder revisar mis decisiones alimentarias anteriores y comparar con futuras.,"El historial debe incluir los productos comprados, fecha y precio."
+,,,,El usuario debe poder acceder al historial en cualquier momento desde el menú.
+,,,,El historial debe poder eliminarse o actualizarse si el usuario lo desea.
+,,,,
+Identificador (ID) de la historia,Revisar recomendaciones anteriores,,,
+,Rol,Característica / Funcionalidad,Razón / Resultado,Criterio de aceptación 
+E09-H18,Como usuario,Quiero ver las recomendaciones anteriores basadas en mis compras,Para seguir mejorando mi alimentación con las recomendaciones previas.,El sistema debe mostrar un resumen de las recomendaciones anteriores.
+,,,,Las recomendaciones deben estar relacionadas con los productos adquiridos en el pasado.
+,,,,
+,,,,
+Identificador (ID) de la historia,Recibir notificaciones de productos saludables,,,
+,Rol,Característica / Funcionalidad,Razón / Resultado,Criterio de aceptación 
+E10-H19,Como usuario,Quiero recibir notificaciones sobre productos saludables que pueden interesarme.,Para descubrir nuevos productos y mejorar mis hábitos alimenticios.,Las notificaciones deben ser personalizadas según mis gustos y objetivos nutricionales.
+,,,,Las notificaciones deben incluir un enlace directo a la página del producto.
+,,,,
+,,,,
+,,,,
+Identificador (ID) de la historia,Notificación de compras pendientes,,,
+,Rol,Característica / Funcionalidad,Razón / Resultado,Criterio de aceptación 
+E10-H20,Como usuario,Quiero recibir recordatorios sobre compras pendientes por hacer.,Para no olvidar productos que necesito comprar,Las notificaciones deben ser enviadas si el usuario tiene productos pendientes en su lista de compras.
+,,,,"Una vez el usuario de por hecha la compra, ya no se notificara"
+,,,,El usuario puede dejar listas pendientes con fecha / hora en forma de recordatorio
