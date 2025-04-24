@@ -65,6 +65,6 @@ Aplicación móvil desarrollada con Ionic y React que permite a los usuarios exp
 
 ### Información Adicional
 
-- **Nombre del Proyecto:** FoodYou.
+- **Nombre del Proyecto:** HealthYou.
 - **Versión Inicial:** 0.0.1.
 - **Tipo de Proyecto:** Módulo ES.

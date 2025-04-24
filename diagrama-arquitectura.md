@@ -6,7 +6,7 @@ config:
 graph TD
     subgraph mobile_client [Aplicacion]
         direction LR
-        app[FoodYou]
+        app[HealthYou]
     end
 
     subgraph cloud_backend [Backend]

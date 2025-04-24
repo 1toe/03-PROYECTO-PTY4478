@@ -21,8 +21,11 @@ const Registro: React.FC = () => {
   const history = useHistory();
 
   const handleRegister = () => {
-    if (nombre && correo && password) {
-      // Aquí podrías guardar los datos en una API o almacenamiento local
+    if (nombre && correo && password) { // Verificar que todos los campos estén llenos+
+      // Bypassando la lógica de registro para el ejemplo:
+      // Aquí iría la lógica para registrar al usuario, como una llamada a una API
+      // o guardar en el almacenamiento local. 
+
       console.log('Registrado:', { nombre, correo, password });
       history.push('/home'); // Redirigir a la página de inicio
     } else {
