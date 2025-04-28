@@ -1,20 +1,31 @@
 import React, { useEffect, useState } from 'react';
-import { Route, Redirect, RouteProps } from 'react-router-dom';
 import { IonLoading } from '@ionic/react';
-import { AuthService } from '../services/firebase/auth.service';
-import { auth } from '../config/firebase';
+import { Redirect, Route } from 'react-router-dom';
 import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../config/firebase';
 
-interface PrivateRouteProps extends RouteProps {
+interface PrivateRouteProps {
     component: React.ComponentType<any>;
+    path: string;
+    exact?: boolean;
 }
 
 const PrivateRoute: React.FC<PrivateRouteProps> = ({ component: Component, ...rest }) => {
-    const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
     const [authChecked, setAuthChecked] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     useEffect(() => {
-        // Agregar un "temporizador" de seguridad para que no se quede esperando indefinidamente > 
+        console.log("PrivateRoute: Verificando autenticación...");
+        
+        // Verificar si ya hay un usuario al cargar el componente
+        const currentUser = auth.currentUser;
+        if (currentUser) {
+            console.log("PrivateRoute: Usuario ya autenticado al cargar el componente");
+            setIsAuthenticated(true);
+            setAuthChecked(true);
+            return;
+        }
+        
         const timeoutId = setTimeout(() => {
             if (!authChecked) {
                 console.warn("La verificación de autenticación está tardando demasiado. Asumiendo que el usuario no está autenticado.");
@@ -25,6 +36,7 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ component: Component, ...re
 
         // Escuchar cambios en el estado de autenticación en tiempo real
         const unsubscribe = onAuthStateChanged(auth, (user) => {
+            console.log("PrivateRoute: onAuthStateChanged ejecutado", user ? "Usuario autenticado" : "No hay usuario");
             setIsAuthenticated(!!user);
             setAuthChecked(true);
             clearTimeout(timeoutId); // Limpiar el temporizador si la respuesta llega a tiempo
@@ -42,12 +54,12 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ component: Component, ...re
         };
     }, []);
 
-    // Mostrar el indicador de carga SOLO mientras se está verificando la autenticación (Verificar edspues)
+    // Mostrar el indicador de carga SOLO mientras se está verificando la autenticación
     if (!authChecked) {
         return <IonLoading isOpen={true} message="Verificando sesión..." />;
     }
 
-    // Una vez que se ha verificado la autenticación, renderizar la ruta privada
+    // Una vez verificada la autenticación, redirigir o mostrar el componente protegido
     return (
         <Route
             {...rest}
@@ -55,7 +67,7 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ component: Component, ...re
                 isAuthenticated ? (
                     <Component {...props} />
                 ) : (
-                    <Redirect to={{ pathname: '/login', state: { from: props.location } }} />
+                    <Redirect to="/login" />
                 )
             }
         />

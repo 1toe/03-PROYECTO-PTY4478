@@ -5,7 +5,9 @@ import {
   sendPasswordResetEmail, 
   updateProfile,
   User,
-  UserCredential 
+  UserCredential,
+  browserLocalPersistence,
+  setPersistence
 } from 'firebase/auth';
 import { auth } from '../../config/firebase';
 import { createUserProfile } from './user.service';
@@ -26,6 +28,9 @@ export const AuthService = {
    */
   async register(email: string, password: string, displayName: string): Promise<UserCredential> {
     try {
+      // Configurar persistencia local antes de registrar
+      await setPersistence(auth, browserLocalPersistence);
+      
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       
       // Actualizar el perfil con el nombre de usuario
@@ -53,6 +58,9 @@ export const AuthService = {
    */
   async login(email: string, password: string): Promise<UserCredential> {
     try {
+      // Configurar persistencia local antes de iniciar sesión
+      await setPersistence(auth, browserLocalPersistence);
+      
       return await signInWithEmailAndPassword(auth, email, password);
     } catch (error) {
       console.error('Error durante el inicio de sesión:', error);

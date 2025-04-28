@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore, enableIndexedDbPersistence } from 'firebase/firestore'; // Importa Firestore y la función para habilitar la persistencia
-import { getAuth } from 'firebase/auth';
+import { getFirestore, enableIndexedDbPersistence } from 'firebase/firestore';
+import { getAuth, setPersistence, browserLocalPersistence } from 'firebase/auth';
 import { getStorage } from 'firebase/storage';
 
 // Configuración de Firebase
@@ -19,6 +19,17 @@ const app = initializeApp(firebaseConfig);
 // Inicializar servicios
 const db = getFirestore(app);
 const auth = getAuth(app);
+
+// Configurar persistencia para autenticación
+setPersistence(auth, browserLocalPersistence).catch((error) => {
+  console.error("Error configurando persistencia de autenticación:", error);
+});
+
+// Habilitar persistencia offline para Firestore
+enableIndexedDbPersistence(db).catch((err) => {
+  console.error("Error habilitando persistencia offline:", err);
+});
+
 const storage = getStorage(app);
 
 export { app, db, auth, storage };
