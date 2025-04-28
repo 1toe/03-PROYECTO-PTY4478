@@ -1,0 +1,23 @@
+.login-container,
+.register-container {
+  padding: 20px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.logo { /** PENDIENTE! **/ 
+  display: block;
+  width: 150px;
+  margin: 30px auto;
+}
+
+.login-button,
+.register-button {
+  margin-top: 30px;
+}
+
+.error-message {
+  margin: 15px 0;
+  display: block;
+  text-align: center;
+}

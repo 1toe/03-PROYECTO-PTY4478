@@ -1,0 +1,38 @@
+.recommendations-container {
+  padding: 16px;
+}
+
+.recommendations-container h2 {
+  margin-bottom: 5px;
+}
+
+.recommendations-container > p {
+  color: var(--ion-color-medium);
+  margin-bottom: 20px;
+}
+
+.recommendation-card {
+  margin-bottom: 16px;
+}
+
+.items-list {
+  margin-bottom: 16px;
+}
+
+.items-list ul {
+  padding-left: 20px;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 50vh;
+}
+
+.no-recommendations {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--ion-color-medium);
+}

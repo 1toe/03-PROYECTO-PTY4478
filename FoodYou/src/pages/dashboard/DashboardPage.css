@@ -1,0 +1,33 @@
+.welcome-section {
+  background: var(--ion-color-primary-shade);
+  color: white;
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.welcome-section h1 {
+  margin-top: 0;
+}
+
+.recent-lists-section {
+  padding: 0 16px;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+}
+
+.empty-lists {
+  text-align: center;
+  padding: 30px 0;
+}
+
+.item-count {
+  color: var(--ion-color-medium);
+  font-size: 0.9em;
+}

@@ -1,0 +1,46 @@
+.profile-header {
+  background-color: var(--ion-color-light);
+  padding: 30px 16px;
+  text-align: center;
+}
+
+.profile-avatar {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 16px;
+}
+
+.avatar-container {
+  position: relative;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.change-photo-btn {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  --padding-start: 8px;
+  --padding-end: 8px;
+  --border-radius: 50%;
+}
+
+.chip-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 8px 0;
+}
+
+.action-buttons {
+  padding: 16px;
+}
+
+.logout-button {
+  margin: 30px 16px;
+}
+
+.empty-text {
+  font-style: italic;
+  color: var(--ion-color-medium);
+}
