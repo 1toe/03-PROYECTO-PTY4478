@@ -1,6 +1,6 @@
 .welcome-section {
   background: var(--ion-color-primary-shade);
-  color: white;
+  color: var(--ion-text-color);
   padding: 20px;
   text-align: center;
   margin-bottom: 20px;
