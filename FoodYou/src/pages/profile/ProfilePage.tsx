@@ -118,16 +118,6 @@ const ProfilePage: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar color="primary">
-          <IonTitle>Mi Perfil</IonTitle>
-          {!editMode && (
-            <IonButton slot="end" fill="clear" onClick={() => setEditMode(true)}>
-              Editar
-            </IonButton>
-          )}
-        </IonToolbar>
-      </IonHeader>
       <IonContent>
         {loading ? (
           <IonLoading isOpen={true} message="Cargando perfil..." />

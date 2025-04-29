@@ -23,3 +23,14 @@
   text-align: center;
   color: var(--ion-text-color);
 }
+
+
+
+.remember-me-item {
+  margin-top: 15px;
+}
+
+.remember-me-label {
+  margin-left: 10px;
+  font-size: 0.9em;
+}

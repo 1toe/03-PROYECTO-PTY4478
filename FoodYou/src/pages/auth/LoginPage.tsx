@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import {
   IonPage, IonHeader, IonToolbar, IonTitle,
   IonContent, IonItem, IonLabel, IonInput,
-  IonButton, IonRow, IonCol, IonLoading, IonText
+  IonButton, IonRow, IonCol, IonLoading, IonText,
+  IonCheckbox
 } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
 import './Auth.css';
@@ -14,6 +15,7 @@ import { AuthService } from '../../services/firebase/auth.service';
 const LoginPage: React.FC = () => { // Componente funcional para la página de inicio de sesión
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const history = useHistory();
@@ -28,43 +30,36 @@ const LoginPage: React.FC = () => { // Componente funcional para la página de i
     }
 
     setIsLoading(true); // Muestra el indicador de carga
-    setErrorMessage(''); // Reinicia el mensaje de error !""
-
+    setErrorMessage(''); // Reinicia el mensaje de error
 
     try {
-      // Integración con el servicio de autenticación
-      // Este servicio debe estar definido en el archivo auth.service.ts
-      // y debe manejar la lógica de inicio de sesión con Firebase Auth..
-      await AuthService.login(email, password);
-      history.push('/dashboard');
+      // Integración con el servicio de autenticación, pasando la opción de recordar sesión
+      await AuthService.login(email, password, rememberMe);
+
+      // Esperamos un momento para asegurarnos que la sesión se estableció correctamente
+      setTimeout(() => {
+        setIsLoading(false);
+        history.push('/app/home');
+      }, 500);
     } catch (error: any) {
       console.error('Error al iniciar sesión:', error);
 
       // Mensajes de error específicos según el código de error de Firebase
-
-      // En orden:
-      // 1. Usuario no encontrado
-      // 2. Contraseña incorrecta
-      // 3. Formato de correo electrónico no válido
-      // 4. Otros errores generales, priorizar..
-
-
       if (error.code === 'auth/user-not-found') {
         setErrorMessage('No existe una cuenta con este correo electrónico');
       } else if (error.code === 'auth/wrong-password') {
         setErrorMessage('Contraseña incorrecta');
       } else if (error.code === 'auth/invalid-email') {
         setErrorMessage('El formato del correo electrónico no es válido');
+      } else if (error.code === 'auth/network-request-failed') {
+        setErrorMessage('Error de conexión. Verifica tu conexión a internet');
       } else {
         setErrorMessage('Error al iniciar sesión. Verifica tus credenciales.');
       }
-    } finally {
       setIsLoading(false); // Oculta el indicador de carga
     }
   };
-  // Y por último, el botón de inicio de sesión que llama a la función handleLogin
-  // y el botón de registro que redirige a la página de registro.
-  // También se incluye un botón de retroceso para volver a la página anterior.
+
   return (
     <IonPage>
       <IonHeader>
@@ -94,6 +89,14 @@ const LoginPage: React.FC = () => { // Componente funcional para la página de i
             />
           </IonItem>
 
+          <IonItem lines="none" className="remember-me-item">
+            <IonCheckbox
+              checked={rememberMe}
+              onIonChange={e => setRememberMe(e.detail.checked)}
+            />
+            <IonLabel className="remember-me-label">Mantener sesión iniciada</IonLabel>
+          </IonItem>
+
           {errorMessage && (
             <IonText color="danger" className="error-message">
               {errorMessage}
@@ -121,7 +124,13 @@ const LoginPage: React.FC = () => { // Componente funcional para la página de i
           </IonRow>
         </div>
 
-        <IonLoading isOpen={isLoading} message="Iniciando sesión..." />
+        <IonLoading
+          isOpen={isLoading}
+          message="Iniciando sesión..."
+          spinner="circles"
+          duration={10000} // 10 segundos máximo
+          backdropDismiss={false}
+        />
       </IonContent>
     </IonPage>
   );

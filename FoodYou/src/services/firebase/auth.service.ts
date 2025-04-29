@@ -1,102 +1,75 @@
 import { 
-  createUserWithEmailAndPassword, 
   signInWithEmailAndPassword, 
-  signOut, 
-  sendPasswordResetEmail, 
+  createUserWithEmailAndPassword, 
   updateProfile,
-  User,
-  UserCredential,
+  signOut,
+  setPersistence,
   browserLocalPersistence,
-  setPersistence
+  browserSessionPersistence,
+  UserCredential
 } from 'firebase/auth';
 import { auth } from '../../config/firebase';
-import { createUserProfile } from './user.service';
 
-// Adjunto los formatos de documento de usuario y de error para que se puedan usar en el servicio de autenticación,
-// Pero no es necesario incluirlos aquí ya que no se usan directamente en este servicio.. xd
+export interface UserProfile {
+  uid: string;
+  email: string;
+  displayName: string;
+  photoURL?: string;
+  phoneNumber?: string;
+  preferences?: {
+    dietaryRestrictions?: string[];
+    favoriteCategories?: string[];
+  };
+  createdAt?: Date;
+}
 
-
-/**
- * Servicio para manejar la autenticación de usuarios
- */
-export const AuthService = {
-  /**
-   * Registra un nuevo usuario con email y contraseña
-   * @param email Email del usuario
-   * @param password Contraseña del usuario
-   * @param displayName Nombre para mostrar del usuario
-   */
-  async register(email: string, password: string, displayName: string): Promise<UserCredential> {
-    try {
-      // Configurar persistencia local antes de registrar
-      await setPersistence(auth, browserLocalPersistence);
-      
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      
-      // Actualizar el perfil con el nombre de usuario
-      await updateProfile(userCredential.user, { displayName });
-      
-      // Crear documento de usuario en Firestore
-      await createUserProfile({
-        uid: userCredential.user.uid,
-        email: userCredential.user.email || '',
-        displayName,
-        createdAt: new Date(),
-      });
-      
-      return userCredential;
-    } catch (error) {
-      console.error('Error durante el registro:', error);
-      throw error;
-    }
-  },
-  
+export class AuthService {
   /**
    * Inicia sesión con email y contraseña
    * @param email Email del usuario
    * @param password Contraseña del usuario
+   * @param rememberMe Si es true, mantiene la sesión después de cerrar el navegador
+   * @returns Promise con las credenciales del usuario
    */
-  async login(email: string, password: string): Promise<UserCredential> {
-    try {
-      // Configurar persistencia local antes de iniciar sesión
-      await setPersistence(auth, browserLocalPersistence);
-      
-      return await signInWithEmailAndPassword(auth, email, password);
-    } catch (error) {
-      console.error('Error durante el inicio de sesión:', error);
-      throw error;
-    }
-  },
-  
-  /**
-   * Cierra la sesión del usuario actual
-   */
-  async logout(): Promise<void> {
-    try {
-      await signOut(auth);
-    } catch (error) {
-      console.error('Error durante el cierre de sesión:', error);
-      throw error;
-    }
-  },
-  
-  /**
-   * Envía un email para restablecer la contraseña
-   * @param email Email del usuario
-   */
-  async forgotPassword(email: string): Promise<void> {
-    try {
-      await sendPasswordResetEmail(auth, email);
-    } catch (error) {
-      console.error('Error al enviar email de recuperación:', error);
-      throw error;
-    }
-  },
-  
-  /**
-   * Obtiene el usuario actual
-   */
-  getCurrentUser(): User | null {
-    return auth.currentUser;
+  static async login(email: string, password: string, rememberMe: boolean = false): Promise<UserCredential> {
+    // Establecer persistencia según la elección del usuario
+    const persistenceType = rememberMe ? browserLocalPersistence : browserSessionPersistence;
+    
+    await setPersistence(auth, persistenceType);
+
+    // Iniciar sesión después de configurar la persistencia
+    return signInWithEmailAndPassword(auth, email, password);
   }
-};
+
+  /**
+   * Registra un nuevo usuario
+   * @param email Email del usuario
+   * @param password Contraseña del usuario
+   * @param displayName Nombre a mostrar del usuario
+   * @returns Promise con las credenciales del usuario
+   */
+  static async register(email: string, password: string, displayName: string): Promise<UserCredential> {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    
+    // Establecer el nombre del usuario
+    if (userCredential.user) {
+      await updateProfile(userCredential.user, {
+        displayName: displayName
+      });
+    }
+    
+    // Por defecto, usa persistencia de sesión para usuarios nuevos
+    await setPersistence(auth, browserSessionPersistence);
+    
+    return userCredential;
+  }
+
+  /**
+   * Cierra la sesión del usuario
+   */
+  static async signOut(): Promise<void> {
+    return signOut(auth);
+  }
+}
+
+export default AuthService;

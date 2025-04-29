@@ -3,12 +3,11 @@ import {
   IonPage, IonHeader, IonToolbar, IonTitle, 
   IonContent, IonCard, IonCardHeader, IonCardTitle,
   IonCardContent, IonButton, IonGrid, IonRow, IonCol,
-  IonIcon, IonSpinner, IonRefresher, IonRefresherContent,
-  IonFab, IonFabButton
+  IonIcon, IonSpinner, IonRefresher, IonRefresherContent
 } from '@ionic/react';
-import { add, listOutline, cartOutline, personOutline } from 'ionicons/icons';
+import { listOutline, cartOutline } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
-import './DashboardPage.css';
+import './HomePage.css';
 
 interface List {
   id: string;
@@ -17,7 +16,7 @@ interface List {
   itemCount: number;
 }
 
-const DashboardPage: React.FC = () => {
+const HomePage: React.FC = () => {
   const [recentLists, setRecentLists] = useState<List[]>([]);
   const [loading, setLoading] = useState(true);
   const history = useHistory();
@@ -79,7 +78,7 @@ const DashboardPage: React.FC = () => {
               <IonButton 
                 expand="block" 
                 color="secondary"
-                onClick={() => history.push('/lists')}
+                onClick={() => history.push('/app/lists')}
               >
                 <IonIcon slot="start" icon={listOutline} />
                 Mis Listas
@@ -89,7 +88,7 @@ const DashboardPage: React.FC = () => {
               <IonButton 
                 expand="block" 
                 color="tertiary"
-                onClick={() => history.push('/recommendations')}
+                onClick={() => history.push('/app/recommendations')}
               >
                 <IonIcon slot="start" icon={cartOutline} />
                 Sugerencias
@@ -112,7 +111,7 @@ const DashboardPage: React.FC = () => {
                 <div className="empty-lists">
                   <p>No tienes listas todavía</p>
                   <IonButton 
-                    onClick={() => history.push('/lists/create')}
+                    onClick={() => history.push('/app/lists/create')}
                     expand="block"
                   >
                     Crear mi primera lista
@@ -120,7 +119,7 @@ const DashboardPage: React.FC = () => {
                 </div>
               ) : (
                 recentLists.map(list => (
-                  <IonCard key={list.id} onClick={() => history.push(`/lists/${list.id}`)}>
+                  <IonCard key={list.id} onClick={() => history.push(`/app/lists/${list.id}`)}>
                     <IonCardHeader>
                       <IonCardTitle>{list.name}</IonCardTitle>
                     </IonCardHeader>
@@ -134,15 +133,9 @@ const DashboardPage: React.FC = () => {
             </>
           )}
         </div>
-        
-        <IonFab vertical="bottom" horizontal="end" slot="fixed">
-          <IonFabButton onClick={() => history.push('/lists/create')}>
-            <IonIcon icon={add} />
-          </IonFabButton>
-        </IonFab>
       </IonContent>
     </IonPage>
   );
 };
 
-export default DashboardPage;
+export default HomePage;

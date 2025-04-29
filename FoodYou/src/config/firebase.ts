@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore, enableIndexedDbPersistence } from 'firebase/firestore';
-import { getAuth, setPersistence, browserLocalPersistence } from 'firebase/auth';
+import { getAuth } from 'firebase/auth';
 import { getStorage } from 'firebase/storage';
 
 // Configuración de Firebase
@@ -20,14 +20,18 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-// Configurar persistencia para autenticación
-setPersistence(auth, browserLocalPersistence).catch((error) => {
-  console.error("Error configurando persistencia de autenticación:", error);
-});
-
-// Habilitar persistencia offline para Firestore
+// Habilitar persistencia offline para Firestore con manejo de errores mejorado
 enableIndexedDbPersistence(db).catch((err) => {
-  console.error("Error habilitando persistencia offline:", err);
+  if (err.code === 'failed-precondition') {
+    // Múltiples pestañas abiertas, persistencia solo puede activarse en una pestaña a la vez
+    console.warn("La persistencia de Firestore no puede habilitarse porque hay múltiples pestañas abiertas.");
+  } else if (err.code === 'unimplemented') {
+    // El navegador actual no soporta todas las características requeridas
+    console.warn("El navegador actual no soporta la persistencia offline para Firestore.");
+  } else {
+    console.error("Error desconocido al habilitar persistencia offline:", err);
+  }
+  // La aplicación SEGUIRÁ funcionando sin persistencia offline
 });
 
 const storage = getStorage(app);

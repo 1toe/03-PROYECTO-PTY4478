@@ -1,51 +1,56 @@
-import React, { useEffect, useState } from 'react';
-import { IonLoading } from '@ionic/react';
-import { Redirect, Route } from 'react-router-dom';
-import { onAuthStateChanged } from 'firebase/auth';
+import React, { useState, useEffect, ReactNode } from 'react';
+import { Route, Redirect, RouteProps } from 'react-router-dom';
+import { IonLoading, IonToast } from '@ionic/react';
 import { auth } from '../config/firebase';
+import { onAuthStateChanged } from 'firebase/auth';
 
-interface PrivateRouteProps {
-    component: React.ComponentType<any>;
-    path: string;
-    exact?: boolean;
+
+// Componente de ruta privada, interrumpe el flujo de navegación si no está autenticado, revisar
+// Documentaciónm si es necesario.
+interface PrivateRouteProps extends Omit<RouteProps, 'component'> {
+    component?: React.ComponentType<any>;
+    children?: ReactNode;
 }
 
-const PrivateRoute: React.FC<PrivateRouteProps> = ({ component: Component, ...rest }) => {
+const PrivateRoute: React.FC<PrivateRouteProps> = ({ component: Component, children, ...rest }) => {
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
     const [authChecked, setAuthChecked] = useState(false);
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [showToast, setShowToast] = useState(false);
+    const [toastMessage, setToastMessage] = useState('');
 
     useEffect(() => {
         console.log("PrivateRoute: Verificando autenticación...");
-        
-        // Verificar si ya hay un usuario al cargar el componente
-        const currentUser = auth.currentUser;
-        if (currentUser) {
-            console.log("PrivateRoute: Usuario ya autenticado al cargar el componente");
-            setIsAuthenticated(true);
-            setAuthChecked(true);
-            return;
-        }
-        
-        const timeoutId = setTimeout(() => {
-            if (!authChecked) {
-                console.warn("La verificación de autenticación está tardando demasiado. Asumiendo que el usuario no está autenticado.");
-                setIsAuthenticated(false);
-                setAuthChecked(true);
-            }
-        }, 3000); // 3 segundos de espera máxima
 
-        // Escuchar cambios en el estado de autenticación en tiempo real
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
-            console.log("PrivateRoute: onAuthStateChanged ejecutado", user ? "Usuario autenticado" : "No hay usuario");
-            setIsAuthenticated(!!user);
-            setAuthChecked(true);
-            clearTimeout(timeoutId); // Limpiar el temporizador si la respuesta llega a tiempo
-        }, (error) => {
-            console.error("Error al verificar autenticación:", error);
+        // Timeout para evitar esperas infinitas (5 segundos)
+        const timeoutId = setTimeout(() => {
+            console.warn("La verificación de autenticación está tardando demasiado. Asumiendo que el usuario no está autenticado.");
             setIsAuthenticated(false);
             setAuthChecked(true);
-            clearTimeout(timeoutId);
-        });
+            setToastMessage('Error al verificar la sesión. Por favor, inténtalo de nuevo.');
+            setShowToast(true);
+        }, 5000); // 5 segundos de espera máxima
+
+
+
+        // Listener para cambios en el estado de autenticación en tiempo real
+        const unsubscribe = onAuthStateChanged(auth,
+            (user) => {
+                // Revisar en la consola !!
+                console.log("PrivateRoute: onAuthStateChanged ejecutado", user ? "Usuario autenticado" : "No hay usuario");
+                setIsAuthenticated(!!user); // Convertir a booleano
+                // Si el usuario está autenticado, se puede acceder a la ruta privada
+                setAuthChecked(true);
+                clearTimeout(timeoutId); // Limpiar el temporizador SÓLO si la respuesta llega a tiempo
+            },
+            (error) => {
+                console.error("Error al verificar autenticación:", error);
+                setIsAuthenticated(false);
+                setAuthChecked(true);
+                setToastMessage('Error al verificar la sesión: ' + error.message);
+                setShowToast(true);
+                clearTimeout(timeoutId);
+            }
+        );
 
         // Limpiar el "listener" y el temporizador cuando el componente se "desmonte"
         return () => {
@@ -54,23 +59,43 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ component: Component, ...re
         };
     }, []);
 
-    // Mostrar el indicador de carga SOLO mientras se está verificando la autenticación
     if (!authChecked) {
-        return <IonLoading isOpen={true} message="Verificando sesión..." />;
+
+        // Mostrar un indicador de carga más detallado mientras se verifica la autenticación
+        return <IonLoading
+            isOpen={true}
+            message="Verificando sesión..."
+            spinner="circles"
+        />;
     }
 
-    // Una vez verificada la autenticación, redirigir o mostrar el componente protegido
     return (
-        <Route
-            {...rest}
-            render={(props) =>
-                isAuthenticated ? (
-                    <Component {...props} />
-                ) : (
-                    <Redirect to="/login" />
-                )
-            }
-        />
+        <>
+            <Route
+                {...rest}
+                render={(props) =>
+                    isAuthenticated ? (
+                        Component ? <Component {...props} /> : children // Renderizar el componente o los hijos
+
+                    ) : (
+                        <Redirect
+                            to={{
+                                pathname: "/login",
+                                state: { from: props.location }
+                            }}
+                        />
+                    )
+                }
+            />
+            <IonToast
+                isOpen={showToast}
+                onDidDismiss={() => setShowToast(false)}
+                message={toastMessage}
+                duration={3000}
+                position="bottom"
+                color="danger"
+            />
+        </>
     );
 };
 

@@ -34,12 +34,31 @@ const RegisterPage: React.FC = () => {
       return;
     }
 
+    // Validación simple de email con regex
+    // Para entender, el email debe tener un formato básico de "usuario@dominio.com"
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setErrorMessage('Por favor ingresa un correo electrónico válido');
+      return;
+    }
+
+    // Validación simple de contraseña
+    if (password.length <= 6) {
+      setErrorMessage('La contraseña debe tener al menos 6 caracteres');
+      return;
+    }
+
     setIsLoading(true);
     setErrorMessage('');
 
     try {
       await AuthService.register(email, password, name);
-      history.push('/dashboard');
+      
+      // Esperamos un momento para asegurarnos que la sesión se estableció correctamente
+      setTimeout(() => {
+        setIsLoading(false);
+        history.push('/dashboard');
+      }, 500);
     } catch (error: any) {
       console.error('Error al registrar usuario:', error);
 
@@ -49,6 +68,8 @@ const RegisterPage: React.FC = () => {
         setErrorMessage('El formato del correo electrónico no es válido.');
       } else if (error.code === 'auth/weak-password') {
         setErrorMessage('La contraseña es demasiado débil. Usa al menos 6 caracteres.');
+      } else if (error.code === 'auth/network-request-failed') {
+        setErrorMessage('Error de conexión. Verifica tu conexión a internet');
       } else {
         setErrorMessage('Error al crear la cuenta. Inténtalo de nuevo.');
       }
@@ -124,7 +145,13 @@ const RegisterPage: React.FC = () => {
           </IonButton>
         </div>
 
-        <IonLoading isOpen={isLoading} message="Creando cuenta..." />
+        <IonLoading 
+          isOpen={isLoading} 
+          message="Creando cuenta..." 
+          spinner="circles"
+          duration={15000} // 15 segundos máximo
+          backdropDismiss={false}
+        />
       </IonContent>
     </IonPage>
   );
