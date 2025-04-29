@@ -65,10 +65,39 @@ export class AuthService {
   }
 
   /**
-   * Cierra la sesión del usuario
+   * Se cierra la sesión del usuario y limpia cualquier dato de persistencia local
+   * @returns Promise que se resuelve cuando la sesión se cierra correctamente
    */
   static async signOut(): Promise<void> {
-    return signOut(auth);
+    try {
+      // Primero cerramos la sesión
+      await signOut(auth);
+      
+      // Luego, forzamos la recarga de la aplicación para limpiar cualquier estado
+      // Esta es una forma efectiva de asegurar que los datos persistentes no se mantengan en memoria
+      window.location.href = '/login';
+      
+      return Promise.resolve();
+    } catch (error) {
+      console.error('Error al cerrar sesión:', error);
+      return Promise.reject(error);
+    }
+  }
+
+  /**
+   * Verifica si hay una sesión activa
+   * @returns boolean que indica si hay sesión activa
+   */
+  static isAuthenticated(): boolean {
+    return !!auth.currentUser;
+  }
+
+  /**
+   * Obtiene el usuario actual
+   * @returns El usuario actual o null
+   */
+  static getCurrentUser() {
+    return auth.currentUser;
   }
 }
 

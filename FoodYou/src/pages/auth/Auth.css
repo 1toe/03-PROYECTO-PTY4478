@@ -4,9 +4,10 @@
   max-width: 500px;
   margin: 0 auto;
   color: var(--ion-text-color);
+  margin-top: 40px; 
 }
 
-.logo { /** PENDIENTE! **/ 
+.logo {
   display: block;
   width: 150px;
   margin: 30px auto;
@@ -21,10 +22,8 @@
   margin: 15px 0;
   display: block;
   text-align: center;
-  color: var(--ion-text-color);
+  color: var(--ion-color-danger);
 }
-
-
 
 .remember-me-item {
   margin-top: 15px;
@@ -33,4 +32,8 @@
 .remember-me-label {
   margin-left: 10px;
   font-size: 0.9em;
+}
+
+.back-button-container {
+  padding: 10px 0 0 10px;
 }

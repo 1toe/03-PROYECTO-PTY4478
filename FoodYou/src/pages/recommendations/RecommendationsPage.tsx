@@ -1,133 +1,73 @@
-import React, { useState, useEffect } from 'react';
-import {
-    IonPage,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
-    IonContent,
-    IonButton,
-    IonIcon,
-    IonCard,
-    IonCardHeader,
-    IonCardTitle,
-    IonCardContent,
-    IonGrid,
-    IonRow,
-    IonCol,
-    IonSpinner
+import React from 'react';
+import { 
+  IonPage, 
+  IonContent,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardContent,
+  IonChip,
+  IonLabel,
+  IonButton
 } from '@ionic/react';
-import { addOutline } from 'ionicons/icons';
-import { useHistory } from 'react-router-dom';
 import './RecommendationsPage.css';
 
-interface Recommendation {
-    id: string;
-    title: string;
-    description: string;
-    items: string[];
-}
-
 const RecommendationsPage: React.FC = () => {
-    const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
-    const [loading, setLoading] = useState(true);
-    const history = useHistory();
+  // Datos de muestra para recomendaciones
 
-    useEffect(() => {
-        loadRecommendations(); // TODO: Implementar la carga de recomendaciones desde el backend
-    }, []);
+  
+  const recommendations = [
+    {
+      id: 1,
+      title: 'Recetas con pollo',
+      description: 'Basado en tus compras recientes de pollo',
+      tags: ['Pollo', 'Cena', 'Saludable']
+    },
+    {
+      id: 2,
+      title: 'Ofertas en lácteos',
+      description: 'Descuentos para productos que compras frecuentemente',
+      tags: ['Ahorro', 'Lácteos', 'Ofertas']
+    },
+    {
+      id: 3,
+      title: 'Frutas de temporada',
+      description: 'Las mejores frutas disponibles este mes',
+      tags: ['Frutas', 'Temporada', 'Orgánico']
+    }
+  ];
 
-    const loadRecommendations = async () => {
-        // Datos de prueba (Obviamente cambiarlos)
-        // Mediante una llamada a la API o servicio de backendd
-        const mockRecommendations = [
-            {
-                id: '1',
-                title: 'Compra semanal básica',
-                description: 'Productos esenciales para la semana',
-                items: ['Leche', 'Pan', 'Huevos', 'Frutas', 'Vegetales']
-            },
-            {
-                id: '2',
-                title: 'Receta de pasta',
-                description: 'Ingredientes para hacer pasta con salsa',
-                items: ['Pasta', 'Tomates', 'Albahaca', 'Queso parmesano', 'Ajo']
-            },
-            {
-                id: '3',
-                title: 'Productos saludables',
-                description: 'Una selección de productos bajos en calorías',
-                items: ['Yogurt griego', 'Pollo', 'Brócoli', 'Quinoa', 'Aguacate']
-            }
-        ];
+  return (
+    <IonPage>
+      <IonContent>
+        <div className="recommendations-header">
+          <h1>Recomendaciones para ti</h1>
+          <p>Basado en tu historial de compras y preferencias</p>
+        </div>
 
-        setTimeout(() => {
-            setRecommendations(mockRecommendations);
-            setLoading(false);
-        }, 800);
-    };
-
-    const createListFromRecommendation = (recommendation: Recommendation) => {
-        // NOTA!!! -> En una implementación real, esto crearía una lista de compras basada en la recomendación
-        console.log(`Crear lista desde recomendación: ${recommendation.title}`);
-        // Luego redirige a la página de listas
-        history.push('/lists/create');
-    };
-
-    return (
-        <IonPage>
-            <IonHeader>
-                <IonToolbar color="primary">
-                    <IonTitle>Recomendaciones</IonTitle>
-                </IonToolbar>
-            </IonHeader>
-            <IonContent>
-                {loading ? (
-                    <div className="loading-container">
-                        <IonSpinner name="crescent" />
-                        <p>Cargando recomendaciones...</p>
-                    </div>
-                ) : (
-                    <div className="recommendations-container">
-                        <h2>Sugerencias para ti</h2>
-                        <p>Basadas en tus preferencias y compras anteriores</p>
-
-                        {recommendations.length > 0 ? (
-                            recommendations.map(recommendation => (
-                                <IonCard key={recommendation.id} className="recommendation-card">
-                                    <IonCardHeader>
-                                        <IonCardTitle>{recommendation.title}</IonCardTitle>
-                                    </IonCardHeader>
-                                    <IonCardContent>
-                                        <p>{recommendation.description}</p>
-                                        <div className="items-list">
-                                            <p><strong>Incluye:</strong></p>
-                                            <ul>
-                                                {recommendation.items.map((item, index) => (
-                                                    <li key={index}>{item}</li>
-                                                ))}
-                                            </ul>
-                                        </div>
-                                        <IonButton
-                                            expand="block"
-                                            size="small"
-                                            onClick={() => createListFromRecommendation(recommendation)}
-                                        >
-                                            <IonIcon slot="start" icon={addOutline} />
-                                            Crear Lista
-                                        </IonButton>
-                                    </IonCardContent>
-                                </IonCard>
-                            ))
-                        ) : (
-                            <div className="no-recommendations">
-                                <p>No hay recomendaciones.</p>
-                            </div>
-                        )}
-                    </div>
-                )}
-            </IonContent>
-        </IonPage>
-    );
+        <div className="recommendations-container">
+          {recommendations.map((rec) => (
+            <IonCard key={rec.id} className="recommendation-card">
+              <IonCardHeader>
+                <IonCardTitle>{rec.title}</IonCardTitle>
+              </IonCardHeader>
+              <IonCardContent>
+                <p>{rec.description}</p>
+                <div className="tags-container">
+                  {rec.tags.map((tag, index) => (
+                    <IonChip key={index} color="primary">
+                      <IonLabel>{tag}</IonLabel>
+                    </IonChip>
+                  ))}
+                </div>
+                <IonButton expand="block">Ver detalles</IonButton>
+              </IonCardContent>
+            </IonCard>
+          ))}
+        </div>
+      </IonContent>
+    </IonPage>
+  );
 };
 
 export default RecommendationsPage;

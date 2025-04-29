@@ -1,18 +1,21 @@
 import React, { useState } from 'react';
 import {
-  IonPage, IonHeader, IonToolbar, IonTitle,
-  IonContent, IonItem, IonLabel, IonInput,
-  IonButton, IonLoading, IonText,
-  IonFab, IonFabButton, IonIcon
+  IonPage,
+  IonContent,
+  IonItem,
+  IonLabel,
+  IonInput,
+  IonButton,
+  IonRow,
+  IonCol,
+  IonLoading,
+  IonText,
+  IonIcon
 } from '@ionic/react';
+import { arrowBack } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
 import './Auth.css';
 import { AuthService } from '../../services/firebase/auth.service';
-
-// Página de registro
-// Sigue casi la misma estructura que la página de inicio de sesión
-// pero con campos adicionales para el nombre y la confirmación de contraseña
-
 
 const RegisterPage: React.FC = () => {
   const [name, setName] = useState('');
@@ -34,61 +37,44 @@ const RegisterPage: React.FC = () => {
       return;
     }
 
-    // Validación simple de email con regex
-    // Para entender, el email debe tener un formato básico de "usuario@dominio.com"
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      setErrorMessage('Por favor ingresa un correo electrónico válido');
-      return;
-    }
-
-    // Validación simple de contraseña
-    if (password.length <= 6) {
-      setErrorMessage('La contraseña debe tener al menos 6 caracteres');
-      return;
-    }
-
     setIsLoading(true);
     setErrorMessage('');
 
     try {
       await AuthService.register(email, password, name);
-      
-      // Esperamos un momento para asegurarnos que la sesión se estableció correctamente
-      setTimeout(() => {
-        setIsLoading(false);
-        history.push('/dashboard');
-      }, 500);
+      setIsLoading(false);
+      history.push('/app/home');
     } catch (error: any) {
       console.error('Error al registrar usuario:', error);
-
+      
       if (error.code === 'auth/email-already-in-use') {
-        setErrorMessage('Este correo electrónico ya está en uso.');
-      } else if (error.code === 'auth/invalid-email') {
-        setErrorMessage('El formato del correo electrónico no es válido.');
+        setErrorMessage('Este correo ya está registrado');
       } else if (error.code === 'auth/weak-password') {
-        setErrorMessage('La contraseña es demasiado débil. Usa al menos 6 caracteres.');
-      } else if (error.code === 'auth/network-request-failed') {
-        setErrorMessage('Error de conexión. Verifica tu conexión a internet');
+        setErrorMessage('La contraseña es demasiado débil');
+      } else if (error.code === 'auth/invalid-email') {
+        setErrorMessage('El formato del correo electrónico no es válido');
       } else {
-        setErrorMessage('Error al crear la cuenta. Inténtalo de nuevo.');
+        setErrorMessage('Error al registrar usuario');
       }
-    } finally {
       setIsLoading(false);
     }
   };
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar color="primary">
-          <IonTitle>Crear Cuenta</IonTitle>
-        </IonToolbar>
-      </IonHeader>
       <IonContent className="ion-padding">
+        <div className="back-button-container">
+          <IonButton fill="clear" onClick={() => history.push('/login')}>
+            <IonIcon slot="icon-only" icon={arrowBack} />
+          </IonButton>
+        </div>
+        
         <div className="register-container">
+          <h1>Crear cuenta</h1>
+          <p>Completa tus datos para registrarte</p>
+          
           <IonItem>
-            <IonLabel position="floating">Nombre</IonLabel>
+            <IonLabel position="floating">Nombre completo</IonLabel>
             <IonInput
               value={name}
               onIonChange={e => setName(e.detail.value!)}
@@ -96,7 +82,7 @@ const RegisterPage: React.FC = () => {
           </IonItem>
 
           <IonItem>
-            <IonLabel position="floating">Correo Electrónico</IonLabel>
+            <IonLabel position="floating">Correo electrónico</IonLabel>
             <IonInput
               type="email"
               value={email}
@@ -114,7 +100,7 @@ const RegisterPage: React.FC = () => {
           </IonItem>
 
           <IonItem>
-            <IonLabel position="floating">Confirmar Contraseña</IonLabel>
+            <IonLabel position="floating">Confirmar contraseña</IonLabel>
             <IonInput
               type="password"
               value={confirmPassword}
@@ -133,23 +119,27 @@ const RegisterPage: React.FC = () => {
             onClick={handleRegister}
             className="register-button"
           >
-            Crear Cuenta
+            Registrarse
           </IonButton>
 
-          <IonButton
-            expand="block"
-            fill="outline"
-            onClick={() => history.push('/login')}
-          >
-            Ya tengo cuenta
-          </IonButton>
+          <IonRow className="ion-justify-content-center">
+            <IonCol size="12" className="ion-text-center">
+              <IonButton
+                fill="clear"
+                size="small"
+                onClick={() => history.push('/login')}
+              >
+                ¿Ya tienes cuenta? Inicia sesión
+              </IonButton>
+            </IonCol>
+          </IonRow>
         </div>
 
-        <IonLoading 
-          isOpen={isLoading} 
-          message="Creando cuenta..." 
+        <IonLoading
+          isOpen={isLoading}
+          message="Creando cuenta..."
           spinner="circles"
-          duration={15000} // 15 segundos máximo
+          duration={10000}
           backdropDismiss={false}
         />
       </IonContent>

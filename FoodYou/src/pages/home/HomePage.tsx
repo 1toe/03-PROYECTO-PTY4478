@@ -1,9 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  IonPage, IonHeader, IonToolbar, IonTitle, 
-  IonContent, IonCard, IonCardHeader, IonCardTitle,
-  IonCardContent, IonButton, IonGrid, IonRow, IonCol,
-  IonIcon, IonSpinner, IonRefresher, IonRefresherContent
+  IonPage,
+  IonContent, 
+  IonCard, 
+  IonCardHeader, 
+  IonCardTitle,
+  IonCardContent, 
+  IonButton, 
+  IonGrid, 
+  IonRow, 
+  IonCol,
+  IonIcon, 
+  IonSpinner, 
+  IonRefresher, 
+  IonRefresherContent
 } from '@ionic/react';
 import { listOutline, cartOutline } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
@@ -57,11 +67,6 @@ const HomePage: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar color="primary">
-          <IonTitle>FoodYou</IonTitle>
-        </IonToolbar>
-      </IonHeader>
       <IonContent>
         <IonRefresher slot="fixed" onIonRefresh={handleRefresh}>
           <IonRefresherContent></IonRefresherContent>

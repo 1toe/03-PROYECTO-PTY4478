@@ -1,18 +1,22 @@
 import React, { useState } from 'react';
 import {
-  IonPage, IonHeader, IonToolbar, IonTitle,
-  IonContent, IonItem, IonLabel, IonInput,
-  IonButton, IonRow, IonCol, IonLoading, IonText,
+  IonPage,
+  IonContent,
+  IonItem,
+  IonLabel,
+  IonInput,
+  IonButton,
+  IonRow,
+  IonCol,
+  IonLoading,
+  IonText,
   IonCheckbox
 } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
 import './Auth.css';
 import { AuthService } from '../../services/firebase/auth.service';
 
-
-// Página de inicio de sesión
-
-const LoginPage: React.FC = () => { // Componente funcional para la página de inicio de sesión
+const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
@@ -20,17 +24,14 @@ const LoginPage: React.FC = () => { // Componente funcional para la página de i
   const [errorMessage, setErrorMessage] = useState('');
   const history = useHistory();
 
-
-  // Maneja el evento de inicio de sesión
-  // Verifica que los campos no estén vacíos y llama al servicio de autenticación
   const handleLogin = async () => {
     if (!email || !password) {
       setErrorMessage('Por favor completa todos los campos');
       return;
     }
 
-    setIsLoading(true); // Muestra el indicador de carga
-    setErrorMessage(''); // Reinicia el mensaje de error
+    setIsLoading(true);
+    setErrorMessage('');
 
     try {
       // Integración con el servicio de autenticación, pasando la opción de recordar sesión
@@ -56,17 +57,12 @@ const LoginPage: React.FC = () => { // Componente funcional para la página de i
       } else {
         setErrorMessage('Error al iniciar sesión. Verifica tus credenciales.');
       }
-      setIsLoading(false); // Oculta el indicador de carga
+      setIsLoading(false);
     }
   };
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar color="primary">
-          <IonTitle>Iniciar Sesión</IonTitle>
-        </IonToolbar>
-      </IonHeader>
       <IonContent className="ion-padding">
         <div className="login-container">
           <img src="/assets/logo.png" alt="FoodYou Logo" className="logo" />
@@ -128,7 +124,7 @@ const LoginPage: React.FC = () => { // Componente funcional para la página de i
           isOpen={isLoading}
           message="Iniciando sesión..."
           spinner="circles"
-          duration={10000} // 10 segundos máximo
+          duration={10000}
           backdropDismiss={false}
         />
       </IonContent>

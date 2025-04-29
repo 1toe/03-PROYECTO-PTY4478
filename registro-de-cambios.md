@@ -1,5 +1,26 @@
 # Registro de Cambios
 
+## [1.0.4] - 29/04/2025
+
+### Mejoras en la Interfaz y Seguridad
+
+#### Añadido
+
+- Implementación de cierre de sesión mejorado que elimina correctamente la persistencia
+- Redirección directa a login tras cierre de sesión para limpiar el estado de la aplicación
+
+#### Modificado
+
+- Eliminados todos los headers de Ionic para adaptarse mejor como WebApp en Android
+- Ajustado el diseño de las páginas para compensar la ausencia de headers
+- Mejorado servicio de autenticación con manejo más robusto del cierre de sesión
+
+#### Técnico
+
+- Forzado de redirección completa al cerrar sesión para garantizar la limpieza del estado
+- Reorganización del diseño de páginas con espacio superior adicional
+- Mejoras en los estilos para mantener la consistencia sin headers
+
 ## [1.0.3] - 29/04/2025
 
 ### Gestión de Sesiones de Usuario
