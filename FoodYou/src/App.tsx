@@ -44,7 +44,7 @@ const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
       <IonRouterOutlet>
-        {/* Rutas de autenticación - EXCLUIDA del sistema de tabs */}
+        {/* Rutas públicas - accesibles sin autenticación */}
         <Route exact path="/login">
           <LoginPage />
         </Route>
@@ -54,77 +54,56 @@ const App: React.FC = () => (
 
         {/* Ruta principal redirecciona a /login o /app/home según autenticación */}
         <Route exact path="/">
-          <Redirect to="/login" />
+          <Redirect to="/app/home" />
         </Route>
 
         {/* Rutas de la aplicación protegidas con sistema de tabs */}
         <Route path="/app">
-          <PrivateRoute>
-            <IonTabs>
-              <IonRouterOutlet>
-                <Route exact path="/app/home">
-                  <HomePage />
-                </Route>
-                <Route exact path="/app/map">
-                  <MapPage />
-                </Route>
-                <Route exact path="/app/profile">
-                  <ProfilePage />
-                </Route>
-                <Route exact path="/app/lists">
-                  <ListsPage />
-                </Route>
-                <Route exact path="/app/lists/create">
-                  <ListDetailsPage />
-                </Route>
-                <Route exact path="/app/lists/edit/:id">
-                  <ListDetailsPage />
-                </Route>
-                <Route exact path="/app/lists/:id">
-                  <ListDetailsPage />
-                </Route>
-                <Route exact path="/app/recommendations">
-                  <RecommendationsPage />
-                </Route>
-                <Route>
-                  <Redirect to="/app/home" />
-                </Route>
-              </IonRouterOutlet>
+          <IonTabs>
+            <IonRouterOutlet>
+              <PrivateRoute exact path="/app/home" component={HomePage} />
+              <PrivateRoute exact path="/app/map" component={MapPage} />
+              <PrivateRoute exact path="/app/profile" component={ProfilePage} />
+              <PrivateRoute exact path="/app/lists" component={ListsPage} />
+              <PrivateRoute exact path="/app/lists/create" component={ListDetailsPage} />
+              <PrivateRoute exact path="/app/lists/edit/:id" component={ListDetailsPage} />
+              <PrivateRoute exact path="/app/lists/:id" component={ListDetailsPage} />
+              <PrivateRoute exact path="/app/recommendations" component={RecommendationsPage} />
+              <Route>
+                <Redirect to="/app/home" />
+              </Route>
+            </IonRouterOutlet>
 
-              <IonTabBar slot="bottom">
-                <IonTabButton tab="home" href="/app/home">
-                  <IonIcon icon={home} />
-                  <IonLabel>Inicio</IonLabel>
-                </IonTabButton>
+            <IonTabBar slot="bottom">
+              <IonTabButton tab="home" href="/app/home">
+                <IonIcon icon={home} />
+                <IonLabel>Inicio</IonLabel>
+              </IonTabButton>
 
-                <IonTabButton tab="lists" href="/app/lists">
-                  <IonIcon icon={list} />
-                  <IonLabel>Listas</IonLabel>
-                </IonTabButton>
+              <IonTabButton tab="lists" href="/app/lists">
+                <IonIcon icon={list} />
+                <IonLabel>Listas</IonLabel>
+              </IonTabButton>
 
-                <IonTabButton tab="map" href="/app/map">
-                  <IonIcon icon={map} />
-                  <IonLabel>Mapa</IonLabel>
-                </IonTabButton>
+              <IonTabButton tab="map" href="/app/map">
+                <IonIcon icon={map} />
+                <IonLabel>Mapa</IonLabel>
+              </IonTabButton>
 
-                <IonTabButton tab="recommendations" href="/app/recommendations">
-                  <IonIcon icon={newspaper} />
-                  <IonLabel>Recomendar</IonLabel>
-                </IonTabButton>
+              <IonTabButton tab="recommendations" href="/app/recommendations">
+                <IonIcon icon={newspaper} />
+                <IonLabel>Recomendar</IonLabel>
+              </IonTabButton>
 
-                <IonTabButton tab="profile" href="/app/profile">
-                  <IonIcon icon={person} />
-                  <IonLabel>Perfil</IonLabel>
-                </IonTabButton>
-              </IonTabBar>
-            </IonTabs>
-          </PrivateRoute>
+              <IonTabButton tab="profile" href="/app/profile">
+                <IonIcon icon={person} />
+                <IonLabel>Perfil</IonLabel>
+              </IonTabButton>
+            </IonTabBar>
+          </IonTabs>
         </Route>
 
         {/* Redirección para rutas antiguas */}
-        <Route exact path="/">
-          <Redirect to="/app/home" />
-        </Route>
         <Route exact path="/profile">
           <Redirect to="/app/profile" />
         </Route>

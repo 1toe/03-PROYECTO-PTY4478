@@ -34,18 +34,17 @@ const LoginPage: React.FC = () => {
     setErrorMessage('');
 
     try {
-      // Integración con el servicio de autenticación, pasando la opción de recordar sesión
       await AuthService.login(email, password, rememberMe);
 
-      // Esperamos un momento para asegurarnos que la sesión se estableció correctamente
+      // Pequeña espera para asegurar que la sesión se ha establecido
       setTimeout(() => {
         setIsLoading(false);
         history.push('/app/home');
-      }, 500);
+      }, 800);
     } catch (error: any) {
       console.error('Error al iniciar sesión:', error);
 
-      // Mensajes de error específicos según el código de error de Firebase
+      // Mensajes de error específicos
       if (error.code === 'auth/user-not-found') {
         setErrorMessage('No existe una cuenta con este correo electrónico');
       } else if (error.code === 'auth/wrong-password') {
@@ -124,7 +123,6 @@ const LoginPage: React.FC = () => {
           isOpen={isLoading}
           message="Iniciando sesión..."
           spinner="circles"
-          duration={10000}
           backdropDismiss={false}
         />
       </IonContent>

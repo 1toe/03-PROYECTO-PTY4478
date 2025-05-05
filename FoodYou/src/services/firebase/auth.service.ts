@@ -1,15 +1,19 @@
 import { 
   signInWithEmailAndPassword, 
-  createUserWithEmailAndPassword, 
+  createUserWithEmailAndPassword,
   updateProfile,
   signOut,
   setPersistence,
   browserLocalPersistence,
   browserSessionPersistence,
-  UserCredential
+  UserCredential,
+  onAuthStateChanged,
+  User
 } from 'firebase/auth';
 import { auth } from '../../config/firebase';
+import { createUserProfile } from './user.service';
 
+// Interfaces
 export interface UserProfile {
   uid: string;
   email: string;
@@ -20,9 +24,13 @@ export interface UserProfile {
     dietaryRestrictions?: string[];
     favoriteCategories?: string[];
   };
-  createdAt?: Date;
+  createdAt: Date;
+  updatedAt?: Date;
 }
 
+/**
+ * Servicio de autenticación con Firebase
+ */
 export class AuthService {
   /**
    * Inicia sesión con email y contraseña
@@ -32,13 +40,20 @@ export class AuthService {
    * @returns Promise con las credenciales del usuario
    */
   static async login(email: string, password: string, rememberMe: boolean = false): Promise<UserCredential> {
-    // Establecer persistencia según la elección del usuario
-    const persistenceType = rememberMe ? browserLocalPersistence : browserSessionPersistence;
-    
-    await setPersistence(auth, persistenceType);
-
-    // Iniciar sesión después de configurar la persistencia
-    return signInWithEmailAndPassword(auth, email, password);
+    try {
+      // Establecer tipo de persistencia según preferencia del usuario
+      const persistenceType = rememberMe ? browserLocalPersistence : browserSessionPersistence;
+      await setPersistence(auth, persistenceType);
+      
+      // Iniciar sesión
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      
+      console.log("Usuario autenticado correctamente:", userCredential.user.uid);
+      return userCredential;
+    } catch (error) {
+      console.error("Error en login:", error);
+      throw error;
+    }
   }
 
   /**
@@ -49,32 +64,44 @@ export class AuthService {
    * @returns Promise con las credenciales del usuario
    */
   static async register(email: string, password: string, displayName: string): Promise<UserCredential> {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    
-    // Establecer el nombre del usuario
-    if (userCredential.user) {
-      await updateProfile(userCredential.user, {
-        displayName: displayName
-      });
+    try {
+      // Crear usuario en Firebase Auth
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      
+      // Establecer el nombre del usuario en Firebase Auth
+      await updateProfile(user, { displayName });
+      
+      // Crear perfil de usuario en Firestore
+      const userProfile: UserProfile = {
+        uid: user.uid,
+        email: user.email || email,
+        displayName,
+        createdAt: new Date(),
+      };
+      
+      await createUserProfile(userProfile);
+      
+      // Por defecto, usa persistencia de sesión para usuarios nuevos
+      await setPersistence(auth, browserSessionPersistence);
+      
+      console.log("Usuario registrado correctamente:", user.uid);
+      return userCredential;
+    } catch (error) {
+      console.error("Error en registro:", error);
+      throw error;
     }
-    
-    // Por defecto, usa persistencia de sesión para usuarios nuevos
-    await setPersistence(auth, browserSessionPersistence);
-    
-    return userCredential;
   }
 
   /**
-   * Se cierra la sesión del usuario y limpia cualquier dato de persistencia local
+   * Cierra la sesión del usuario
    * @returns Promise que se resuelve cuando la sesión se cierra correctamente
    */
   static async signOut(): Promise<void> {
     try {
-      // Primero cerramos la sesión
       await signOut(auth);
       
-      // Luego, forzamos la recarga de la aplicación para limpiar cualquier estado
-      // Esta es una forma efectiva de asegurar que los datos persistentes no se mantengan en memoria
+      // Forzar redirección para limpiar completamente el estado
       window.location.href = '/login';
       
       return Promise.resolve();
@@ -96,8 +123,17 @@ export class AuthService {
    * Obtiene el usuario actual
    * @returns El usuario actual o null
    */
-  static getCurrentUser() {
+  static getCurrentUser(): User | null {
     return auth.currentUser;
+  }
+
+  /**
+   * Observa cambios en el estado de autenticación
+   * @param callback Función que se ejecuta cuando cambia el estado de autenticación
+   * @returns Función para cancelar la suscripción
+   */
+  static onAuthStateChange(callback: (user: User | null) => void): () => void {
+    return onAuthStateChanged(auth, callback);
   }
 }
 
