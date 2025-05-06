@@ -128,10 +128,10 @@ const LoginPage: React.FC = () => {
 
           <IonButton
             expand="block"
-            onClick={handleLogin}
+            onClick={handleLogin}asdasd
             className="login-button"
             disabled={isLoading}
-          >
+          >sd
             Iniciar Sesión
           </IonButton>
 
