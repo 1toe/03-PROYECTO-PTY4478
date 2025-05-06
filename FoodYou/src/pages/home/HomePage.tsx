@@ -32,7 +32,6 @@ const HomePage: React.FC = () => {
   const history = useHistory();
 
   useEffect(() => {
-    // Simulación de carga de datos
     const loadData = async () => {
       try {
         // Aquí se integraría con el servicio de listas
@@ -48,7 +47,7 @@ const HomePage: React.FC = () => {
         setTimeout(() => {
           setRecentLists(mockLists);
           setLoading(false);
-        }, 800); // Simulamos tiempo de carga
+        }); 
       } catch (error) {
         console.error('Error al cargar las listas:', error);
         setLoading(false);
@@ -58,11 +57,11 @@ const HomePage: React.FC = () => {
     loadData();
   }, []);
 
+  // Refrescar datos
   const handleRefresh = async (event: any) => {
-    // Simulación de actualización de datos
     setTimeout(() => {
       event.detail.complete();
-    }, 1000);
+    }, );
   };
 
   return (

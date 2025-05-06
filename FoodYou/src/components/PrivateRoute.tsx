@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, Redirect, RouteProps } from 'react-router-dom';
 import { useAuth } from "../AuthContext"; // Import useAuth hook
+import { IonSpinner } from '@ionic/react';
 
 interface PrivateRouteProps extends RouteProps {
   component: React.ComponentType<any>;
@@ -10,13 +11,22 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ component: Component, ...re
   // Consumimos el contexto de autenticación
   const { currentUser, loading } = useAuth();
 
-  //  El AuthProvider global ya gestiona el estado de carga antes de renderizar las rutas.
-  //  Si llegamos a este punto y la carga sigue siendo verdadera, podríamos mostrar opcionalmente un indicador de carga aquí
-  //  Si la carga es falsa, comprobamos el usuario actual.
-
-  //  Nota: El estado de carga GLOBAL lo gestiona AuthProvider.
-  //  PrivateRoute ahora asume que, si renderiza, se determina el estado de autenticación(la carga es falsa).
-
+  // Mostrar indicador de carga mientras se verifica la autenticación
+  if (loading) {
+    return (
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        height: '100vh',
+        flexDirection: 'column',
+        gap: '10px'
+      }}>
+        <IonSpinner name="crescent" />
+        <div>Verificando autenticación...</div>
+      </div>
+    );
+  }
 
   return (
     <Route

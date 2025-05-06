@@ -75,7 +75,7 @@ const ListDetailsPage: React.FC = () => {
         setList(mockList);
         setItems(mockItems);
         setLoading(false);
-      }, 800); // Simulamos tiempo de carga
+      });
     } catch (error) {
       console.error('Error al cargar la información de la lista:', error);
       setLoading(false);
@@ -97,7 +97,6 @@ const ListDetailsPage: React.FC = () => {
 
       // Aquí se integraría con el servicio de listas
       // Ejemplo: await listService.updateListItem(id, itemId, { completed: !items.find(i => i.id === itemId)?.completed });
-      // Mientras tanto, simulamos la actualización
     } catch (error) {
       console.error('Error al actualizar el estado del item:', error);
       showToastMessage('Error al actualizar el item');
@@ -112,7 +111,6 @@ const ListDetailsPage: React.FC = () => {
 
 
     try {
-      // Simulación de añadir un item a la lista
       const newItem = {
         id: `item-${Date.now()}`,
         productId: `p-${Date.now()}`,

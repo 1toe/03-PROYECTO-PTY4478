@@ -27,10 +27,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const [loading, setLoading] = useState(true); // Start loading initially
 
     useEffect(() => {
-        // Subscribe to auth state changes
         const unsubscribe = AuthService.onAuthStateChange(user => {
             setCurrentUser(user);
-            setLoading(false); // Set loading to false once auth state is determined
+            setLoading(false); // Estado se actualiza cuando se recibe el usuario
         });
 
         // Cleanup subscription on unmount

@@ -10,11 +10,13 @@ import {
   IonCol,
   IonCheckbox,
   IonText,
-  IonAlert
+  IonAlert,
+  IonLoading
 } from '@ionic/react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import './Auth.css';
 import { AuthService } from '../../services/firebase/auth.service';
+import { useAuth } from '../../AuthContext';
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -24,16 +26,18 @@ const LoginPage: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [showAlert, setShowAlert] = useState(false);
   const history = useHistory();
-
+  const location = useLocation();
+  const { currentUser, loading: authLoading } = useAuth();
+  
   // Verificar si ya está autenticado al cargar la página
   useEffect(() => {
-    const checkAuth = async () => {
-      if (AuthService.isAuthenticated()) {
-        history.push('/app/home');
-      }
-    };
-    checkAuth();
-  }, [history]);
+    // Solo redirigir si ya tenemos la información de autenticación cargada y el usuario está autenticado
+    if (!authLoading && currentUser) {
+      // Redireccionar a la página anterior si existe, o a home por defecto
+      const { from } = location.state as { from?: { pathname: string } } || { from: { pathname: '/app/home' } };
+      history.replace(from.pathname || '/app/home');
+    }
+  }, [currentUser, authLoading, history, location.state]);
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -46,8 +50,7 @@ const LoginPage: React.FC = () => {
 
     try {
       await AuthService.login(email, password, rememberMe);
-      // Redirigir directamente después del login sin mostrar loading
-      history.push('/app/home');
+      // El useEffect se encargará de la redirección cuando currentUser se actualice
     } catch (error: any) {
       console.error('Error al iniciar sesión:', error);
 
@@ -85,6 +88,8 @@ const LoginPage: React.FC = () => {
   return (
     <IonPage>
       <IonContent className="ion-padding">
+        <IonLoading isOpen={authLoading} message="Verificando sesión..." />
+        
         <div className="login-container">
           <img src="/assets/logo.png" alt="FoodYou Logo" className="logo" />
           <h1>Iniciar Sesión</h1>

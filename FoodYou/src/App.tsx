@@ -1,9 +1,9 @@
 import { Redirect, Route } from 'react-router-dom';
-import { IonApp, IonIcon, IonLabel, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs, setupIonicReact } from '@ionic/react';
+import { IonApp, IonIcon, IonLabel, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs, setupIonicReact, IonSpinner } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 
 // Importar AuthProvider y el hook useAuth
-import { AuthProvider } from './AuthContext';
+import { AuthProvider, useAuth } from './AuthContext';
 
 import LoginPage from './pages/auth/LoginPage';
 import RegisterPage from './pages/auth/RegisterPage';
@@ -43,6 +43,34 @@ import './theme/variables.css';
 
 setupIonicReact();
 
+// Loading component to show while checking auth state
+const LoadingScreen: React.FC = () => {
+  return (
+    <div style={{ 
+      display: 'flex', 
+      justifyContent: 'center', 
+      alignItems: 'center', 
+      height: '100vh',
+      flexDirection: 'column',
+      gap: '10px'
+    }}>
+      <IonSpinner name="crescent" />
+      <div>Cargando...</div>
+    </div>
+  );
+};
+
+// Root route component that handles authentication redirects
+const RootRedirect: React.FC = () => {
+  const { currentUser, loading } = useAuth();
+  
+  if (loading) {
+    return <LoadingScreen />;
+  }
+  
+  return <Redirect to={currentUser ? "/app/home" : "/login"} />;
+};
+
 const App: React.FC = () => (
   <IonApp>
     <AuthProvider>
@@ -56,15 +84,13 @@ const App: React.FC = () => (
             <RegisterPage />
           </Route>
 
-          {/* Ruta principal redirecciona a /login o /app/home según autenticación */}
+          {/* Ruta principal redirecciona según autenticación */}
           <Route exact path="/">
-
-            <Redirect to="/app/home" />
+            <RootRedirect />
           </Route>
 
           {/* Rutas de la aplicación protegidas con sistema de tabs */}
           <Route path="/app">
-
             <IonTabs>
               <IonRouterOutlet>
                 <PrivateRoute exact path="/app/home" component={HomePage} />

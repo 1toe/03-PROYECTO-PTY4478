@@ -37,7 +37,6 @@ const ListsPage: React.FC = () => {
   const history = useHistory();
 
   useEffect(() => {
-    // Simulación de carga de datos
     const loadLists = setTimeout(() => {
       const mockLists: ShoppingList[] = [
         { 
@@ -66,7 +65,7 @@ const ListsPage: React.FC = () => {
       ];
       setLists(mockLists);
       setLoading(false);
-    }, 1000);
+    });
 
     return () => clearTimeout(loadLists);
   }, []);
