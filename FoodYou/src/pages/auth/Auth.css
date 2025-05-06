@@ -9,13 +9,17 @@
 
 .logo {
   display: block;
-  width: 150px;
+  width: 180px;
+  height: auto;
   margin: 30px auto;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
 }
 
 .login-button,
 .register-button {
   margin-top: 30px;
+  --background: var(--ion-color-primary);
+  --background-hover: var(--ion-color-primary-shade);
 }
 
 .error-message {
@@ -32,6 +36,7 @@
 .remember-me-label {
   margin-left: 10px;
   font-size: 0.9em;
+  color: var(--ion-text-color);
 }
 
 .back-button-container {

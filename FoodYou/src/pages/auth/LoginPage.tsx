@@ -35,7 +35,7 @@ const LoginPage: React.FC = () => {
     if (!authLoading && currentUser) {
       // Redireccionar a la página anterior si existe, o a home por defecto
       const { from } = location.state as { from?: { pathname: string } } || { from: { pathname: '/app/home' } };
-      history.replace(from.pathname || '/app/home');
+      history.replace(from?.pathname || '/app/home');
     }
   }, [currentUser, authLoading, history, location.state]);
 
@@ -91,7 +91,7 @@ const LoginPage: React.FC = () => {
         <IonLoading isOpen={authLoading} message="Verificando sesión..." />
         
         <div className="login-container">
-          <img src="/assets/logo.png" alt="FoodYou Logo" className="logo" />
+          <img src="/assets/logo.png" alt="FoodYou" className="logo" />
           <h1>Iniciar Sesión</h1>
 
           <IonItem>

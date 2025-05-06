@@ -1,15 +1,20 @@
 :root {
   /** custom colors **/
-  --ion-color-primary: rgb(204, 153, 204);
-  --ion-color-primary-rgb: 204, 153, 204;
-  --ion-color-primary-contrast: rgb(255, 255, 255);
-  --ion-color-primary-shade: rgb(147, 85, 156);
+  --ion-color-primary: #FF5733;
+  --ion-color-primary-rgb: 255, 87, 51;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-shade: #e54d2d;
   
-  --ion-background-color: rgb(204, 153, 204);
-  --ion-background-color-rgb: 204, 153, 204;
+  --ion-color-secondary: #2E7D32;
+  --ion-color-secondary-rgb: 46, 125, 50;
+  --ion-color-secondary-contrast: #ffffff;
+  --ion-color-secondary-shade: #286e2c;
   
-  --ion-text-color: rgb(255, 255, 255);
-  --ion-text-color-rgb: 255, 255, 255;
+  --ion-background-color: #FFF3E0;
+  --ion-background-color-rgb: 255, 243, 224;
   
-  --ion-border-color: rgb(255, 255, 255);
+  --ion-text-color: #333333;
+  --ion-text-color-rgb: 51, 51, 51;
+  
+  --ion-border-color: #DDD;
 }
