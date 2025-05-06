@@ -1,120 +1,81 @@
 import { 
   doc, 
-  setDoc, 
   getDoc, 
-  updateDoc, 
-  collection,
-  query,
-  where,
-  getDocs
+  setDoc, 
+  updateDoc
 } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 
-// Constantes
-const USERS_COLLECTION = 'users';
+// Tipos de datos para el perfil de usuario
+interface UserPreferences {
+  theme: 'light' | 'dark' | 'system';
+  notifications: boolean;
+  diet: string[];
+}
 
-// Tipos
 export interface UserProfile {
   uid: string;
   email: string;
   displayName: string;
-  photoURL?: string;
-  phoneNumber?: string;
-  preferences?: {
-    dietaryRestrictions?: string[];
-    favoriteCategories?: string[];
-  };
+  photoURL: string | null;
   createdAt: Date;
-  updatedAt?: Date;
+  preferences: UserPreferences;
 }
 
-/**
- * Servicio para manejar operaciones con usuarios en Firestore
- */
-export const UserService = {
+export class UserService {
+  private static readonly COLLECTION_NAME = 'users';
+
   /**
-   * Crea un nuevo perfil de usuario en Firestore
-   * @param userData Datos del usuario
+   * Crea un nuevo perfil de usuario
    */
-  async createUserProfile(userData: UserProfile): Promise<void> {
+  static async createUserProfile(userData: UserProfile): Promise<void> {
     try {
-      const userRef = doc(db, USERS_COLLECTION, userData.uid);
-      await setDoc(userRef, userData);
+      const userRef = doc(db, this.COLLECTION_NAME, userData.uid);
+      
+      // Convertir Date a timestamp de Firestore
+      const userDataToSave = {
+        ...userData,
+        createdAt: userData.createdAt
+      };
+      
+      await setDoc(userRef, userDataToSave);
     } catch (error) {
       console.error('Error al crear perfil de usuario:', error);
       throw error;
     }
-  },
-  
+  }
+
   /**
    * Obtiene el perfil de un usuario por su ID
-   * @param uid ID del usuario
    */
-  async getUserProfile(uid: string): Promise<UserProfile | null> {
+  static async getUserProfile(userId: string): Promise<UserProfile | null> {
     try {
-      const userRef = doc(db, USERS_COLLECTION, uid);
-      const userSnap = await getDoc(userRef);
+      const userRef = doc(db, this.COLLECTION_NAME, userId);
+      const docSnap = await getDoc(userRef);
       
-      if (userSnap.exists()) {
-        return userSnap.data() as UserProfile;
+      if (docSnap.exists()) {
+        return docSnap.data() as UserProfile;
+      } else {
+        return null;
       }
-      
-      return null;
     } catch (error) {
       console.error('Error al obtener perfil de usuario:', error);
       throw error;
     }
-  },
-  
+  }
+
   /**
    * Actualiza el perfil de un usuario
-   * @param uid ID del usuario
-   * @param userData Datos a actualizar
    */
-  async updateUserProfile(uid: string, userData: Partial<UserProfile>): Promise<void> {
+  static async updateUserProfile(userId: string, data: Partial<UserProfile>): Promise<void> {
     try {
-      const userRef = doc(db, USERS_COLLECTION, uid);
-      
-      // Añadir timestamp de actualización
-      const updatedData = {
-        ...userData,
-        updatedAt: new Date(),
-      };
-      
-      await updateDoc(userRef, updatedData);
+      const userRef = doc(db, this.COLLECTION_NAME, userId);
+      await updateDoc(userRef, { ...data });
     } catch (error) {
       console.error('Error al actualizar perfil de usuario:', error);
       throw error;
     }
-  },
-  
-  /**
-   * Busca usuarios por nombre de usuario
-   * @param displayName Nombre de usuario a buscar
-   */
-  async searchUsersByName(displayName: string): Promise<UserProfile[]> {
-    try {
-      const usersRef = collection(db, USERS_COLLECTION);
-      const q = query(usersRef, where('displayName', '>=', displayName), where('displayName', '<=', displayName + '\uf8ff'));
-      const querySnapshot = await getDocs(q);
-      
-      const users: UserProfile[] = [];
-      querySnapshot.forEach((doc) => {
-        users.push(doc.data() as UserProfile);
-      });
-      
-      return users;
-    } catch (error) {
-      console.error('Error al buscar usuarios:', error);
-      throw error;
-    }
   }
-};
+}
 
-// Alias para mantener compatibilidad
-export const { 
-  createUserProfile, 
-  getUserProfile, 
-  updateUserProfile, 
-  searchUsersByName 
-} = UserService;
+export default UserService;

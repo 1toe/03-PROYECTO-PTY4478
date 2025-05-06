@@ -1,89 +1,143 @@
-import React, { useState } from 'react';
-import { 
-  IonPage, 
+import React, { useState, useEffect } from 'react';
+import {
+  IonPage,
   IonContent,
-  IonButton, 
-  IonList, 
-  IonItem, 
+  IonHeader,
+  IonTitle,
+  IonToolbar,
+  IonButton,
+  IonCard,
+  IonCardHeader,
+  IonCardContent,
+  IonCardTitle,
+  IonCardSubtitle,
+  IonItem,
   IonLabel,
   IonIcon,
-  IonAvatar,
-  IonLoading,
-  IonAlert
+  IonList,
+  IonAlert,
+  IonLoading
 } from '@ionic/react';
-import { logOutOutline, personCircleOutline, settingsOutline, helpCircleOutline } from 'ionicons/icons';
+import { logOut, settings, person, moon, notifications } from 'ionicons/icons';
+import { useHistory } from 'react-router-dom';
 import { AuthService } from '../../services/firebase/auth.service';
+import { UserService } from '../../services/firebase/user.service';
 import './ProfilePage.css';
 
 const ProfilePage: React.FC = () => {
-  const [showLoading, setShowLoading] = useState(false);
-  const [showAlert, setShowAlert] = useState(false);
-  const [alertMessage, setAlertMessage] = useState('');
-  
-  const currentUser = AuthService.getCurrentUser();
-  const displayName = currentUser?.displayName || 'Usuario';
-  const email = currentUser?.email || '';
-  const photoURL = currentUser?.photoURL;
+  const [userName, setUserName] = useState<string>('');
+  const [userEmail, setUserEmail] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [showLogoutAlert, setShowLogoutAlert] = useState<boolean>(false);
+  const history = useHistory();
 
-  const handleSignOut = async () => {
-    setShowLoading(true);
+  useEffect(() => {
+    const loadUserProfile = async () => {
+      const currentUser = AuthService.getCurrentUser();
+
+      if (currentUser) {
+        setUserName(currentUser.displayName || 'Usuario');
+        setUserEmail(currentUser.email || '');
+
+        try {
+          const userProfile = await UserService.getUserProfile(currentUser.uid);
+          if (userProfile) {
+            // Aplicar más datos al perfil del usuariol.
+          }
+        } catch (error) {
+          console.error('Error al cargar perfil:', error);
+        }
+      }
+    };
+
+    loadUserProfile();
+  }, []);
+
+  const handleLogout = async () => {
+    setIsLoading(true);
     try {
-      await AuthService.signOut();
-    } catch (error: any) {
-      setAlertMessage('Error al cerrar sesión: ' + error.message);
-      setShowAlert(true);
-      setShowLoading(false);
+      await AuthService.logout();
+      history.replace('/login');
+    } catch (error) {
+      console.error('Error al cerrar sesión:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <IonPage>
+      <IonHeader>
+        <IonToolbar>
+          <IonTitle>Perfil</IonTitle>
+        </IonToolbar>
+      </IonHeader>
       <IonContent fullscreen>
-        <div className="profile-header">
-          <IonAvatar className="profile-avatar">
-            {photoURL ? 
-              <img src={photoURL} alt="Foto de perfil" /> : 
-              <IonIcon icon={personCircleOutline} className="profile-icon" />
-            }
-          </IonAvatar>
-          <h1>{displayName}</h1>
-          <p>{email}</p>
+        <IonHeader collapse="condense">
+          <IonToolbar>
+            <IonTitle size="large">Perfil</IonTitle>
+          </IonToolbar>
+        </IonHeader>
+
+        <div className="profile-container">
+          <IonCard className="profile-card">
+            <div className="profile-avatar">
+              <IonIcon icon={person} />
+            </div>
+            <IonCardHeader>
+              <IonCardTitle>{userName}</IonCardTitle>
+              <IonCardSubtitle>{userEmail}</IonCardSubtitle>
+            </IonCardHeader>
+          </IonCard>
+
+          <IonList>
+            <IonItem button detail>
+              <IonIcon slot="start" icon={settings} />
+              <IonLabel>Configuración de cuenta</IonLabel>
+            </IonItem>
+
+            <IonItem button detail>
+              <IonIcon slot="start" icon={moon} />
+              <IonLabel>Tema oscuro</IonLabel>
+            </IonItem>
+
+            <IonItem button detail>
+              <IonIcon slot="start" icon={notifications} />
+              <IonLabel>Notificaciones</IonLabel>
+            </IonItem>
+          </IonList>
+
+          <IonButton
+            expand="block"
+            color="danger"
+            className="logout-button"
+            onClick={() => setShowLogoutAlert(true)}
+          >
+            <IonIcon slot="start" icon={logOut} />
+            Cerrar sesión
+          </IonButton>
         </div>
 
-        <IonList>
-          <IonItem lines="full" detail={true}>
-            <IonIcon slot="start" icon={personCircleOutline} />
-            <IonLabel>Editar perfil</IonLabel>
-          </IonItem>
-          
-          <IonItem lines="full" detail={true}>
-            <IonIcon slot="start" icon={settingsOutline} />
-            <IonLabel>Configuración</IonLabel>
-          </IonItem>
-          
-          <IonItem lines="full" detail={true}>
-            <IonIcon slot="start" icon={helpCircleOutline} />
-            <IonLabel>Ayuda</IonLabel>
-          </IonItem>
-          
-          <IonItem lines="none" onClick={handleSignOut} className="logout-item">
-            <IonIcon slot="start" icon={logOutOutline} color="danger" />
-            <IonLabel color="danger">Cerrar sesión</IonLabel>
-          </IonItem>
-        </IonList>
-        
-        <IonLoading
-          isOpen={showLoading}
-          message="Cerrando sesión..."
-          duration={5000}
-        />
-        
         <IonAlert
-          isOpen={showAlert}
-          onDidDismiss={() => setShowAlert(false)}
-          header="Error"
-          message={alertMessage}
-          buttons={['OK']}
+          isOpen={showLogoutAlert}
+          onDidDismiss={() => setShowLogoutAlert(false)}
+          header={'Cerrar sesión'}
+          message={'¿Estás seguro que deseas cerrar tu sesión?'}
+          buttons={[
+            {
+              text: 'Cancelar',
+              role: 'cancel'
+            },
+            {
+              text: 'Sí, cerrar sesión',
+              handler: handleLogout
+            }
+          ]}
+        />
+
+        <IonLoading
+          isOpen={isLoading}
+          message={'Cerrando sesión...'}
         />
       </IonContent>
     </IonPage>

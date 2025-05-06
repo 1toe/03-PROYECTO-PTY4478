@@ -6,9 +6,19 @@
 }
 
 .profile-avatar {
+  display: flex;
+  justify-content: center;
   width: 100px;
   height: 100px;
-  margin: 0 auto 16px;
+  margin-top: 20px;
+}
+
+.profile-avatar ion-icon {
+  font-size: 80px;
+  color: var(--ion-color-primary);
+  background-color: rgba(var(--ion-color-primary-rgb), 0.1);
+  border-radius: 50%;
+  padding: 16px;
 }
 
 .avatar-container {
@@ -26,6 +36,15 @@
   --border-radius: 50%;
 }
 
+.profile-container {
+  padding: 16px;
+}
+
+.profile-card {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
 .chip-container {
   display: flex;
   flex-wrap: wrap;
@@ -38,6 +57,7 @@
 }
 
 .logout-button {
+  margin-top: 32px;
   margin: 30px 16px;
 }
 

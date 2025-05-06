@@ -8,7 +8,6 @@ import {
   IonButton,
   IonRow,
   IonCol,
-  IonLoading,
   IonText,
   IonIcon
 } from '@ionic/react';
@@ -42,11 +41,11 @@ const RegisterPage: React.FC = () => {
 
     try {
       await AuthService.register(email, password, name);
-      setIsLoading(false);
+      // Redirigir directamente después del registro sin mostrar loading
       history.push('/app/home');
     } catch (error: any) {
       console.error('Error al registrar usuario:', error);
-      
+
       if (error.code === 'auth/email-already-in-use') {
         setErrorMessage('Este correo ya está registrado');
       } else if (error.code === 'auth/weak-password') {
@@ -68,11 +67,11 @@ const RegisterPage: React.FC = () => {
             <IonIcon slot="icon-only" icon={arrowBack} />
           </IonButton>
         </div>
-        
+
         <div className="register-container">
           <h1>Crear cuenta</h1>
           <p>Completa tus datos para registrarte</p>
-          
+
           <IonItem>
             <IonLabel position="floating">Nombre completo</IonLabel>
             <IonInput
@@ -118,6 +117,7 @@ const RegisterPage: React.FC = () => {
             expand="block"
             onClick={handleRegister}
             className="register-button"
+            disabled={isLoading}
           >
             Registrarse
           </IonButton>
@@ -128,20 +128,13 @@ const RegisterPage: React.FC = () => {
                 fill="clear"
                 size="small"
                 onClick={() => history.push('/login')}
+                disabled={isLoading}
               >
                 ¿Ya tienes cuenta? Inicia sesión
               </IonButton>
             </IonCol>
           </IonRow>
         </div>
-
-        <IonLoading
-          isOpen={isLoading}
-          message="Creando cuenta..."
-          spinner="circles"
-          duration={10000}
-          backdropDismiss={false}
-        />
       </IonContent>
     </IonPage>
   );

@@ -1,127 +1,97 @@
-import { 
-  signInWithEmailAndPassword, 
+import {
   createUserWithEmailAndPassword,
-  updateProfile,
+  signInWithEmailAndPassword,
   signOut,
-  setPersistence,
-  browserLocalPersistence,
-  browserSessionPersistence,
-  UserCredential,
+  updateProfile,
+  sendPasswordResetEmail,
   onAuthStateChanged,
   User
 } from 'firebase/auth';
 import { auth } from '../../config/firebase';
-import { createUserProfile } from './user.service';
+import { UserService } from './user.service';
 
-// Interfaces
-export interface UserProfile {
-  uid: string;
-  email: string;
-  displayName: string;
-  photoURL?: string;
-  phoneNumber?: string;
-  preferences?: {
-    dietaryRestrictions?: string[];
-    favoriteCategories?: string[];
-  };
-  createdAt: Date;
-  updatedAt?: Date;
-}
-
-/**
- * Servicio de autenticación con Firebase
- */
 export class AuthService {
   /**
-   * Inicia sesión con email y contraseña
-   * @param email Email del usuario
-   * @param password Contraseña del usuario
-   * @param rememberMe Si es true, mantiene la sesión después de cerrar el navegador
-   * @returns Promise con las credenciales del usuario
+   * Registra un nuevo usuario con email y contraseña
    */
-  static async login(email: string, password: string, rememberMe: boolean = false): Promise<UserCredential> {
+  static async register(email: string, password: string, name: string): Promise<User> {
     try {
-      // Establecer tipo de persistencia según preferencia del usuario
-      const persistenceType = rememberMe ? browserLocalPersistence : browserSessionPersistence;
-      await setPersistence(auth, persistenceType);
-      
-      // Iniciar sesión
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      
-      console.log("Usuario autenticado correctamente:", userCredential.user.uid);
-      return userCredential;
-    } catch (error) {
-      console.error("Error en login:", error);
-      throw error;
-    }
-  }
-
-  /**
-   * Registra un nuevo usuario
-   * @param email Email del usuario
-   * @param password Contraseña del usuario
-   * @param displayName Nombre a mostrar del usuario
-   * @returns Promise con las credenciales del usuario
-   */
-  static async register(email: string, password: string, displayName: string): Promise<UserCredential> {
-    try {
-      // Crear usuario en Firebase Auth
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-      
-      // Establecer el nombre del usuario en Firebase Auth
-      await updateProfile(user, { displayName });
-      
-      // Crear perfil de usuario en Firestore
-      const userProfile: UserProfile = {
-        uid: user.uid,
-        email: user.email || email,
-        displayName,
-        createdAt: new Date(),
-      };
-      
-      await createUserProfile(userProfile);
-      
-      // Por defecto, usa persistencia de sesión para usuarios nuevos
-      await setPersistence(auth, browserSessionPersistence);
-      
-      console.log("Usuario registrado correctamente:", user.uid);
-      return userCredential;
+      // Actualizar el perfil con el nombre
+      if (userCredential.user) {
+        await updateProfile(userCredential.user, { displayName: name });
+
+        // Crear documento de usuario en Firestore
+        await UserService.createUserProfile({
+          uid: userCredential.user.uid,
+          email: email,
+          displayName: name,
+          photoURL: null,
+          createdAt: new Date(),
+          preferences: {
+            theme: 'system',
+            notifications: true,
+            diet: []
+          }
+        });
+      }
+
+      return userCredential.user;
     } catch (error) {
-      console.error("Error en registro:", error);
+      console.error('Error en registro:', error);
       throw error;
     }
   }
 
   /**
-   * Cierra la sesión del usuario
-   * @returns Promise que se resuelve cuando la sesión se cierra correctamente
+   * Inicia sesión con email y contraseña
    */
-  static async signOut(): Promise<void> {
+  static async login(email: string, password: string, rememberMe = false): Promise<User> {
+    try {
+      // Configurar la persistencia de la sesión (podría implementarse en un futuro)
+      // if (rememberMe) { setPersistence... } 
+
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      return userCredential.user;
+    } catch (error) {
+      console.error('Error en inicio de sesión:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Cierra la sesión del usuario actual
+   */
+  static async logout(): Promise<void> {
     try {
       await signOut(auth);
-      
-      // Forzar redirección para limpiar completamente el estado
-      window.location.href = '/login';
-      
-      return Promise.resolve();
     } catch (error) {
       console.error('Error al cerrar sesión:', error);
-      return Promise.reject(error);
+      throw error;
     }
   }
 
   /**
-   * Verifica si hay una sesión activa
-   * @returns boolean que indica si hay sesión activa
+   * Envía un correo de recuperación de contraseña
+   */
+  static async resetPassword(email: string): Promise<void> {
+    try {
+      await sendPasswordResetEmail(auth, email);
+    } catch (error) {
+      console.error('Error al enviar correo de recuperación:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Verifica si hay un usuario autenticado
    */
   static isAuthenticated(): boolean {
     return !!auth.currentUser;
   }
 
   /**
-   * Obtiene el usuario actual
-   * @returns El usuario actual o null
+   * Obtiene el usuario actual autenticado
    */
   static getCurrentUser(): User | null {
     return auth.currentUser;
@@ -129,10 +99,8 @@ export class AuthService {
 
   /**
    * Observa cambios en el estado de autenticación
-   * @param callback Función que se ejecuta cuando cambia el estado de autenticación
-   * @returns Función para cancelar la suscripción
    */
-  static onAuthStateChange(callback: (user: User | null) => void): () => void {
+  static onAuthStateChange(callback: (user: User | null) => void) {
     return onAuthStateChanged(auth, callback);
   }
 }

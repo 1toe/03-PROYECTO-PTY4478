@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   IonPage,
   IonContent,
@@ -8,9 +8,9 @@ import {
   IonButton,
   IonRow,
   IonCol,
-  IonLoading,
+  IonCheckbox,
   IonText,
-  IonCheckbox
+  IonAlert
 } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
 import './Auth.css';
@@ -22,7 +22,18 @@ const LoginPage: React.FC = () => {
   const [rememberMe, setRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [showAlert, setShowAlert] = useState(false);
   const history = useHistory();
+
+  // Verificar si ya está autenticado al cargar la página
+  useEffect(() => {
+    const checkAuth = async () => {
+      if (AuthService.isAuthenticated()) {
+        history.push('/app/home');
+      }
+    };
+    checkAuth();
+  }, [history]);
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -35,27 +46,38 @@ const LoginPage: React.FC = () => {
 
     try {
       await AuthService.login(email, password, rememberMe);
-
-      // Pequeña espera para asegurar que la sesión se ha establecido
-      setTimeout(() => {
-        setIsLoading(false);
-        history.push('/app/home');
-      }, 800);
+      // Redirigir directamente después del login sin mostrar loading
+      history.push('/app/home');
     } catch (error: any) {
       console.error('Error al iniciar sesión:', error);
 
-      // Mensajes de error específicos
-      if (error.code === 'auth/user-not-found') {
-        setErrorMessage('No existe una cuenta con este correo electrónico');
-      } else if (error.code === 'auth/wrong-password') {
-        setErrorMessage('Contraseña incorrecta');
-      } else if (error.code === 'auth/invalid-email') {
-        setErrorMessage('El formato del correo electrónico no es válido');
+      if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+        setErrorMessage('Email o contraseña incorrectos');
+      } else if (error.code === 'auth/too-many-requests') {
+        setErrorMessage('Demasiados intentos fallidos. Por favor, inténtalo más tarde.');
       } else if (error.code === 'auth/network-request-failed') {
-        setErrorMessage('Error de conexión. Verifica tu conexión a internet');
+        setErrorMessage('Error de red. Comprueba tu conexión a internet.');
       } else {
-        setErrorMessage('Error al iniciar sesión. Verifica tus credenciales.');
+        setErrorMessage('Error al iniciar sesión');
       }
+      setIsLoading(false);
+    }
+  };
+
+  const handleResetPassword = async () => {
+    if (!email) {
+      setErrorMessage('Ingresa tu correo electrónico para restablecer la contraseña');
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      await AuthService.resetPassword(email);
+      setShowAlert(true);
+      setIsLoading(false);
+    } catch (error) {
+      console.error('Error al enviar correo de recuperación:', error);
+      setErrorMessage('Error al enviar correo de recuperación');
       setIsLoading(false);
     }
   };
@@ -65,9 +87,10 @@ const LoginPage: React.FC = () => {
       <IonContent className="ion-padding">
         <div className="login-container">
           <img src="/assets/logo.png" alt="FoodYou Logo" className="logo" />
+          <h1>Iniciar Sesión</h1>
 
           <IonItem>
-            <IonLabel position="floating">Correo Electrónico</IonLabel>
+            <IonLabel position="floating">Correo electrónico</IonLabel>
             <IonInput
               type="email"
               value={email}
@@ -89,7 +112,7 @@ const LoginPage: React.FC = () => {
               checked={rememberMe}
               onIonChange={e => setRememberMe(e.detail.checked)}
             />
-            <IonLabel className="remember-me-label">Mantener sesión iniciada</IonLabel>
+            <IonLabel className="remember-me-label">Recordar mi sesión</IonLabel>
           </IonItem>
 
           {errorMessage && (
@@ -102,6 +125,7 @@ const LoginPage: React.FC = () => {
             expand="block"
             onClick={handleLogin}
             className="login-button"
+            disabled={isLoading}
           >
             Iniciar Sesión
           </IonButton>
@@ -111,7 +135,21 @@ const LoginPage: React.FC = () => {
               <IonButton
                 fill="clear"
                 size="small"
+                onClick={handleResetPassword}
+                disabled={isLoading}
+              >
+                Olvidé mi contraseña
+              </IonButton>
+            </IonCol>
+          </IonRow>
+
+          <IonRow className="ion-justify-content-center">
+            <IonCol size="12" className="ion-text-center">
+              <IonButton
+                fill="clear"
+                size="small"
                 onClick={() => history.push('/register')}
+                disabled={isLoading}
               >
                 ¿No tienes cuenta? Regístrate
               </IonButton>
@@ -119,11 +157,12 @@ const LoginPage: React.FC = () => {
           </IonRow>
         </div>
 
-        <IonLoading
-          isOpen={isLoading}
-          message="Iniciando sesión..."
-          spinner="circles"
-          backdropDismiss={false}
+        <IonAlert
+          isOpen={showAlert}
+          onDidDismiss={() => setShowAlert(false)}
+          header={'Email enviado'}
+          message={'Se ha enviado un correo para restablecer tu contraseña. Revisa tu bandeja de entrada.'}
+          buttons={['Entendido']}
         />
       </IonContent>
     </IonPage>
