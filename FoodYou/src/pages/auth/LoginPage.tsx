@@ -28,7 +28,7 @@ const LoginPage: React.FC = () => {
   const history = useHistory();
   const location = useLocation();
   const { currentUser, loading: authLoading } = useAuth();
-  
+
   // Verificar si ya está autenticado al cargar la página
   useEffect(() => {
     // Solo redirigir si ya tenemos la información de autenticación cargada y el usuario está autenticado
@@ -89,7 +89,7 @@ const LoginPage: React.FC = () => {
     <IonPage>
       <IonContent className="ion-padding">
         <IonLoading isOpen={authLoading} message="Verificando sesión..." />
-        
+
         <div className="login-container">
           <img src="/assets/logo.png" alt="FoodYou" className="logo" />
           <h1>Iniciar Sesión</h1>
@@ -128,10 +128,10 @@ const LoginPage: React.FC = () => {
 
           <IonButton
             expand="block"
-            onClick={handleLogin}asdasd
+            onClick={handleLogin}
             className="login-button"
             disabled={isLoading}
-          >sd
+          >
             Iniciar Sesión
           </IonButton>
 
