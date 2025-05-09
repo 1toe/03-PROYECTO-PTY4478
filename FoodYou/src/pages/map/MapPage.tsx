@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  IonPage, 
+import React, { useState, useEffect, useRef } from 'react';
+import {
+  IonPage,
   IonContent,
   IonLoading,
   IonButton,
@@ -11,6 +11,7 @@ import {
 } from '@ionic/react';
 import { locate, locateOutline } from 'ionicons/icons';
 import './MapPage.css';
+import { loadGoogleMaps, initMap } from '../../services/map/map.service';
 
 interface Location {
   latitude: number;
@@ -21,6 +22,7 @@ const MapPage: React.FC = () => {
   const [location, setLocation] = useState<Location | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const mapRef = useRef<HTMLDivElement | null>(null);
 
   const getLocation = () => {
     if (!navigator.geolocation) {
@@ -33,24 +35,40 @@ const MapPage: React.FC = () => {
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        setLocation({
+        const loc = {
           latitude: position.coords.latitude,
           longitude: position.coords.longitude
-        });
+        };
+        setLocation(loc);
         setLoading(false);
+
+        if (mapRef.current && (window as any).google && (window as any).google.maps) {
+          initMap(mapRef.current, loc.latitude, loc.longitude);
+        } else {
+          setError("Google Maps no está disponible");
+        }
       },
       (error) => {
         setError(`Error al obtener la ubicación: ${error.message}`);
         setLoading(false);
       },
-      { enableHighAccuracy: true }
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,     // Espera hasta 10 segundos por una ubicación precisa
+        maximumAge: 0       // No reutiliza ubicaciones antiguas
+      }
     );
   };
 
   useEffect(() => {
-    // Intentar obtener la ubicación al cargar la página
-    getLocation();
-  }, []);
+    loadGoogleMaps()
+      .then(() => {
+        if (location && mapRef.current) {
+          initMap(mapRef.current, location.latitude, location.longitude);
+        }
+      })
+      .catch((err) => setError(err));
+  }, [location]);
 
   return (
     <IonPage>
@@ -58,16 +76,11 @@ const MapPage: React.FC = () => {
         <div className="map-container">
           {location ? (
             <div className="map-placeholder">
-              <div className="map-content">
-                {/* Aquí se integraría un mapa real como Google Maps, Leaflet, etc. */}
-                <h2>Tu ubicación actual</h2>
-                <p>Latitud: {location.latitude.toFixed(6)}</p>
-                <p>Longitud: {location.longitude.toFixed(6)}</p>
-              </div>
+              <div ref={mapRef} id="map" style={{ height: "400px", width: "100%" }} />
               <IonCard className="nearby-stores">
                 <IonCardContent>
                   <h3>Tiendas cercanas</h3>
-                  <p>Esta funcionalidad estará disponible próximamente. Aquí podrás ver tiendas y supermercados cercanos a tu ubicación.</p>
+                  <p>Esta funcionalidad estará disponible próximamente.</p>
                 </IonCardContent>
               </IonCard>
             </div>
@@ -81,7 +94,7 @@ const MapPage: React.FC = () => {
               </IonButton>
             </div>
           )}
-          
+
           <div className="map-controls">
             <IonButton onClick={getLocation} disabled={loading}>
               <IonIcon slot="start" icon={locate} />
@@ -89,7 +102,7 @@ const MapPage: React.FC = () => {
             </IonButton>
           </div>
         </div>
-        
+
         <IonLoading isOpen={loading} message="Obteniendo tu ubicación..." />
         <IonToast
           isOpen={!!error}
