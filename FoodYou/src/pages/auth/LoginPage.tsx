@@ -17,6 +17,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import './Auth.css';
 import { AuthService } from '../../services/firebase/auth.service';
 import { useAuth } from '../../AuthContext';
+import logoImage from '../../assets/logo.png';
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -91,7 +92,7 @@ const LoginPage: React.FC = () => {
         <IonLoading isOpen={authLoading} message="Verificando sesión..." />
 
         <div className="login-container">
-          <img src="/assets/logo.png" alt="FoodYou" className="logo" />
+          <img src={logoImage} alt="FoodYou" className="logo" />
           <h1>Iniciar Sesión</h1>
 
           <IonItem>
@@ -136,16 +137,7 @@ const LoginPage: React.FC = () => {
           </IonButton>
 
           <IonRow className="ion-justify-content-center">
-            <IonCol size="12" className="ion-text-center">
-              <IonButton
-                fill="clear"
-                size="small"
-                onClick={handleResetPassword}
-                disabled={isLoading}
-              >
-                Olvidé mi contraseña
-              </IonButton>
-            </IonCol>
+
           </IonRow>
 
           <IonRow className="ion-justify-content-center">
