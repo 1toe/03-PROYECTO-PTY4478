@@ -4,53 +4,17 @@ import json
 import os
 from datetime import datetime
 
+# URLs por tipo de sello
+urls = {
+    "sin_sellos": "https://www.unimarc.cl/category/desayuno-y-dulces?warningStamps=sin-sellos",
+    "un_sello": "https://www.unimarc.cl/category/desayuno-y-dulces?warningStamps=un-sello",
+    "dos_sellos": "https://www.unimarc.cl/category/desayuno-y-dulces?warningStamps=dos-sellos"
+}
+
 # Encabezados para simular un navegador
 headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, Gecko) Chrome/123.0.0.0 Safari/537.36"
 }
-
-def leer_urls_desde_archivo(archivo):
-    """Lee las URLs desde un archivo de texto"""
-    urls = {}
-    try:
-        with open(archivo, 'r', encoding='utf-8') as file:
-            for linea in file:
-                linea = linea.strip()
-                if linea and not linea.startswith('#'):
-                    partes = linea.split('=', 1)
-                    if len(partes) == 2:
-                        clave = partes[0].strip()
-                        valor = partes[1].strip()
-                        urls[clave] = valor
-        
-        if urls:
-            print(f"URLs cargadas exitosamente desde {archivo}")
-        else:
-            print(f"No se encontraron URLs válidas en {archivo}")
-    except FileNotFoundError:
-        print(f"El archivo {archivo} no existe. Creando un archivo de ejemplo...")
-        crear_archivo_urls_ejemplo(archivo)
-        return None
-    except Exception as e:
-        print(f"Error al leer el archivo de URLs: {e}")
-        return None
-    
-    return urls
-
-def crear_archivo_urls_ejemplo(archivo):
-    """Crea un archivo de ejemplo con URLs si no existe"""
-    ejemplo = """# Formato: tipo_de_sello=URL
-# Cada línea debe contener un tipo de sello y su URL correspondiente
-sin_sellos=https://www.unimarc.cl/category/desayuno-y-dulces?warningStamps=sin-sellos
-un_sello=https://www.unimarc.cl/category/desayuno-y-dulces?warningStamps=un-sello
-dos_sellos=https://www.unimarc.cl/category/desayuno-y-dulces?warningStamps=dos-sellos
-"""
-    try:
-        with open(archivo, 'w', encoding='utf-8') as file:
-            file.write(ejemplo)
-        print(f"Se ha creado el archivo de ejemplo {archivo}. Por favor, edítelo según sea necesario y vuelva a ejecutar el script.")
-    except Exception as e:
-        print(f"Error al crear el archivo de ejemplo: {e}")
 
 def get_total_products(soup):
     try:
@@ -192,23 +156,11 @@ def scrape_products(base_url, sellos_tipo):
     return all_products
 
 def main():
-    # Definir las rutas de los directorios
     urls_folder = "URLS Unimarc"
     json_folder = "JSON Unimarc"
     os.makedirs(urls_folder, exist_ok=True)
     os.makedirs(json_folder, exist_ok=True)
-    
-    # Archivo de URLs
-    archivo_urls = "urls_unimarc.txt"
-    
-    # Leer URLs desde el archivo
-    urls = leer_urls_desde_archivo(archivo_urls)
-    
-    # Si no se pudieron cargar las URLs, terminar el programa
-    if not urls:
-        return
-    
-    # Continuar con el proceso de scraping
+
     all_products = {}
     grand_total = 0
     

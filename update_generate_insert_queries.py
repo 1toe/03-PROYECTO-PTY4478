@@ -22,8 +22,17 @@ def get_latest_json_files(json_folder="JSON Unimarc"):
     return json_files
 
 def generate_insert_queries(products):
-    """Genera consultas INSERT para cada producto"""
+    """Genera consultas INSERT para cada producto con referencia a TABLA_CATEGORIAS"""
     queries = []
+    
+    # Primero, generar consulta para obtener el ID de categoría
+    categoria_query = """-- Consulta para verificar o insertar categoría
+WITH categoria_id AS (
+    SELECT id 
+    FROM public."TABLA_CATEGORIAS" 
+    WHERE nombre = 'chocolates-y-confites'
+)
+"""
     
     for product in products:
         peso = extract_weight(product['nombre'])
@@ -37,7 +46,8 @@ def generate_insert_queries(products):
             url_producto,
             peso_gramos,
             sellos_advertencia,
-            categoria
+            categoria,
+            categoria_id
         ) VALUES (
             '{product['nombre'].replace("'", "''")}',
             '{product['marca'].replace("'", "''")}',
@@ -47,11 +57,12 @@ def generate_insert_queries(products):
             '{product['url_producto'] or ''}',
             {peso or 'NULL'},
             '{product['sellos_advertencia']}',
-            'chocolates-y-confites'
+            'chocolates-y-confites',
+            (SELECT id FROM categoria_id)
         );"""
         queries.append(query)
     
-    return queries
+    return [categoria_query] + queries
 
 def main():
     # Crear carpeta para archivos SQL si no existe
@@ -72,8 +83,8 @@ def main():
             
         queries = generate_insert_queries(products)
         all_queries.extend(queries)
-        total_products += len(products)
-        print(f"Generadas {len(queries)} consultas para productos con {sello_tipo}")
+        total_products += len(products) - 1  # Restamos 1 por la consulta de categoría
+        print(f"Generadas {len(queries) - 1} consultas para productos con {sello_tipo}")
 
     # Guardar todas las consultas en un archivo SQL
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
