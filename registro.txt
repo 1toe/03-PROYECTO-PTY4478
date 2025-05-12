@@ -1,0 +1,55 @@
+PS E:\GitHub - Repositorios\03-PROYECTO-PTY4478> py .\main-scraper-unimarc.py
+
+==================================================
+Procesando productos con sin_sellos
+==================================================
+
+Realizando solicitud a URL de productos con sin_sellos - Página 1...
+HTML de página 1 guardado como: URLS Unimarc\estructura_unimarc_sin_sellos_page1_20250511_204920.html
+Intentando extraer datos de productos desde __NEXT_DATA__...
+Extraídos 8 productos de la página 1
+
+Total de productos guardados para sin_sellos: 8
+Archivo JSON guardado como: JSON Unimarc\productos_unimarc_desayuno-y-dulces_chocolates-y-confites_sin_sellos_8_productos_20250511_204920.json
+
+==================================================
+Procesando productos con un_sello
+==================================================
+
+Realizando solicitud a URL de productos con un_sello - Página 1...
+HTML de página 1 guardado como: URLS Unimarc\estructura_unimarc_un_sello_page1_20250511_204922.html
+Intentando extraer datos de productos desde __NEXT_DATA__...
+Extraídos 1 productos de la página 1
+
+Total de productos guardados para un_sello: 1
+Archivo JSON guardado como: JSON Unimarc\productos_unimarc_desayuno-y-dulces_chocolates-y-confites_un_sello_1_productos_20250511_204922.json
+
+==================================================
+Procesando productos con dos_sellos
+==================================================
+
+Realizando solicitud a URL de productos con dos_sellos - Página 1...
+HTML de página 1 guardado como: URLS Unimarc\estructura_unimarc_dos_sellos_page1_20250511_204924.html
+Intentando extraer datos de productos desde __NEXT_DATA__...
+Extraídos 50 productos de la página 1
+
+Realizando solicitud a URL de productos con dos_sellos - Página 2...
+HTML de página 2 guardado como: URLS Unimarc\estructura_unimarc_dos_sellos_page2_20250511_204926.html
+Intentando extraer datos de productos desde __NEXT_DATA__...
+Extraídos 50 productos de la página 2
+
+Realizando solicitud a URL de productos con dos_sellos - Página 3...
+HTML de página 3 guardado como: URLS Unimarc\estructura_unimarc_dos_sellos_page3_20250511_204928.html
+Intentando extraer datos de productos desde __NEXT_DATA__...
+Extraídos 6 productos de la página 3
+
+Total de productos guardados para dos_sellos: 106
+Archivo JSON guardado como: JSON Unimarc\productos_unimarc_desayuno-y-dulces_chocolates-y-confites_dos_sellos_106_productos_20250511_204928.json
+
+==================================================
+RESUMEN DE EXTRACCIÓN
+==================================================
+sin_sellos: 8 productos extraídos
+un_sello: 1 productos extraídos
+dos_sellos: 106 productos extraídos
+Total general: 115 productos
