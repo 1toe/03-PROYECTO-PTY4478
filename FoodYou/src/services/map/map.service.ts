@@ -1,49 +1,61 @@
-// src/services/map/map.service.ts
-
 export interface Location {
     latitude: number;
     longitude: number;
   }
   
+  // Variable para controlar que el script se carga solo una vez
+  let isLoadingScript = false;
+  let isLoaded = false;
+  
   /**
    * Carga dinámicamente el script de Google Maps JavaScript API
    */
   export const loadGoogleMaps = (): Promise<void> => {
-    return new Promise((resolve, reject) => {  // Aquí definimos `resolve` y `reject`
+    return new Promise((resolve, reject) => {
+      // Si ya está cargado, resolvemos inmediatamente
       if ((window as any).google && (window as any).google.maps) {
         console.log("Google Maps ya está cargado.");
+        isLoaded = true;
         resolve();
+        return;
+      }
+      
+      // Si ya está en proceso de carga, esperamos
+      if (isLoadingScript) {
+        // Comprobamos cada 500ms si ya se cargó
+        const checkLoaded = setInterval(() => {
+          if ((window as any).google && (window as any).google.maps) {
+            clearInterval(checkLoaded);
+            isLoaded = true;
+            console.log("Google Maps cargado por otro proceso.");
+            resolve();
+          }
+        }, 500);
         return;
       }
   
       const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
       
-
       if (!apiKey) {
         reject('Falta la clave de Google Maps en el archivo .env');
         return;
       }
   
+      isLoadingScript = true;
       const script = document.createElement('script');
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}`;
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&loading=async`;
       script.async = true;
       script.defer = true;
   
       script.onload = () => {
         console.log("Google Maps script cargado.");
-        
-        // Verificar si google.maps está disponible después de que el script se cargue
-        setTimeout(() => {
-          if ((window as any).google && (window as any).google.maps) {
-            console.log("google.maps ahora está disponible.");
-            resolve(); // Aquí usamos `resolve` correctamente
-          } else {
-            reject('Error: google.maps no está disponible después de cargar el script');
-          }
-        }, 3000); // Esperar 3 segundos antes de verificar
+        isLoaded = true;
+        isLoadingScript = false;
+        resolve();
       };
       
       script.onerror = () => {
+        isLoadingScript = false;
         reject('Error al cargar Google Maps');
       };
   
@@ -69,9 +81,20 @@ export interface Location {
       zoom: 15
     });
   
-    new (window as any).google.maps.Marker({
-      position: { lat, lng },
-      map,
-      title: 'Tu ubicación'
-    });
+    // Usar AdvancedMarkerElement en lugar del Marker deprecado
+    if ((window as any).google.maps.marker && (window as any).google.maps.marker.AdvancedMarkerElement) {
+      const position = { lat, lng };
+      new (window as any).google.maps.marker.AdvancedMarkerElement({
+        map,
+        position,
+        title: 'Tu ubicación'
+      });
+    } else {
+      // Fallback al marcador tradicional si AdvancedMarkerElement no está disponible
+      new (window as any).google.maps.Marker({
+        position: { lat, lng },
+        map,
+        title: 'Tu ubicación'
+      });
+    }
   };

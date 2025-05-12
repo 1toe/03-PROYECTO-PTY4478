@@ -9,9 +9,10 @@ import {
   IonCard,
   IonCardContent
 } from '@ionic/react';
-import { locate, locateOutline } from 'ionicons/icons';
+import { locate, locateOutline, refreshOutline } from 'ionicons/icons';
 import './MapPage.css';
 import { loadGoogleMaps, initMap } from '../../services/map/map.service';
+import { useTouchEventHandler } from '../../utils/TouchEventHandler';
 
 interface Location {
   latitude: number;
@@ -22,7 +23,35 @@ const MapPage: React.FC = () => {
   const [location, setLocation] = useState<Location | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const mapRef = useRef<HTMLDivElement | null>(null);
+  const [mapLoaded, setMapLoaded] = useState(false);
+  const mapRef = useRef<HTMLDivElement>(null);
+
+  // Aplicar el handler de eventos táctiles al contenedor del mapa
+  useTouchEventHandler(mapRef);
+
+  // Cargar Google Maps al inicio
+  useEffect(() => {
+    setLoading(true);
+    loadGoogleMaps()
+      .then(() => {
+        setMapLoaded(true);
+        if (location && mapRef.current) {
+          initMap(mapRef.current, location.latitude, location.longitude);
+        }
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(`Error al cargar Google Maps: ${err}`);
+        setLoading(false);
+      });
+  }, []);
+
+  // Efecto para inicializar el mapa cuando la ubicación cambia
+  useEffect(() => {
+    if (mapLoaded && location && mapRef.current) {
+      initMap(mapRef.current, location.latitude, location.longitude);
+    }
+  }, [location, mapLoaded]);
 
   const getLocation = () => {
     if (!navigator.geolocation) {
@@ -41,12 +70,6 @@ const MapPage: React.FC = () => {
         };
         setLocation(loc);
         setLoading(false);
-
-        if (mapRef.current && (window as any).google && (window as any).google.maps) {
-          initMap(mapRef.current, loc.latitude, loc.longitude);
-        } else {
-          setError("Google Maps no está disponible");
-        }
       },
       (error) => {
         setError(`Error al obtener la ubicación: ${error.message}`);
@@ -54,35 +77,42 @@ const MapPage: React.FC = () => {
       },
       {
         enableHighAccuracy: true,
-        timeout: 10000,     // Espera hasta 10 segundos por una ubicación precisa
-        maximumAge: 0       // No reutiliza ubicaciones antiguas
+        timeout: 10000,
+        maximumAge: 0
       }
     );
   };
-
-  useEffect(() => {
-    loadGoogleMaps()
-      .then(() => {
-        if (location && mapRef.current) {
-          initMap(mapRef.current, location.latitude, location.longitude);
-        }
-      })
-      .catch((err) => setError(err));
-  }, [location]);
 
   return (
     <IonPage>
       <IonContent>
         <div className="map-container">
           {location ? (
-            <div className="map-placeholder">
-              <div ref={mapRef} id="map" style={{ height: "400px", width: "100%" }} />
+            <div className="map-placeholder" ref={mapRef}>
+              <div id="map" style={{ height: "400px", width: "100%" }} />
               <IonCard className="nearby-stores">
                 <IonCardContent>
                   <h3>Tiendas cercanas</h3>
-                  <p>Esta funcionalidad estará disponible próximamente.</p>
+                  <p>  </p>
                 </IonCardContent>
               </IonCard>
+
+              {/* Controles del mapa con manejo específico de eventos táctiles */}
+              <div className="map-controls">
+                <IonButton 
+                  onClick={getLocation} 
+                  onTouchStart={(e) => e.stopPropagation()}
+                >
+                  <IonIcon icon={locateOutline} />
+                  {location ? 'Actualizar ubicación' : 'Obtener ubicación'}
+                </IonButton>
+                <IonButton 
+                  onClick={() => {/* acción de refrescar */}} 
+                  onTouchStart={(e) => e.stopPropagation()}
+                >
+                  <IonIcon icon={refreshOutline} />
+                </IonButton>
+              </div>
             </div>
           ) : (
             <div className="location-request">
@@ -94,13 +124,6 @@ const MapPage: React.FC = () => {
               </IonButton>
             </div>
           )}
-
-          <div className="map-controls">
-            <IonButton onClick={getLocation} disabled={loading}>
-              <IonIcon slot="start" icon={locate} />
-              {location ? 'Actualizar ubicación' : 'Obtener ubicación'}
-            </IonButton>
-          </div>
         </div>
 
         <IonLoading isOpen={loading} message="Obteniendo tu ubicación..." />

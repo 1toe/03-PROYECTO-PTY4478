@@ -1,3 +1,4 @@
+import React, { useEffect } from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import { IonApp, IonIcon, IonLabel, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs, setupIonicReact, IonSpinner } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
@@ -42,13 +43,12 @@ import './theme/variables.css';
 
 setupIonicReact();
 
-// Loading component to show while checking auth state
 const LoadingScreen: React.FC = () => {
   return (
-    <div style={{ 
-      display: 'flex', 
-      justifyContent: 'center', 
-      alignItems: 'center', 
+    <div style={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
       height: '100vh',
       flexDirection: 'column',
       gap: '10px'
@@ -59,100 +59,125 @@ const LoadingScreen: React.FC = () => {
   );
 };
 
-// Root route component that handles authentication redirects
 const RootRedirect: React.FC = () => {
   const { currentUser, loading } = useAuth();
-  
+
   if (loading) {
     return <LoadingScreen />;
   }
-  
+
   return <Redirect to={currentUser ? "/app/home" : "/login"} />;
 };
 
-const App: React.FC = () => (
-  <IonApp>
-    <AuthProvider>
-      <IonReactRouter>
-        <IonRouterOutlet>
-          {/* Rutas públicas - accesibles sin autenticación */}
-          <Route exact path="/login">
-            <LoginPage />
-          </Route>
-          <Route exact path="/register">
-            <RegisterPage />
-          </Route>
+const App: React.FC = () => {
+  useEffect(() => {
+    // Configurar manejo de eventos táctiles a nivel global
+    const handleTouchMove = (e: TouchEvent) => {
+      // Permitir el desplazamiento predeterminado en la mayoría de los casos
+      // Solo intervenir cuando sea necesario
 
-          {/* Ruta principal redirecciona según autenticación */}
-          <Route exact path="/">
-            <RootRedirect />
-          </Route>
+      if (e.target &&
+        (e.target as HTMLElement).classList &&
+        (e.target as HTMLElement).classList.contains('prevent-touch')) {
+        if (e.cancelable) {
+          e.preventDefault();
+        }
+      }
+    };
 
-          {/* Rutas de la aplicación protegidas con sistema de tabs */}
-          <Route path="/app">
-            <IonTabs>
-              <IonRouterOutlet>
-                <PrivateRoute exact path="/app/home" component={HomePage} />
-                <PrivateRoute exact path="/app/map" component={MapPage} />
-                <PrivateRoute exact path="/app/profile" component={ProfilePage} />
-                <PrivateRoute exact path="/app/lists" component={ListsPage} />
-                <PrivateRoute exact path="/app/lists/create" component={ListDetailsPage} />
-                <PrivateRoute exact path="/app/lists/edit/:id" component={ListDetailsPage} />
-                <PrivateRoute exact path="/app/lists/:id" component={ListDetailsPage} />
-                <PrivateRoute exact path="/app/recommendations" component={RecommendationsPage} />
+    // Configurar con passive: true para mejorar el rendimiento general,
+    // solo intervenimos en casos específicos
+    document.addEventListener('touchmove', handleTouchMove, { passive: true });
 
-                <Route>
-                  <Redirect to="/app/home" />
-                </Route>
-              </IonRouterOutlet>
+    return () => {
+      document.removeEventListener('touchmove', handleTouchMove);
+    };
+  }, []);
 
-              <IonTabBar slot="bottom">
-                <IonTabButton tab="home" href="/app/home">
-                  <IonIcon icon={home} />
-                  <IonLabel>Inicio</IonLabel>
-                </IonTabButton>
+  return (
+    <IonApp>
+      <AuthProvider>
+        <IonReactRouter>
+          <IonRouterOutlet>
+            {/* Rutas públicas - accesibles sin autenticación */}
+            <Route exact path="/login">
+              <LoginPage />
+            </Route>
+            <Route exact path="/register">
+              <RegisterPage />
+            </Route>
 
-                <IonTabButton tab="lists" href="/app/lists">
-                  <IonIcon icon={list} />
-                  <IonLabel>Listas</IonLabel>
-                </IonTabButton>
+            {/* Ruta principal redirecciona según autenticación */}
+            <Route exact path="/">
+              <RootRedirect />
+            </Route>
 
-                <IonTabButton tab="map" href="/app/map">
-                  <IonIcon icon={map} />
-                  <IonLabel>Mapa</IonLabel>
-                </IonTabButton>
+            {/* Rutas de la aplicación protegidas con sistema de tabs */}
+            <Route path="/app">
+              <IonTabs>
+                <IonRouterOutlet>
+                  <PrivateRoute exact path="/app/home" component={HomePage} />
+                  <PrivateRoute exact path="/app/map" component={MapPage} />
+                  <PrivateRoute exact path="/app/profile" component={ProfilePage} />
+                  <PrivateRoute exact path="/app/lists" component={ListsPage} />
+                  <PrivateRoute exact path="/app/lists/create" component={ListDetailsPage} />
+                  <PrivateRoute exact path="/app/lists/edit/:id" component={ListDetailsPage} />
+                  <PrivateRoute exact path="/app/lists/:id" component={ListDetailsPage} />
+                  <PrivateRoute exact path="/app/recommendations" component={RecommendationsPage} />
 
-                <IonTabButton tab="recommendations" href="/app/recommendations">
-                  <IonIcon icon={newspaper} />
-                  <IonLabel>Recomendar</IonLabel>
-                </IonTabButton>
+                  <Route>
+                    <Redirect to="/app/home" />
+                  </Route>
+                </IonRouterOutlet>
 
-                <IonTabButton tab="profile" href="/app/profile">
-                  <IonIcon icon={person} />
-                  <IonLabel>Perfil</IonLabel>
-                </IonTabButton>
-              </IonTabBar>
-            </IonTabs>
-          </Route>
+                <IonTabBar slot="bottom">
+                  <IonTabButton tab="home" href="/app/home">
+                    <IonIcon icon={home} />
+                    <IonLabel>Inicio</IonLabel>
+                  </IonTabButton>
 
-          {/* Redirección para rutas antiguas */}
-          <Route exact path="/profile">
-            <Redirect to="/app/profile" />
-          </Route>
-          <Route exact path="/recommendations">
-            <Redirect to="/app/recommendations" />
-          </Route>
-          <Route exact path="/lists">
-            <Redirect to="/app/lists" />
-          </Route>
-          <Route exact path="/dashboard">
-            <Redirect to="/app/home" />
-          </Route>
+                  <IonTabButton tab="lists" href="/app/lists">
+                    <IonIcon icon={list} />
+                    <IonLabel>Listas</IonLabel>
+                  </IonTabButton>
 
-        </IonRouterOutlet>
-      </IonReactRouter>
-    </AuthProvider>
-  </IonApp>
-);
+                  <IonTabButton tab="map" href="/app/map">
+                    <IonIcon icon={map} />
+                    <IonLabel>Mapa</IonLabel>
+                  </IonTabButton>
+
+                  <IonTabButton tab="recommendations" href="/app/recommendations">
+                    <IonIcon icon={newspaper} />
+                    <IonLabel>Recomendar</IonLabel>
+                  </IonTabButton>
+
+                  <IonTabButton tab="profile" href="/app/profile">
+                    <IonIcon icon={person} />
+                    <IonLabel>Perfil</IonLabel>
+                  </IonTabButton>
+                </IonTabBar>
+              </IonTabs>
+            </Route>
+
+            {/* Redirección para rutas antiguas */}
+            <Route exact path="/profile">
+              <Redirect to="/app/profile" />
+            </Route>
+            <Route exact path="/recommendations">
+              <Redirect to="/app/recommendations" />
+            </Route>
+            <Route exact path="/lists">
+              <Redirect to="/app/lists" />
+            </Route>
+            <Route exact path="/dashboard">
+              <Redirect to="/app/home" />
+            </Route>
+
+          </IonRouterOutlet>
+        </IonReactRouter>
+      </AuthProvider>
+    </IonApp>
+  );
+};
 
 export default App;
