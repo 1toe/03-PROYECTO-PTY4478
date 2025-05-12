@@ -1,0 +1,2243 @@
+[
+    {
+        "nombre": "Galletas Arcor Maná vainilla tripack 408 g",
+        "marca": "Arcor",
+        "sku": "5108",
+        "precio": 1950,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/243571/000000000000353250-UN-01.jpg?v=638596781404300000",
+        "url_producto": "https://www.unimarc.cl/galleta-mana-liv-vain-trip-arcor-393-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Galleta mini palmerita Costa 35 g",
+        "marca": "Costa",
+        "sku": "83500",
+        "precio": 230,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/233791/000000000663002002-UN-01.jpg?v=638215999315970000",
+        "url_producto": "https://www.unimarc.cl/galleta-mini-costa-35-gr-palmerita/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Galleta mini vino Costa 35 g",
+        "marca": "Costa",
+        "sku": "82407",
+        "precio": 230,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/230144/000000000000661863-UN-01.jpg?v=638025581148730000",
+        "url_producto": "https://www.unimarc.cl/galleta-mini-vino-costa-35-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Galletas Arcor mini dinosaurios 35 g",
+        "marca": "Arcor",
+        "sku": "5551",
+        "precio": 280,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/179641/000000000000571222-UN.jpg?v=636754641353400000",
+        "url_producto": "https://www.unimarc.cl/galleta-mini-dinosaurio-arcor-35-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Cereal Milo Nestlé caja 300 g",
+        "marca": "Milo",
+        "sku": "76044",
+        "precio": 2590,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/232835/000000000000650356-UN-01.jpg?v=638176201656800000",
+        "url_producto": "https://www.unimarc.cl/cereal-milo-300-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Cereal Trix caja 300 g",
+        "marca": "Trix",
+        "sku": "76045",
+        "precio": 2590,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/246857/000000000000650357-UN-01.jpg.jpg?v=638750765708170000",
+        "url_producto": "https://www.unimarc.cl/cereal-trix-300-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Manjar Colun bolsa 1 Kg",
+        "marca": "Colun",
+        "sku": "3496",
+        "precio": 3490,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/234159/000000000000052531-UN-01.jpg?v=638228784145900000",
+        "url_producto": "https://www.unimarc.cl/manjar-bolsa-colun-1-kg/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Galletas Arcor mini conquista 35 g",
+        "marca": "Arcor",
+        "sku": "11049",
+        "precio": 280,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/180108/571223.jpg?v=636764189861270000",
+        "url_producto": "https://www.unimarc.cl/galleta-azuc-palmeri-conquista-arcor-35g/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Cereal Chocapic original caja 310 g",
+        "marca": "Chocapic",
+        "sku": "90524",
+        "precio": 2590,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/246914/000000000000674067-UN-01.jpg.jpg?v=638754235741830000",
+        "url_producto": "https://www.unimarc.cl/cereal-orig-chocolate-chocapic-310-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Galletas de arroz Mizos chocolate 20 g",
+        "marca": "Mizos",
+        "sku": "15998",
+        "precio": 470,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/218817/000000000000778437-UN-01.jpg?v=637647223789270000",
+        "url_producto": "https://www.unimarc.cl/galletas-de-arroz-chocolate-mizos-20-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Gomitas flipy sabor frutal Ambrosoli 90 g",
+        "marca": "Ambrosoli",
+        "sku": "86218",
+        "precio": 890,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/236842/000000000000666678-UN-01.jpg?v=638386099038830000",
+        "url_producto": "https://www.unimarc.cl/gomitas-sab-frutal-flipy-ambrosoli-90-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Cereal Zucosos Nestlé caja 350 g",
+        "marca": "Zucosos",
+        "sku": "7039",
+        "precio": 2590,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/232846/000000000000963527-UN-01.jpg?v=638176211681170000",
+        "url_producto": "https://www.unimarc.cl/cereal-zucosos-350gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Pack barra cereal Costa Cereal Bar choco cereal 8 un de 18 g",
+        "marca": "Costa",
+        "sku": "1354",
+        "precio": 2030,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/210948/000000000000615859-UN-01.jpg?v=637521854699500000",
+        "url_producto": "https://www.unimarc.cl/chococereal-est-costa-8-un-x-18-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Chocolate Guylian amargo sin azúcar 100 g",
+        "marca": "Guylian",
+        "sku": "57607",
+        "precio": 3950,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/242750/000000000000920013-UN-01.jpg?v=638557827145230000",
+        "url_producto": "https://www.unimarc.cl/chocolate-amargo-guy-barra-s-a-100-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Galleta Gullón sin gluten avena naranja 180 g",
+        "marca": "Gullon",
+        "sku": "83080",
+        "precio": 2090,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/231285/000000000000661714-UN-01.jpg?v=638059507785870000",
+        "url_producto": "https://www.unimarc.cl/galleta-s-gluten-avena-narj-gullon-180gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Manjar untable Nestlé doypack 400 g",
+        "marca": "Nestle",
+        "sku": "77974",
+        "precio": 2630,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/247335/000000000000652284-UN-01.jpg.jpg?v=638772956137000000",
+        "url_producto": "https://www.unimarc.cl/manjar-doypack-nestle-400-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Manjar Nestlé doy pack 800 g",
+        "marca": "Nestle",
+        "sku": "71646",
+        "precio": 3990,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/247277/000000000000646214-UN-01.jpg.jpg?v=638768012999270000",
+        "url_producto": "https://www.unimarc.cl/manjar-nestle-doy-pack-800-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Gomitas ácidas loop Ambrosoli 90 g",
+        "marca": "Ambrosoli",
+        "sku": "84326",
+        "precio": 920,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/233674/000000000000664104-UN-01.jpg?v=638209842582200000",
+        "url_producto": "https://www.unimarc.cl/gomitas-acidas-loop-ambrosoli-90-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Galleta Mckay criollita 80 g",
+        "marca": "Mckay",
+        "sku": "88973",
+        "precio": 950,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/244044/000000000000670638-UN-01.jpg?v=638617517948230000",
+        "url_producto": "https://www.unimarc.cl/galleta-criollita-mckay-80-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Cereal azucarados Merkat bolsa 500 g",
+        "marca": "Merkat",
+        "sku": "82440",
+        "precio": 1550,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/229917/000000000000637093-UN-01.jpg?v=638018934477100000",
+        "url_producto": "https://www.unimarc.cl/cereal-azucarado-bolsa-merkat-500-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Cereal chocolatosos Merkat bolsa 500 g",
+        "marca": "Merkat",
+        "sku": "82439",
+        "precio": 1550,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/229918/000000000000637092-UN-01.jpg?v=638018937967000000",
+        "url_producto": "https://www.unimarc.cl/cereal-chocolatado-merkat-500-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Pack barra cereal Costa Cereal Bar chips chocolate 8 un de 21 g",
+        "marca": "Costa",
+        "sku": "5779",
+        "precio": 2030,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/210947/000000000000604340-DIS-01.jpg?v=637521853032670000",
+        "url_producto": "https://www.unimarc.cl/cereal-barra-chips-cerealbar-costa-21-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Galletas Costa vino 160 g",
+        "marca": "Costa",
+        "sku": "3318",
+        "precio": 880,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/230791/000000000000024735-UN-01.jpg?v=638048069148030000",
+        "url_producto": "https://www.unimarc.cl/galleta-vino-costa-160-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Mantequilla de maní Waitrose con trocitos 340 g",
+        "marca": "Waitrose",
+        "sku": "38541",
+        "precio": 3220,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/178033/000000000000725043-UN.jpg?v=636682208935230000",
+        "url_producto": "https://www.unimarc.cl/manteq-c-trocitos-mani-waitrose-340-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Chocolate Costa Milk libre de azúcar 80 g",
+        "marca": "Costa",
+        "sku": "4875",
+        "precio": 2200,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/193181/000000000000231474-UN-01.jpg?v=637215415701330000",
+        "url_producto": "https://www.unimarc.cl/costa-milk-libre-de-azucar-costa-80-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Gomitas amberries Ambrosoli 90 g",
+        "marca": "Ambrosoli",
+        "sku": "84329",
+        "precio": 920,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/233675/000000000000664131-UN-01.jpg?v=638209843083000000",
+        "url_producto": "https://www.unimarc.cl/gomitas-amberries-ambrosoli-90-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Gomitas ambrosito Ambrosoli 90 g",
+        "marca": "Ambrosoli",
+        "sku": "84327",
+        "precio": 920,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/233676/000000000000664105-UN-01.jpg?v=638209858160400000",
+        "url_producto": "https://www.unimarc.cl/gomitas-ambrosito-ambrosoli-90-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Cereal choco krispis Kelloggs 310 g",
+        "marca": "Kelloggs",
+        "sku": "86854",
+        "precio": 3510,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/237978/000000000000667935-UN-01.jpg?v=638453341495300000",
+        "url_producto": "https://www.unimarc.cl/cereal-choco-krispis-kelloggs-310-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Gomitas Amos peelerz sabor durazno 80 g",
+        "marca": "Amos",
+        "sku": "90462",
+        "precio": 1400,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/246542/000000000674088002-UN-01.jpg?v=638747982254100000",
+        "url_producto": "https://www.unimarc.cl/gomitas-peleerz-amos-80-gr-durazno/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Marshmallow fini corazón 80g",
+        "marca": "Fini",
+        "sku": "85169",
+        "precio": 1310,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/246384/000000000000655046-UN-01.jpg?v=638730705227670000",
+        "url_producto": "https://www.unimarc.cl/marshmallow-corazon-fini-80-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Marshmallows fini trenza de colores 80g",
+        "marca": "Fini",
+        "sku": "85171",
+        "precio": 1310,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/246386/000000000000666061-UN-01.jpg?v=638730706188600000",
+        "url_producto": "https://www.unimarc.cl/marshmallows-trenza-colores-fini-80-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Marshmallows fini camping estilo americano 250g",
+        "marca": "Fini",
+        "sku": "85170",
+        "precio": 2920,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/246385/000000000000666060-UN-01.jpg?v=638730705705370000",
+        "url_producto": "https://www.unimarc.cl/marshmallows-camping-fini-250-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Gomitas frugelé Ambrosoli 100 g",
+        "marca": "Ambrosoli",
+        "sku": "84431",
+        "precio": 870,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/233678/000000000000665044-UN-01.jpg?v=638209868949030000",
+        "url_producto": "https://www.unimarc.cl/gomitas-frugele-ambrosoli-100-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Cereal Kelloggs Zucaritas 240 g",
+        "marca": "Kelloggs",
+        "sku": "85143",
+        "precio": 2090,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/235703/000000000000666080-UN-01.jpg?v=638336953188970000",
+        "url_producto": "https://www.unimarc.cl/cereal-zucaritas-kelloggs-240-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Galletas Ecovida mini chips de chocolate sin azúcar 30 g",
+        "marca": "Ecovida",
+        "sku": "90277",
+        "precio": 400,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/246244/000000000673280002-UN-01.jpg?v=638717646160500000",
+        "url_producto": "https://www.unimarc.cl/gall-mini-s-az-ecovida-30-g-chips-choco/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Cereal Natur maíz inflado bolsa 300 g",
+        "marca": "Natur",
+        "sku": "969",
+        "precio": 2800,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/194851/000000000000342158-UN-01.jpg?v=637254282070900000",
+        "url_producto": "https://www.unimarc.cl/cereal-natur-original-maiz-300-g/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Cereal Coockie crisp chocolate 310 g",
+        "marca": "Nestle",
+        "sku": "89175",
+        "precio": 2590,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/244374/000000000000671171-UN-01.jpg?v=638633827063970000",
+        "url_producto": "https://www.unimarc.cl/cereal-choco-cookie-crisp-nestle-310-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Mantequilla de maní Waitrose suave 340 g",
+        "marca": "Waitrose",
+        "sku": "38542",
+        "precio": 3160,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/178035/000000000000725044-UN.jpg?v=636682211108100000",
+        "url_producto": "https://www.unimarc.cl/manteq-de-mani-suave-waitrose-340-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Galletas Gullón sin azúcar chocochip 150 g",
+        "marca": "Gullon",
+        "sku": "17827",
+        "precio": 2460,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/237917/000000000000204599-UN-01.jpg?v=638442959582630000",
+        "url_producto": "https://www.unimarc.cl/galletas-gullon-chip-choco-diet-125-g/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Gomitas Amos peelerz sabor mango 80 g",
+        "marca": "Amos",
+        "sku": "90461",
+        "precio": 1400,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/246541/000000000674088001-UN-01.jpg?v=638747982251600000",
+        "url_producto": "https://www.unimarc.cl/gomitas-peleerz-amos-80-gr-mango/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Cereal Trix minis 300 g",
+        "marca": "Trix",
+        "sku": "87550",
+        "precio": 2760,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/240176/000000000000668735-UN-01.jpg?v=638538126705930000",
+        "url_producto": "https://www.unimarc.cl/cereal-mini-frutal-trix-300-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Cereal Milo minis 330 g",
+        "marca": "Milo",
+        "sku": "87507",
+        "precio": 2760,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/240086/000000000000668736-UN-01.jpg?v=638531943973930000",
+        "url_producto": "https://www.unimarc.cl/cereal-milo-mini-330-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Cereal Chocapic minis 330 g",
+        "marca": "Chocapic",
+        "sku": "87509",
+        "precio": 2760,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/240067/000000000000668737-UN-01.jpg?v=638531079834470000",
+        "url_producto": "https://www.unimarc.cl/cereal-mini-chocolatado-chocapic-330-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Gomitas Mogul Arcor ositos tuttifrutti piña y plátano  90 g",
+        "marca": "Arcor",
+        "sku": "63327",
+        "precio": 820,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/192931/000000000000639929-UN-01.jpg?v=637212791652970000",
+        "url_producto": "https://www.unimarc.cl/gomitas-ositos-mogul-arcor-90-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Chancaca Deliciosa 2 bloques 400 g",
+        "marca": "Deliciosa",
+        "sku": "86883",
+        "precio": 2490,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/238307/000000000000667968-UN-01.jpg?v=638464726073230000",
+        "url_producto": "https://www.unimarc.cl/chancaca-2-bloques-deliciosa-400-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Chocolate Guylian milk sin azúcar 100 g",
+        "marca": "Guylian",
+        "sku": "2500",
+        "precio": 3950,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/242749/000000000000920012-UN-01.jpg?v=638557826334230000",
+        "url_producto": "https://www.unimarc.cl/chocolate-de-leche-barra-guylian-100-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Cereal Kelloggs Froot Loops 270g",
+        "marca": "Kelloggs",
+        "sku": "85142",
+        "precio": 2780,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/235702/000000000000666079-UN-01.jpg?v=638314267924530000",
+        "url_producto": "https://www.unimarc.cl/cereal-froot-loops-kelloggs-270-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "CEREAL BOLITAS SABOR CHOCOLATE NUESTRA COCINA 480G",
+        "marca": "Nuestra Cocina",
+        "sku": "86666",
+        "precio": 2890,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/237542/000000000000665499-UN-01.jpg?v=638430176348470000",
+        "url_producto": "https://www.unimarc.cl/cereal-bolitas-chocolate-n-cocina-480-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Cereal froot loops Kelloggs 480 g",
+        "marca": "Kelloggs",
+        "sku": "85600",
+        "precio": 3990,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/235716/000000000000666172-UN-01.jpg?v=638321946514200000",
+        "url_producto": "https://www.unimarc.cl/cereal-froot-loops-kelloggs-480gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Gomitas Mogul Arcor gusanito extreme ácido dulce 90 g",
+        "marca": "Arcor",
+        "sku": "63326",
+        "precio": 820,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/192929/000000000000639928-UN-01.jpg?v=637212790599470000",
+        "url_producto": "https://www.unimarc.cl/gomitas-gusanito-extr-mogul-arcor-90-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Gomitas frugelé Ambrosoli 380 g",
+        "marca": "Ambrosoli",
+        "sku": "84328",
+        "precio": 3150,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/233677/000000000000664106-UN-01.jpg?v=638209867053670000",
+        "url_producto": "https://www.unimarc.cl/gomitas-frugele-ambrosoli-380-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Galleta Gullon sin gluten chip choco 130 g",
+        "marca": "Gullon",
+        "sku": "11859",
+        "precio": 2600,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/178710/000000000000628045-UN.jpg?v=636722755321530000",
+        "url_producto": "https://www.unimarc.cl/gall-gullon-chocochip-s-glut-s-azu-130gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Masticable kegol surtido Arcor 153 Gr.",
+        "marca": "Arcor",
+        "sku": "54434",
+        "precio": 1060,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/182014/000000000000634686-UN.jpg?v=636820496590030000",
+        "url_producto": "https://www.unimarc.cl/masticable-kegol-surtido-arcor-153-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Marshmallows Guaguitas Ambrosoli 80 g",
+        "marca": "Ambrosoli",
+        "sku": "12795",
+        "precio": 930,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/198095/000000000000612034-UN-01.jpg?v=637286489287100000",
+        "url_producto": "https://www.unimarc.cl/gomitas-de-guaguita-ambrosoli-80-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Turrón de maní Dos en Uno 45 g",
+        "marca": "Dos En Uno",
+        "sku": "13482",
+        "precio": 420,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/227129/000000000000215403-UN-01.jpg?v=637898019966230000",
+        "url_producto": "https://www.unimarc.cl/turron-de-mani-dos-en-uno-45-grs/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Galleta Gullón diet nature sin azúcar twins cacao con crema 147 g",
+        "marca": "Gullon",
+        "sku": "75590",
+        "precio": 2620,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/213223/000000000000646139-UN-01.jpg?v=637533352461000000",
+        "url_producto": "https://www.unimarc.cl/galleta-diet-nat-s-az-twins-gullon-147gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Galleta Ecovida con chips de chocolate sin azúcar 100 g",
+        "marca": "Ecovida",
+        "sku": "86744",
+        "precio": 1340,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/237567/000000000000667771-UN-01.jpg?v=638430176417430000",
+        "url_producto": "https://www.unimarc.cl/galleta-chips-de-chocolate-ecovida-100gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Gomita Ambrosoli loop cintas frutales 67 g",
+        "marca": "Ambrosoli",
+        "sku": "90178",
+        "precio": 1000,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/246006/000000000668190001-UN-01.jpg?v=638703079848000000",
+        "url_producto": "https://www.unimarc.cl/gomita-loop-cintas-ambros-67gr-frutal/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Gomita Ambrosoli loop cintas frutilla 67 g",
+        "marca": "Ambrosoli",
+        "sku": "90179",
+        "precio": 1000,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/246007/000000000668190002-UN-01.jpg?v=638703081060700000",
+        "url_producto": "https://www.unimarc.cl/gomita-loop-cintas-ambros-67gr-frutilla/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Galletas Mckay Criollitas champaña 100 g",
+        "marca": "Mckay",
+        "sku": "182",
+        "precio": 1170,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/247329/000000000000024662-UN-01.jpg.jpg?v=638772079981830000",
+        "url_producto": "https://www.unimarc.cl/galletas-champana-criollitas-mckay-100-g/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Galletas McKay vino 155 g",
+        "marca": "Mckay",
+        "sku": "4967",
+        "precio": 930,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/216077/000000000000321018-UN-01.jpg?v=637587594708370000",
+        "url_producto": "https://www.unimarc.cl/galleta-vino-mckay-155-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Gomitas Mogul extreme ositos ácido dulce 90 g",
+        "marca": "Arcor",
+        "sku": "63323",
+        "precio": 900,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/202006/000000000000639925-UN-01.jpg?v=637366582094630000",
+        "url_producto": "https://www.unimarc.cl/gomitas-osito-extreme-mogul-arcor-90-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Galletas McKay limón mini 40 g",
+        "marca": "Mckay",
+        "sku": "7212",
+        "precio": 400,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/216119/000000000400185004-UN-01.jpg?v=637587615660330000",
+        "url_producto": "https://www.unimarc.cl/galleta-mckay-mini-40-gr-limon/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Manjar Colun pote 200 g",
+        "marca": "Colun",
+        "sku": "3489",
+        "precio": 1210,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/190917/frontal-3041.jpg?v=637145460614630000",
+        "url_producto": "https://www.unimarc.cl/manjar-pote-colun-200-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Pack barra cereal Costa Cereal Bar frutos rojos 8 un de 21 g",
+        "marca": "Costa",
+        "sku": "636",
+        "precio": 2030,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/210953/000000000000172735-UN-01.jpg?v=637521912876300000",
+        "url_producto": "https://www.unimarc.cl/cereal-barra-cereal-bar-frutos-rojos-costa-8u/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Manjar Nestlé El Manjar clásico bolsa 1 Kg",
+        "marca": "Nestle",
+        "sku": "422",
+        "precio": 5290,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/247273/000000000000053809-UN-01.jpg.jpg?v=638768008364470000",
+        "url_producto": "https://www.unimarc.cl/manjar-nestle-bolsa-1-kg/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Granola Nuestra Cocina miel almendras 370 g",
+        "marca": "Nuestra Cocina",
+        "sku": "76837",
+        "precio": 2590,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/216414/000000000650914002-UN-01.jpg?v=637595368886230000",
+        "url_producto": "https://www.unimarc.cl/gran-miel-nuestra-coci-370g-almendras/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Cereal Zucaritas Kelloggs 450 g",
+        "marca": "Kelloggs",
+        "sku": "85145",
+        "precio": 4390,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/235372/000000000000666083-UN-01.jpg?v=638289344105130000",
+        "url_producto": "https://www.unimarc.cl/cereal-zucaritas-kelloggs-450-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Cereal Nuestra Cocina azucarados dulce de maíz 510 g",
+        "marca": "Nuestra Cocina",
+        "sku": "77619",
+        "precio": 3490,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/216418/000000000000651614-UN-01.jpg?v=637595372384870000",
+        "url_producto": "https://www.unimarc.cl/cereal-azucarado-nuestra-cocina-510-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Cereal Natur arroz inflado bolsa 20 g",
+        "marca": "Natur",
+        "sku": "7805",
+        "precio": 490,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/210893/000000000000007087-UN-01.jpg?v=637520321569070000",
+        "url_producto": "https://www.unimarc.cl/arroz-inflado-natur-sobre-20-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Cereal Natur trigo inflado miel bolsa 20 g",
+        "marca": "Natur",
+        "sku": "7806",
+        "precio": 490,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/210891/000000000000007088-UN-01.jpg?v=637520319860470000",
+        "url_producto": "https://www.unimarc.cl/trigo-inflado-natur-sobre-20-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Galleta champagne Gullon 200 g",
+        "marca": "Gullon",
+        "sku": "40848",
+        "precio": 2650,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/182181/GALLETA-CHAMPAGNE-GULLON-200-GR.jpg?v=636824697875200000",
+        "url_producto": "https://www.unimarc.cl/galleta-champagne-gullon-200-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Pack barra cereal Costa Cereal Bar fruta+yoghurt 8 un de 21 g",
+        "marca": "Costa",
+        "sku": "10893",
+        "precio": 2030,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/213523/000000000000172733-UN-01.jpg?v=637540048347400000",
+        "url_producto": "https://www.unimarc.cl/barra-cereal-frutas-yoghurt-costa-8-un/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Cereal Natur arroz inflado bolsa 300 g",
+        "marca": "Natur",
+        "sku": "5036",
+        "precio": 2800,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/194854/000000000000342159-UN-01.jpg?v=637254284166030000",
+        "url_producto": "https://www.unimarc.cl/arroz-inflado-natur-bolsa-300-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Cereal Quadritos Quaker avena original 320 g",
+        "marca": "Quaker",
+        "sku": "87470",
+        "precio": 3890,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/240084/000000000000668635-UN-01.jpg?v=638531943969030000",
+        "url_producto": "https://www.unimarc.cl/quadritos-avena-int-original-quaker-320g/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Galleta oblea Gullón diet nature sin azúcar chocolate 180 g",
+        "marca": "Gullon",
+        "sku": "11857",
+        "precio": 3650,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/182204/000000000000628043-UN.jpg?v=636824796224370000",
+        "url_producto": "https://www.unimarc.cl/galleta-oblea-gullon-chocolat-diet-210gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Manjar Colun pote 400 g",
+        "marca": "Colun",
+        "sku": "482",
+        "precio": 2540,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/190911/frontal-3580.jpg?v=637145457408930000",
+        "url_producto": "https://www.unimarc.cl/manjar-colun-pote-400-g/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Cereal Kelloggs Zucaritas 680 g",
+        "marca": "Kelloggs",
+        "sku": "85144",
+        "precio": 6990,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/235704/000000000000666082-UN-01.jpg?v=638314267931700000",
+        "url_producto": "https://www.unimarc.cl/cereal-zucaritas-kelloggs-680-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Manjar Colun sin lactosa pote 380 g",
+        "marca": "Colun",
+        "sku": "79946",
+        "precio": 2780,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/222603/000000000000653423-UN-01.jpg?v=637758851776030000",
+        "url_producto": "https://www.unimarc.cl/manjar-sin-lactosa-colun-380gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Granola Nuestra Cocina miel cranberries 370 g",
+        "marca": "Nuestra Cocina",
+        "sku": "76836",
+        "precio": 2590,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/216413/000000000650914001-UN-01.jpg?v=637595367818930000",
+        "url_producto": "https://www.unimarc.cl/gran-miel-nuestra-coci-370g-cranberries/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Galleta mini Dos en Uno festidulce 35 g",
+        "marca": "Dos En Uno",
+        "sku": "39473",
+        "precio": 280,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/237955/000000000000933459-UN-01.jpg?v=638453341628070000",
+        "url_producto": "https://www.unimarc.cl/galletas-festidulce-surt-dos-en-uno-35gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Caramelo Bon bun bum Colombina fresa bolsa 456 g",
+        "marca": "Colombina",
+        "sku": "75544",
+        "precio": 3700,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/222398/000000000648870001-UN-01.jpg?v=637752595326100000",
+        "url_producto": "https://www.unimarc.cl/caramelo-bb-bum-colombina-456g-fresa/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Cereal Nuestra Cocina aros frutales caja 330 g",
+        "marca": "Nuestra Cocina",
+        "sku": "77762",
+        "precio": 3100,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/217331/000000000000651413-UN-01.jpg?v=637613654354930000",
+        "url_producto": "https://www.unimarc.cl/cereal-aros-frutales-nuestra-cocina-330g/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Cereal Natur trigo inflado bolsa 300 g",
+        "marca": "Natur",
+        "sku": "5035",
+        "precio": 2800,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/194848/000000000000342157-UN-01.jpg?v=637254275816800000",
+        "url_producto": "https://www.unimarc.cl/trigo-natur-bolsa-300-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Galletas Mckay niza 150 g",
+        "marca": "Mckay",
+        "sku": "9534",
+        "precio": 930,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/216087/000000000000504318-UN-01.jpg?v=637587599635670000",
+        "url_producto": "https://www.unimarc.cl/mckay-gall-niza-150-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Galletas Costa Gran cereal fibra cacao 135 g",
+        "marca": "Costa",
+        "sku": "3972",
+        "precio": 1210,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/210966/000000000000160867-UN-01.jpg?v=637521963499570000",
+        "url_producto": "https://www.unimarc.cl/galleta-gran-cereal-cacao-costa-135-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Galletas McKay vino mini 40 g",
+        "marca": "Mckay",
+        "sku": "7211",
+        "precio": 400,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/216117/000000000400185002-UN-01.jpg?v=637587614477100000",
+        "url_producto": "https://www.unimarc.cl/galleta-mckay-mini-40-gr-vino/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Manjar Nestlé sin lactosa 500 g",
+        "marca": "Nestle",
+        "sku": "67981",
+        "precio": 3400,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/247280/000000000000645238-UN-01.jpg.jpg?v=638768016177700000",
+        "url_producto": "https://www.unimarc.cl/manjar-sin-lactosa-nestle-500-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Galletas de arroz Mizos sabor chocolate 120 g",
+        "marca": "Mizos",
+        "sku": "73653",
+        "precio": 3510,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/218808/000000000000648331-UN-01.jpg?v=637647215301470000",
+        "url_producto": "https://www.unimarc.cl/galletas-de-arroz-s-choco-mizos-120-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Marshmallows Morf Arcor tradicional 120 g",
+        "marca": "Arcor",
+        "sku": "4189",
+        "precio": 1030,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/179643/000000000000177501-UN.jpg?v=636754645959970000",
+        "url_producto": "https://www.unimarc.cl/marsmallows-morf-tradicional-120-grs/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Galletas de arroz Tika mini chocolate berries 22 g",
+        "marca": "Tika",
+        "sku": "71356",
+        "precio": 670,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/217028/000000000646302002-UN-01.jpg?v=637607797210900000",
+        "url_producto": "https://www.unimarc.cl/galleta-mini-rice-tika-22-choco-berries/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Manjar Nestlé bolsa 200 g",
+        "marca": "Nestle",
+        "sku": "4106",
+        "precio": 1320,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/247275/000000000000172388-UN-01.jpg.jpg?v=638768010619270000",
+        "url_producto": "https://www.unimarc.cl/manjar-bolsa-nestle-200-grs/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Marshmallows Tento mini sabor vainilla bolsa 220 g",
+        "marca": "Tento",
+        "sku": "80303",
+        "precio": 1430,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/224654/000000000000653903-UN-01.jpg?v=637823457461530000",
+        "url_producto": "https://www.unimarc.cl/marshmallows-mini-vainilla-tento-220-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Galleta mini Dos en Uno coco 35 g",
+        "marca": "Dos En Uno",
+        "sku": "13494",
+        "precio": 280,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/237954/000000000000780173-UN-01.jpg?v=638453341591900000",
+        "url_producto": "https://www.unimarc.cl/galleta-mini-coco-dos-en-uno-35-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Chicle Fini sabor sandía 80g",
+        "marca": "Fini",
+        "sku": "85179",
+        "precio": 1290,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/246383/000000000000652955-UN-01.jpg?v=638730704736100000",
+        "url_producto": "https://www.unimarc.cl/chicle-sabor-sandia-fini-80-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Cereal Milo Nestlé bolsa 30 g",
+        "marca": "Milo",
+        "sku": "347",
+        "precio": 630,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/232830/000000000000047333-UN-01.jpg?v=638176197088430000",
+        "url_producto": "https://www.unimarc.cl/cereal-milo-nestle-bolsa-indv-30-g/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Granola keto My Way maqui 220 g",
+        "marca": "My Way",
+        "sku": "85101",
+        "precio": 5650,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/235119/000000000000664128-UN-01.jpg?v=638270312543500000",
+        "url_producto": "https://www.unimarc.cl/granola-keto-maqui-my-way-220gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Galletas Costa champaña 140 g",
+        "marca": "Costa",
+        "sku": "4016",
+        "precio": 1990,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/210996/000000000000165524-UN-01.jpg?v=637522023504830000",
+        "url_producto": "https://www.unimarc.cl/galleta-champana-costa-140-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Galleta Mckay limón 120 g",
+        "marca": "Mckay",
+        "sku": "83643",
+        "precio": 930,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/233764/000000000000663005-UN-01.jpg?v=638213209779100000",
+        "url_producto": "https://www.unimarc.cl/galleta-limon-mckay-120-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Caramelo Bon bon bum Colombina surtido 456 g",
+        "marca": "Colombina",
+        "sku": "75545",
+        "precio": 3700,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/222400/000000000648870002-UN-01.jpg?v=637752596533930000",
+        "url_producto": "https://www.unimarc.cl/caramelo-bb-bum-colombina-456g-surtido/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Manjar tradicional Colun doypack 800 g",
+        "marca": "Colun",
+        "sku": "87616",
+        "precio": 4430,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/242743/000000000000669443-UN-01.jpg?v=638556337550500000",
+        "url_producto": "https://www.unimarc.cl/manjar-colun-doypack-800-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Gomitas Fini frutillas y crema 90 g",
+        "marca": "Fini",
+        "sku": "87694",
+        "precio": 1450,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/246395/000000000669160001-UN-01.jpg?v=638730710125570000",
+        "url_producto": "https://www.unimarc.cl/gomitas-fini-90-gr-frutillas/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Cereal Gold sabor miel 570 g",
+        "marca": "Gold",
+        "sku": "78694",
+        "precio": 5190,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/232838/000000000000652677-UN-01.jpg?v=638176204603800000",
+        "url_producto": "https://www.unimarc.cl/cereal-sabor-miel-gold-570-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Granola keto My Way tradicional 220 g",
+        "marca": "My Way",
+        "sku": "85100",
+        "precio": 5650,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/235116/000000000000664127-UN-01.png?v=638270307781400000",
+        "url_producto": "https://www.unimarc.cl/granola-keto-tradicional-my-way-220gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Marshmallows Tento sabor frutal bolsa 180 g",
+        "marca": "Tento",
+        "sku": "80301",
+        "precio": 1270,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/224651/000000000000653901-UN-01.jpg?v=637823451346600000",
+        "url_producto": "https://www.unimarc.cl/marshmallows-sabor-frutal-tento-180-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Huevitos de Almendra Merello 250 g.",
+        "marca": "Merello",
+        "sku": "15610",
+        "precio": 3320,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/248082/000000000000217219-UN-01.jpg.jpg?v=638802402348470000",
+        "url_producto": "https://www.unimarc.cl/huevitos-de-almendra-merello-250-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "GOMITAS CITRIC FRUGELE AMBROSOLI 100 GR",
+        "marca": "Ambrosoli",
+        "sku": "86775",
+        "precio": 1040,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/237561/000000000000667748-UN-01.jpg?v=638430176400270000",
+        "url_producto": "https://www.unimarc.cl/gomitas-frugele-citric-ambrosoli-100-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Turrón Maní Arcor 220 g",
+        "marca": "Arcor",
+        "sku": "13139",
+        "precio": 1950,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/234870/000000000000560428-UN-01.jpg?v=638259138722330000",
+        "url_producto": "https://www.unimarc.cl/turron-mani-arcor-280-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Galletas de arroz Cerealitas sin gluten 160 g",
+        "marca": "Cerealita",
+        "sku": "1051",
+        "precio": 4130,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/238654/000000000000517754-UN-01.jpg?v=638494074468130000",
+        "url_producto": "https://www.unimarc.cl/galletas-cerealitas-arroz-160-g/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Galleta maravilla Mckay 120 g",
+        "marca": "Mckay",
+        "sku": "82305",
+        "precio": 930,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/228282/000000000000661440-UN-01.jpg?v=637944382605600000",
+        "url_producto": "https://www.unimarc.cl/galleta-maravilla-mckay-120-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Galletas de arroz Tika mini chocolate avellana 22 g",
+        "marca": "Tika",
+        "sku": "71355",
+        "precio": 670,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/217027/000000000646302001-UN-01.jpg?v=637607796695000000",
+        "url_producto": "https://www.unimarc.cl/galleta-mini-rice-tika-2-choco-avellana/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Cereal Quadritos Quaker avena chocolate 320 g",
+        "marca": "Quaker",
+        "sku": "87471",
+        "precio": 3990,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/240085/000000000000668636-UN-01.jpg?v=638531943971330000",
+        "url_producto": "https://www.unimarc.cl/quadritos-avena-int-chocolat-quaker-320g/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Galletas Costa Gran cereal muesli 135 g",
+        "marca": "Costa",
+        "sku": "3971",
+        "precio": 1210,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/210965/000000000000160866-UN-01.jpg?v=637521953507870000",
+        "url_producto": "https://www.unimarc.cl/galleta-gran-cereal-muesli-costa-135-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Galletas Bogutti sugar free chocolate chips 135 g",
+        "marca": "Bogutti",
+        "sku": "78646",
+        "precio": 1610,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/225917/000000000000645797-UN-01.jpg?v=637858906951730000",
+        "url_producto": "https://www.unimarc.cl/galleta-sugar-free-choc-chips-bogut-135g/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Manjar Nestlé con tapa lata 375 g",
+        "marca": "Nestle",
+        "sku": "84216",
+        "precio": 2260,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/247270/000000000000664028-UN-01.jpg.jpg?v=638768003919470000",
+        "url_producto": "https://www.unimarc.cl/manjar-c-tapa-tarro-nestle-375-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Cereal Nuestra Cocina aros frutales marshmallow caja 330 g",
+        "marca": "Nuestra Cocina",
+        "sku": "84308",
+        "precio": 3430,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/233995/000000000000663380-UN-01.jpg?v=638218541857530000",
+        "url_producto": "https://www.unimarc.cl/cereal-aros-marshm-nuestra-cocina-330g/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Manjar Nestlé bolsa 500 g",
+        "marca": "Nestle",
+        "sku": "3534",
+        "precio": 3280,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/247276/000000000000054189-UN-01.jpg.jpg?v=638768012029170000",
+        "url_producto": "https://www.unimarc.cl/manjar-nestle-500-grs/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Chocolates Entrelagos pralines sin azúcar 119 g",
+        "marca": "Entrelagos",
+        "sku": "74196",
+        "precio": 9650,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/205583/000000000000648787-UN-01.jpg?v=637425391413800000",
+        "url_producto": "https://www.unimarc.cl/choc-pralines-s-azucar-entrelagos-119-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Manjar Colun bolsa 500 g",
+        "marca": "Colun",
+        "sku": "3497",
+        "precio": 3130,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/234160/000000000000052538-UN-01.jpg?v=638228784778070000",
+        "url_producto": "https://www.unimarc.cl/manjar-bolsa-colun-500-grs/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Marshmallows Tento vainilla bolsa 400 g",
+        "marca": "Tento",
+        "sku": "80300",
+        "precio": 2600,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/224649/000000000000653900-UN-01.jpg?v=637823441143330000",
+        "url_producto": "https://www.unimarc.cl/marshmallows-vainilla-xl-tento-400-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Cereal estrellitas con miel Nestle 270 g",
+        "marca": "Nestle",
+        "sku": "86287",
+        "precio": 2850,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/236616/000000000000667119-UN-01.jpg?v=638445516370670000",
+        "url_producto": "https://www.unimarc.cl/cereal-estrellitas-con-miel-nestle-270gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Manjar Calo bolsa 920 g",
+        "marca": "Calo",
+        "sku": "3929",
+        "precio": 4390,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/235128/000000000000155293-UN-01.jpg?v=638270367851270000",
+        "url_producto": "https://www.unimarc.cl/manjar-calo-bolsa-1-kg/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Masticables Ambrosoli masticandy sabores frutales 600 g",
+        "marca": "Ambrosoli",
+        "sku": "5836",
+        "precio": 4530,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/198091/000000000000607508-UN-01.jpg?v=637286484197900000",
+        "url_producto": "https://www.unimarc.cl/masticable-ambrosoli-600-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Masticables Ambrosoli masticandy tubitos frutales 400 g",
+        "marca": "Ambrosoli",
+        "sku": "11539",
+        "precio": 3630,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/198071/000000000000883202-UN-01.jpg?v=637286428473600000",
+        "url_producto": "https://www.unimarc.cl/masticable-ambrosoli-400-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Gomitas 4D Amos con forma de bloques 100 g",
+        "marca": "Amos",
+        "sku": "79214",
+        "precio": 1450,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/220748/000000000652912001-UN-01.jpg?v=637692926048930000",
+        "url_producto": "https://www.unimarc.cl/gomitas-4d-sabores-amos-100gr-bloques/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Caramelos Ambrosoli arbolito 100 un bolsa 430 g",
+        "marca": "Ambrosoli",
+        "sku": "4558",
+        "precio": 3130,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/198083/000000000000195308-UN-01.jpg?v=637286461652830000",
+        "url_producto": "https://www.unimarc.cl/caramelo-arbolito-ambrosoli-430-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Galleta sandwich chocolate Gullon 250 Gr.",
+        "marca": "Gullon",
+        "sku": "11858",
+        "precio": 3850,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/182203/000000000000628043-UN.jpg?v=636824793378900000",
+        "url_producto": "https://www.unimarc.cl/galleta-sandwich-gullon-chocolate-250gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Galletas Barquillo La Galleteria 250 Grs",
+        "marca": "La Galleteria De Lau",
+        "sku": "205",
+        "precio": 5050,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/189098/000000000000027330-UN-02-1993.jpg?v=637038345901600000",
+        "url_producto": "https://www.unimarc.cl/galletas-barquillo-la-galleteria-250-grs/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Caramelo Bon bon bum Colombina sandia bolsa 456 g",
+        "marca": "Colombina",
+        "sku": "75546",
+        "precio": 3700,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/222402/000000000648870003-UN-01.jpg?v=637752597564370000",
+        "url_producto": "https://www.unimarc.cl/caramelo-bb-bum-colombina-456g-sandia/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Gomitas tajadas Tento sabor sandia 80 g",
+        "marca": "Tento",
+        "sku": "82084",
+        "precio": 850,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/228104/000000000000657224-UN-01.jpg?v=637933413535600000",
+        "url_producto": "https://www.unimarc.cl/gomitas-tajada-sabor-sandia-tento-80gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Masticable Colombina max frut con Crema bolsa 430 g",
+        "marca": "Colombina",
+        "sku": "13110",
+        "precio": 2730,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/227349/000000000000615395-UN-01.jpg?v=637903896843900000",
+        "url_producto": "https://www.unimarc.cl/masticable-max-frut-c-cr-colombina-430gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Cereal Chocapic Nestlé original chocolate 640 g",
+        "marca": "Chocapic",
+        "sku": "90925",
+        "precio": 6650,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/247053/000000000000674066-UN-01.jpg.jpg?v=638756727445200000",
+        "url_producto": "https://www.unimarc.cl/cereal-orig-chocolate-chocapic-640-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Cereal Natur arroz inflado bolsa 100 g",
+        "marca": "Natur",
+        "sku": "7807",
+        "precio": 1470,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/210885/000000000000007091-UN-01.jpg?v=637520311088400000",
+        "url_producto": "https://www.unimarc.cl/arroz-inflado-natur-sobre-100-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Manjar Los Peumos bolsa 1 Kg",
+        "marca": "Los Peumos",
+        "sku": "86282",
+        "precio": 4510,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/236591/000000000000665222-UN-01.jpg?v=638362733859400000",
+        "url_producto": "https://www.unimarc.cl/manjar-bolsa-los-peumos-1kg/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Marshmallow guaguitas Ambrosoli 300 g",
+        "marca": "Ambrosoli",
+        "sku": "11132",
+        "precio": 2780,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/198097/000000000000612035-UN-01.jpg?v=637286502227130000",
+        "url_producto": "https://www.unimarc.cl/marschmallows-guaguita-ambrosoli-300-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Cereal Nuestra Cocina cubitos de avena caja 400 g",
+        "marca": "Nuestra Cocina",
+        "sku": "77617",
+        "precio": 3470,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/216415/000000000000651606-UN-01.jpg?v=637595370570870000",
+        "url_producto": "https://www.unimarc.cl/cereal-avena-cubitos-nuestra-cocina-400g/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Manjar Los Peumos doypack 400 g",
+        "marca": "Los Peumos",
+        "sku": "86283",
+        "precio": 2100,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/236592/000000000000665224-UN-01.jpg?v=638362733861900000",
+        "url_producto": "https://www.unimarc.cl/manjar-doypack-los-peumos-400gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Mazapán Entrelagos frutas caja 120 g",
+        "marca": "Entrelagos",
+        "sku": "48395",
+        "precio": 5690,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/200409/000000000000763990-UN-01.jpg?v=637330108395300000",
+        "url_producto": "https://www.unimarc.cl/mazapan-caja-burdeo-entrelagos-120-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Yogueta Ambrosoli surtida bolsa 15 un",
+        "marca": "Ambrosoli",
+        "sku": "83502",
+        "precio": 2080,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/234176/000000000000662999-UN-01.jpg?v=638231311165600000",
+        "url_producto": "https://www.unimarc.cl/yogueta-surtida-ambrosoli-15-un/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Cereal Nuestra Cocina chocolatados con cacao 400 g",
+        "marca": "Nuestra Cocina",
+        "sku": "77620",
+        "precio": 3280,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/216416/000000000000651615-UN-01.jpg?v=637595371155600000",
+        "url_producto": "https://www.unimarc.cl/cereal-chocolatado-nuestra-cocina-400-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Gomitas Ambrosoli amberries 25 g",
+        "marca": "Ambrosoli",
+        "sku": "13861",
+        "precio": 590,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/195300/000000000000545967-UN-01.jpg?v=637260413949130000",
+        "url_producto": "https://www.unimarc.cl/amberries-ambrosoli-25-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Gomitas fini gusano ácido 90g",
+        "marca": "Fini",
+        "sku": "85168",
+        "precio": 1450,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/246393/000000000631565003-UN-01.jpg?v=638730709212470000",
+        "url_producto": "https://www.unimarc.cl/gomitas-fini-90-gr-gusano-acido/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Masticables Arcor frutales surtidos bolsa 800 g",
+        "marca": "Arcor",
+        "sku": "4245",
+        "precio": 7490,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/166765/masticable-fruta-surtido-arcor-800-gr.jpg?v=636543205750030000",
+        "url_producto": "https://www.unimarc.cl/masticable-fruta-surtido-arcor-800-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Cereal Natur maíz inflado bolsa 100 g",
+        "marca": "Natur",
+        "sku": "7809",
+        "precio": 1470,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/210889/000000000000007093-UN-01.jpg?v=637520316994630000",
+        "url_producto": "https://www.unimarc.cl/maiz-inflado-natur-sobre-100-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Chancaca Iansa 450 g",
+        "marca": "Iansa",
+        "sku": "33940",
+        "precio": 2600,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/247924/000000000000147955-UN-01.jpg.jpg?v=638796536047070000",
+        "url_producto": "https://www.unimarc.cl/chancaca-iansa-450-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Huevitos de almendra Merello 90 g",
+        "marca": "Merello",
+        "sku": "34029",
+        "precio": 1560,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/248080/000000000000159961-UN-01.jpg.jpg?v=638802400492470000",
+        "url_producto": "https://www.unimarc.cl/huevitos-de-almendra-merello-90-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Guagua sabores Pelayo pote 400 g",
+        "marca": "Pelayo",
+        "sku": "86830",
+        "precio": 3750,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/237879/000000000000666015-UN-01.jpg?v=638441235440230000",
+        "url_producto": "https://www.unimarc.cl/guagua-sabores-pelayo-pote-400-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Gomitas botella Tento sabor cola 80 g",
+        "marca": "Tento",
+        "sku": "82082",
+        "precio": 850,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/228106/000000000000657222-UN-01.jpg?v=637933420605100000",
+        "url_producto": "https://www.unimarc.cl/gomitas-botella-sabor-cola-tento-80gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Cereal estrellitas con miel Nestle 30 g",
+        "marca": "Nestle",
+        "sku": "85973",
+        "precio": 630,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/236597/000000000000666450-UN-01.jpg?v=638362733878600000",
+        "url_producto": "https://www.unimarc.cl/cereal-mini-estrellitas-nestle-30-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Choco tablet Gullón sin azúcar añadida 150 g",
+        "marca": "Gullon",
+        "sku": "78549",
+        "precio": 4990,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/220548/000000000000652102-UN-01.jpg?v=637686957424030000",
+        "url_producto": "https://www.unimarc.cl/choco-tablet-s-az-anadida-gullon-150-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Pack Barra cereal Nature Valley avena miel caja 6 un de 42 g",
+        "marca": "Nature Valley",
+        "sku": "1404",
+        "precio": 5050,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/195538/000000000000638562-UN-01.jpg?v=637261972827900000",
+        "url_producto": "https://www.unimarc.cl/cereal-barra-nature-valley-avena-miel-12u-x-21g/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Manjar Nestlé receta casera 1 Kg",
+        "marca": "Nestle",
+        "sku": "12725",
+        "precio": 6350,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/247274/000000000000146208-UN-01.jpg.jpg?v=638768009391700000",
+        "url_producto": "https://www.unimarc.cl/manjar-receta-casera-nestle-1-kilo/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Gomitas fini regaliz frutilla ácida 80g",
+        "marca": "Fini",
+        "sku": "78901",
+        "precio": 1450,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/246391/000000000631564003-UN-01.jpg?v=638730708351730000",
+        "url_producto": "https://www.unimarc.cl/gomitas-regaliz-fini-80-frutilla-acida/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Galletas Costa Champañitas 85 g",
+        "marca": "Costa",
+        "sku": "4017",
+        "precio": 1110,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/211060/000000000000165526-UN-01.jpg?v=637522169796900000",
+        "url_producto": "https://www.unimarc.cl/galleta-champanita-costa-85-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Galletas Eat Clever coco limón 150 g",
+        "marca": "Eat Clever",
+        "sku": "79759",
+        "precio": 4220,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/221533/000000000653043003-UN-01.jpg?v=637721705025270000",
+        "url_producto": "https://www.unimarc.cl/galleta-fam-eat-clever-150g-coco-limon/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Galletas Eat Clever choco chips 150 g",
+        "marca": "Eat Clever",
+        "sku": "79757",
+        "precio": 4220,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/221534/000000000653043001-UN-01.jpg?v=637721709005900000",
+        "url_producto": "https://www.unimarc.cl/galleta-fam-eat-clever-150g-choco-chips/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Gomitas eucaliptus Merello 90 g",
+        "marca": "Merello",
+        "sku": "33980",
+        "precio": 910,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/248078/000000000000156051-UN-01.jpg.jpg?v=638802398303230000",
+        "url_producto": "https://www.unimarc.cl/gomitas-eucaliptus-merello-90-grs/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Cereal Natur trigo inflado bolsa 100 g",
+        "marca": "Natur",
+        "sku": "7808",
+        "precio": 1470,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/210887/000000000000007092-UN-01.jpg?v=637520314642870000",
+        "url_producto": "https://www.unimarc.cl/trigo-inflado-natur-sobre-100-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Dulce de leche sin lactosa Eckart 380 gr",
+        "marca": "Eckart",
+        "sku": "39689",
+        "precio": 2790,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/183296/000000000000980354-UN.jpg?v=636873212520430000",
+        "url_producto": "https://www.unimarc.cl/dulce-de-leche-sin-lactosa-eckart-380-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Manjar casero Pucara frasco 545 g",
+        "marca": "Pucara",
+        "sku": "13798",
+        "precio": 5750,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/183025/000000000000218455-UN.jpg?v=636863688327500000",
+        "url_producto": "https://www.unimarc.cl/manjar-casero-frasco-vidrio-pucara-545gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Cereal balls Cola Cao 300 g",
+        "marca": "Cola Cao",
+        "sku": "89857",
+        "precio": 2790,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/245785/000000000000672558-UN-01.jpg?v=638690279871130000",
+        "url_producto": "https://www.unimarc.cl/cereal-balls-trigo-maiz-cola-cao-300-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Pack Galletas Gullón oblea diet vainilla 3 un de 60 g Pack Galletas Gullón oblea diet vainilla 3 un de 210 g",
+        "marca": "Gullon",
+        "sku": "5659",
+        "precio": 3650,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/179754/000000000000585164-UN.jpg?v=636755434729300000",
+        "url_producto": "https://www.unimarc.cl/galleta-barquillo-vainilla-gullon-210-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Cereal Cola Cao choco flakes 300 g",
+        "marca": "Cola Cao",
+        "sku": "90129",
+        "precio": 2790,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/245971/000000000000672559-UN-01.jpg?v=638702189859770000",
+        "url_producto": "https://www.unimarc.cl/cereal-trigo-maiz-flakes-cola-cao-300-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Calugas de leche de mi Campo bolsa 90 g",
+        "marca": "De Mi Campo",
+        "sku": "4517",
+        "precio": 1050,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/167222/calugas-de-leche-de-mi-campo-90-gr.jpg?v=636543730782500000",
+        "url_producto": "https://www.unimarc.cl/calugas-de-leche-de-mi-campo-90-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Galletas finas Gullón avena chocolate zero 150 g",
+        "marca": "Gullon",
+        "sku": "82328",
+        "precio": 4550,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/228999/000000000000660612-UN-01.jpg?v=637981836569930000",
+        "url_producto": "https://www.unimarc.cl/gall-finas-zero-avena-choco-gullon-150gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Mazapán Providencia frutal surtido 200 g",
+        "marca": "Providencia",
+        "sku": "38670",
+        "precio": 4680,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/201799/000000000000754949-UN-01.jpg?v=637364661760600000",
+        "url_producto": "https://www.unimarc.cl/mazapan-frutal-surtido-15-un/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Manjar Los Peumos pote 400 g",
+        "marca": "Los Peumos",
+        "sku": "86993",
+        "precio": 2120,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/238578/000000000000665223-UN-01.jpg?v=638488751932900000",
+        "url_producto": "https://www.unimarc.cl/manjar-pote-los-peumos-400gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Masticable Colombina max frutacida 430 g",
+        "marca": "Colombina",
+        "sku": "13111",
+        "precio": 2730,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/227351/000000000000615396-UN-01.jpg?v=637903898270000000",
+        "url_producto": "https://www.unimarc.cl/masticable-max-frutacida-colombina-430gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Manjar Los Peumos doypack 800 g",
+        "marca": "Los Peumos",
+        "sku": "86284",
+        "precio": 3900,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/236593/000000000000665225-UN-01.jpg?v=638362733864230000",
+        "url_producto": "https://www.unimarc.cl/manjar-doypack-los-peumos-800gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Cilindros de manjar De mi Campo 150 g",
+        "marca": "De Mi Campo",
+        "sku": "62501",
+        "precio": 2220,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/188472/Cilindros-de-manjar-De-mi-Campo-150-g-1-70929.jpg?v=637037231143730000",
+        "url_producto": "https://www.unimarc.cl/manjar-de-mi-campo-cilindro-150-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Mermelada waitrose fine orange 340g",
+        "marca": "Waitrose",
+        "sku": "82479",
+        "precio": 5390,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/235682/000000000000661969-UN-01.jpg?v=638314267862970000",
+        "url_producto": "https://www.unimarc.cl/mermelada-fine-orange-waitrose-340gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Mini sustancias Ambrosoli sabor original 110 g",
+        "marca": "Ambrosoli",
+        "sku": "84426",
+        "precio": 1250,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/233793/000000000000664218-UN-01.jpg?v=638216007202470000",
+        "url_producto": "https://www.unimarc.cl/mini-sustancias-ambrosoli-110-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Masticables Dos en Uno Candy surtido bolsa 400 g",
+        "marca": "Dos En Uno",
+        "sku": "4721",
+        "precio": 4760,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/187247/frontal-7481.jpg?v=637015710839070000",
+        "url_producto": "https://www.unimarc.cl/candy-surtido-dos-en-uno-400-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Porotitos colores Merello 90 gr",
+        "marca": "Merello",
+        "sku": "43121",
+        "precio": 800,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/248077/000000000000156047-UN-01.jpg.jpg?v=638802397386470000",
+        "url_producto": "https://www.unimarc.cl/porotitos-de-colores-merello-90-grs/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Pack Barra cereal Nature Valley almendra 6 un de 42 g",
+        "marca": "Nature Valley",
+        "sku": "1406",
+        "precio": 5050,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/195540/000000000000639260-UN-01.jpg?v=637261974040530000",
+        "url_producto": "https://www.unimarc.cl/cereal-barra-nature-valley-almendra-12u-x-21g/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Guaguas Pelayo 200 g",
+        "marca": "Pelayo",
+        "sku": "12292",
+        "precio": 1480,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/168839/GUAGUAS-PELAYO-50-UN-200-GR-1-18039.jpg?v=636578256093330000",
+        "url_producto": "https://www.unimarc.cl/guaguas-pelayo-50-un-200-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Caramelo Chupa Chups extreme bites bolsa 57 g",
+        "marca": "Chupa Chups",
+        "sku": "82053",
+        "precio": 1110,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/228089/000000000000659526-UN-01.jpg?v=637933362599200000",
+        "url_producto": "https://www.unimarc.cl/gomita-extreme-bites-chupa-chups-57gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Gomitas ositos Tento sabor frutal 80 g",
+        "marca": "Tento",
+        "sku": "82083",
+        "precio": 850,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/228105/000000000000657223-UN-01.jpg?v=637933417015270000",
+        "url_producto": "https://www.unimarc.cl/gomitas-ositos-sabor-frutal-tento-80g/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Chocolate Winergy 58 g",
+        "marca": "Winergy",
+        "sku": "60486",
+        "precio": 890,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/185847/CHOC-WINERGY-NOUG-PEANT-58-GR-1-68600.jpg?v=636988209892730000",
+        "url_producto": "https://www.unimarc.cl/choc-winergy-noug-peant-58-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Pack caramelos Mentos sabor menta 87.12 g",
+        "marca": "Mentos",
+        "sku": "74693",
+        "precio": 2050,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/213141/000000000649102002-UN-01.jpg?v=637533199655830000",
+        "url_producto": "https://www.unimarc.cl/caramelos-pack-mentos-87-12-gr-menta/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Gomitas Fini ositos dulces 90 g",
+        "marca": "Fini",
+        "sku": "87695",
+        "precio": 1450,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/246396/000000000669160002-UN-01.jpg?v=638730710613900000",
+        "url_producto": "https://www.unimarc.cl/gomitas-fini-90-gr-ositos-dulces/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Masticable barra Colombina crunchu berries 360 g",
+        "marca": "Colombina",
+        "sku": "87433",
+        "precio": 2990,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/239906/000000000668733001-UN-01.png?v=638525087664930000",
+        "url_producto": "https://www.unimarc.cl/mastic-barra-crunchy-colom-360g-berries/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Gomitas fini regaliz frutilla dulce 80g",
+        "marca": "Fini",
+        "sku": "85161",
+        "precio": 1450,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/246390/000000000631564002-UN-01.jpg?v=638730707864300000",
+        "url_producto": "https://www.unimarc.cl/gomitas-regaliz-fini-80-frutilla-dulce/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Cereal Kelloggs choco copos caja 330 g",
+        "marca": "Kelloggs",
+        "sku": "86971",
+        "precio": 3370,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/238354/000000000000668193-UN-01.jpg?v=638466428870100000",
+        "url_producto": "https://www.unimarc.cl/cereal-choco-copos-kelloggs-330-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Cereal Nuestra Cocina centellitas con miel caja 500 g",
+        "marca": "Nuestra Cocina",
+        "sku": "77618",
+        "precio": 3950,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/216417/000000000000651613-UN-01.jpg?v=637595371703470000",
+        "url_producto": "https://www.unimarc.cl/cereal-azuc-centellitas-nuestra-coc-500g/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Galleta mini Pelayo champaña 100 g",
+        "marca": "Pelayo",
+        "sku": "68188",
+        "precio": 850,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/194585/000000000000641544-UN-01.jpg?v=637244168438130000",
+        "url_producto": "https://www.unimarc.cl/galleta-mini-champana-pelayo-100-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Pinpop XL Ambrosoli frutos rojos 576 g",
+        "marca": "Ambrosoli",
+        "sku": "13124",
+        "precio": 3580,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/210912/000000000000780250-UN-01.jpg?v=637520979034270000",
+        "url_producto": "https://www.unimarc.cl/pinpop-xl-frutos-rojos-ambrosoli-576-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Caramelo Chupa Chups extremes sabores frutales 57 g",
+        "marca": "Chupa Chups",
+        "sku": "79982",
+        "precio": 1110,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/222191/000000000000652910-UN-01.jpg?v=637746505164270000",
+        "url_producto": "https://www.unimarc.cl/gomita-extreme-belts-chupa-chups-57gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Pack caramelos Mentos sabor frutilla 87.12 g",
+        "marca": "Mentos",
+        "sku": "74694",
+        "precio": 2050,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/213139/000000000649102003-UN-01.jpg?v=637533196796930000",
+        "url_producto": "https://www.unimarc.cl/caramelos-pack-mentos-87-12-gr-frutilla/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Gomitas Frugelé 66 g",
+        "marca": "Ambrosoli",
+        "sku": "65466",
+        "precio": 1030,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/210926/000000000000640184-UN-01.jpg?v=637521025079970000",
+        "url_producto": "https://www.unimarc.cl/gomita-frugele-66-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Manjar Calo doy pack 800 g",
+        "marca": "Calo",
+        "sku": "53764",
+        "precio": 4150,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/244848/000000000000634413-UN-01.jpg?v=638653103398670000",
+        "url_producto": "https://www.unimarc.cl/manjar-calo-800-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Galleta oblea Gullon vainilla 60 g Galleta oblea Gullon vainilla 70 g",
+        "marca": "Gullon",
+        "sku": "35927",
+        "precio": 1640,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/205837/000000000000597052-UN-01.jpg?v=637438931642200000",
+        "url_producto": "https://www.unimarc.cl/galleta-oblea-vainilla-gullon-70-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Cereal chocolate Mono crunch Costa duo 360 g",
+        "marca": "Costa",
+        "sku": "82030",
+        "precio": 4200,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/230789/000000000656986002-UN-01.jpg?v=638048056440230000",
+        "url_producto": "https://www.unimarc.cl/cereal-choc-mono-crunch-costa-360g-duo/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Galleta Fergar surtido 750 g",
+        "marca": "Fergar",
+        "sku": "43725",
+        "precio": 3800,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/190307/Galleta-Fergar-surtido-750-g-1-7220.jpg?v=637130556951800000",
+        "url_producto": "https://www.unimarc.cl/galleta-surtido-familiar-fergar-750-grs/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Chancaca Deliciosa 200 g",
+        "marca": "Deliciosa",
+        "sku": "89191",
+        "precio": 1470,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/244452/000000000000667907-UN.jpg?v=638639008983830000",
+        "url_producto": "https://www.unimarc.cl/chancaca-1-bloque-deliciosa-200-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Gomitas flipy pink Ambrosoli 90 g",
+        "marca": "Ambrosoli",
+        "sku": "91343",
+        "precio": 1180,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/248295/000000000000675578-UN-01.jpg?v=638809523239230000",
+        "url_producto": "https://www.unimarc.cl/gomitas-flipy-pink-ambrosoli-90-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Gomitas Fini plátano 90g",
+        "marca": "Fini",
+        "sku": "85181",
+        "precio": 1450,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/246394/000000000631565004-UN-01.jpg?v=638730709704730000",
+        "url_producto": "https://www.unimarc.cl/gomitas-fini-90-gr-platano/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Gomitas Fini aros de frutilla ácida 90 g",
+        "marca": "Fini",
+        "sku": "87696",
+        "precio": 1450,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/246397/000000000669160003-UN-01.jpg?v=638730711113830000",
+        "url_producto": "https://www.unimarc.cl/gomitas-fini-90-gr-aros-de-frutilla/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Galletas Eat Clever maqui berry 150 g",
+        "marca": "Eat Clever",
+        "sku": "79758",
+        "precio": 4220,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/221532/000000000653043002-UN-01.jpg?v=637721701325430000",
+        "url_producto": "https://www.unimarc.cl/galleta-fam-eat-clever-150g-maqui-berry/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Dulce de leche clásico Manfrey pote 400 g",
+        "marca": "Manfrey",
+        "sku": "34935",
+        "precio": 2780,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/188531/Dulce-de-leche-clasico-Manfrey-pote-400-g-1-9340.jpg?v=637037232684830000",
+        "url_producto": "https://www.unimarc.cl/dulce-de-leche-manfrey-400-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Gomitas danesas Merello 250 g",
+        "marca": "Merello",
+        "sku": "34112",
+        "precio": 1990,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/248081/000000000000171123-UN-01.jpg.jpg?v=638802401465400000",
+        "url_producto": "https://www.unimarc.cl/gomitas-danesas-merello-250-grs/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Calugas de leche de mi Campo 250 g",
+        "marca": "De Mi Campo",
+        "sku": "3296",
+        "precio": 3130,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/166661/calugas-de-leche-de-mi-campo-250-gr.jpg?v=636543168775470000",
+        "url_producto": "https://www.unimarc.cl/calugas-de-leche-de-mi-campo-250-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Guagüitas Merello 250 g",
+        "marca": "Merello",
+        "sku": "14518",
+        "precio": 2260,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/248083/000000000000266655-UN-01.jpg.jpg?v=638802403122930000",
+        "url_producto": "https://www.unimarc.cl/guaguitas-merello-250-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Galleta Fergar sabor vainilla 1 Kg",
+        "marca": "Fergar",
+        "sku": "15588",
+        "precio": 5250,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/190311/Galleta-Fergar-sabor-vainilla-1-Kg-1-7216.jpg?v=637130562968430000",
+        "url_producto": "https://www.unimarc.cl/galleta-de-vainilla-fergar-1-kg/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Tubos Fini geles dulces sabor uva 80 g",
+        "marca": "Fini",
+        "sku": "88196",
+        "precio": 1250,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/246398/000000000669163001-UN-01.jpg?v=638730711513600000",
+        "url_producto": "https://www.unimarc.cl/tubos-geles-fini-80-gr-uva-dulce/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Pinpop Ambrosoli surtido 15 un",
+        "marca": "Ambrosoli",
+        "sku": "83505",
+        "precio": 2030,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/234780/000000000000662998-UN-01.jpg?v=638254798228400000",
+        "url_producto": "https://www.unimarc.cl/pin-pop-surtido-ambrosoli-15-un/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Calugas de leche de mi Campo nuez 250 g",
+        "marca": "De Mi Campo",
+        "sku": "4011",
+        "precio": 3240,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/167280/calugas-de-leche-nuez-de-mi-campo-250-gr.jpg?v=636543735207600000",
+        "url_producto": "https://www.unimarc.cl/calugas-de-leche-nuez-de-mi-campo-250-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Caramelo blando Pelayo tubo fresa 80 g",
+        "marca": "Pelayo",
+        "sku": "75541",
+        "precio": 1260,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/214087/000000000650100001-UN-01.jpg?v=637562489378470000",
+        "url_producto": "https://www.unimarc.cl/caramelo-blando-tubo-pelayo-80g-fresa/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Galleta Criollita mckay clásica 120g",
+        "marca": "Mckay",
+        "sku": "85635",
+        "precio": 1320,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/236107/000000000000665986-UN-01.jpg?v=638337542826070000",
+        "url_producto": "https://www.unimarc.cl/galleta-criollita-clasica-mckay-120-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Guaguitas Pelayo 70 g",
+        "marca": "Pelayo",
+        "sku": "12228",
+        "precio": 870,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/168873/GUAGUITAS-PELAYO-70-GR-1-22670.jpg?v=636578370082300000",
+        "url_producto": "https://www.unimarc.cl/guaguitas-pelayo-70-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Galleta de maiz Mizos sabor chocolate 120 g",
+        "marca": "Mizos",
+        "sku": "82315",
+        "precio": 4360,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/229000/000000000000660767-UN-01.jpg?v=637981846719430000",
+        "url_producto": "https://www.unimarc.cl/galleta-de-maiz-s-chocolate-mizos-120-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Gomitas Amos ositos 100 g",
+        "marca": "Amos",
+        "sku": "86398",
+        "precio": 1450,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/236843/000000000000667344-UN-01.jpg?v=638386099042300000",
+        "url_producto": "https://www.unimarc.cl/gomitas-de-gelatina-ositos-amos-100-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Cereal Zucosos Nestlé caja 700 g",
+        "marca": "Zucosos",
+        "sku": "91292",
+        "precio": 5990,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/248306/000000000000674756-UN-01.jpg?v=638810269921930000",
+        "url_producto": "https://www.unimarc.cl/cereal-azucarado-zucosos-700-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Caramelo Forno sueño dorado nuez 115 g",
+        "marca": "Forno",
+        "sku": "44089",
+        "precio": 1380,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/220768/000000000000277018-UN-01.jpg?v=637692980949670000",
+        "url_producto": "https://www.unimarc.cl/caramelo-sueno-de-nuez-forno-115-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Gomitas Trolli culebras luminosas bolsa 100 g",
+        "marca": "Trolli",
+        "sku": "5268",
+        "precio": 1190,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/179858/000000000000517751-UN.jpg?v=636758041499300000",
+        "url_producto": "https://www.unimarc.cl/gomitas-culebra-fosforecente-trolli-100g/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Gomitas americana Forno 120 g",
+        "marca": "Forno",
+        "sku": "43738",
+        "precio": 1630,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/220769/000000000000210139-UN-01.jpg?v=637692982149430000",
+        "url_producto": "https://www.unimarc.cl/gomitas-americana-forno-120-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Gomitas fini gusano dulce 80g",
+        "marca": "Fini",
+        "sku": "85158",
+        "precio": 1450,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/246392/000000000631565002-UN-01.jpg?v=638730708755100000",
+        "url_producto": "https://www.unimarc.cl/gomitas-fini-90-gr-gusano-dulce/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Cereal sabor frutal Trix 700 g",
+        "marca": "Trix",
+        "sku": "91291",
+        "precio": 5990,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/248324/000000000000674755-UN-01.jpg?v=638810305941230000",
+        "url_producto": "https://www.unimarc.cl/cereal-sabor-frutal-trix-700-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Tubos Fini uva ácida 80 g",
+        "marca": "Fini",
+        "sku": "87698",
+        "precio": 1250,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/246399/000000000669163002-UN-01.jpg?v=638730711920200000",
+        "url_producto": "https://www.unimarc.cl/tubos-geles-fini-80-gr-uva-acido/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Cereal choco krispis Kelloggs 630 g",
+        "marca": "Kelloggs",
+        "sku": "86853",
+        "precio": 5560,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/237977/000000000000667934-UN-01.jpg?v=638453341483900000",
+        "url_producto": "https://www.unimarc.cl/cereal-choco-krispis-kelloggs-630-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Chocolate barra chocolate arandanos rojos 100g",
+        "marca": "Barra Chocolate",
+        "sku": "85644",
+        "precio": 6290,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/235788/000000000000665999-UN-01.jpg?v=638330788590870000",
+        "url_producto": "https://www.unimarc.cl/choco-aranda-rojos-barra-chocolate-100g/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Chocolate orgánico Manare sin azúcar 79% cacao 100 g",
+        "marca": "Manare",
+        "sku": "78433",
+        "precio": 5270,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/218840/000000000000652529-UN-01.jpg?v=637647385514230000",
+        "url_producto": "https://www.unimarc.cl/chocolate-s-az-79-organico-manare-100gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Granola keto Granolin caja 220 g",
+        "marca": "Granolin",
+        "sku": "82222",
+        "precio": 6790,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/227854/000000000000660021-UN-01.jpg?v=637925426979200000",
+        "url_producto": "https://www.unimarc.cl/granola-keto-granolin-220-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Chocolate Entrelagos napolitanas sin azúcar 126 g",
+        "marca": "Entrelagos",
+        "sku": "73673",
+        "precio": 8190,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/205580/000000000000648093-UN-01.jpg?v=637425390031330000",
+        "url_producto": "https://www.unimarc.cl/chocolate-napolit-s-az-entrelagos-126-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Pack barra cereal Cereal Bar choco cereal 5 un de 18 g",
+        "marca": "Costa",
+        "sku": "84407",
+        "precio": 1110,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/233797/000000000000664891-DIS-01.jpg?v=638216018818470000",
+        "url_producto": "https://www.unimarc.cl/dis-cerealbar-chococereal-costa-5x18-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Mermelada waitrose pres strawberry 340g",
+        "marca": "Waitrose",
+        "sku": "82477",
+        "precio": 5390,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/235680/000000000000661967-UN-01.jpg?v=638314267857170000",
+        "url_producto": "https://www.unimarc.cl/mermelada-pres-strawberry-waitrose-340gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Gomitas Amos bloques de construcción 100 g",
+        "marca": "Amos",
+        "sku": "90460",
+        "precio": 1400,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/246540/000000000674078002-UN-01.jpg?v=638747982249530000",
+        "url_producto": "https://www.unimarc.cl/gomitas-amos-10-bloques-de-construccion/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Chocolate orgánico Manare sin azúcar 62% cacao 100 g",
+        "marca": "Manare",
+        "sku": "78384",
+        "precio": 5090,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/218822/000000000000652472-UN-01.jpg?v=637647265254170000",
+        "url_producto": "https://www.unimarc.cl/chocolate-s-azu-62-organ-manare-100-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Chocolate barra chocolate naranja jengibre 100g",
+        "marca": "Barra Chocolate",
+        "sku": "85643",
+        "precio": 6290,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/235787/000000000000665998-UN-01.jpg?v=638330788581800000",
+        "url_producto": "https://www.unimarc.cl/choco-naranja-jeng-barra-chocolate-100g/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Anis artesanal Forno 115 g",
+        "marca": "Forno",
+        "sku": "43737",
+        "precio": 1270,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/220766/000000000000210138-UN-01.jpg?v=637692979647930000",
+        "url_producto": "https://www.unimarc.cl/anis-artesanal-forno-115-grs/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Alfajor Havanna mixtos 6 un",
+        "marca": "Havanna",
+        "sku": "52822",
+        "precio": 10790,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/187106/Alfajor-Havanna-mixtos-6-un-1-60189.jpg?v=637013950335770000",
+        "url_producto": "https://www.unimarc.cl/alfajor-mixto-x6-havanna/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Galletas champaña Pavesi 325 g",
+        "marca": "Pavesi",
+        "sku": "14590",
+        "precio": 6090,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/188270/Galleta-Champaña-Pavesi-325-g-1-11150.jpg?v=637037227019030000",
+        "url_producto": "https://www.unimarc.cl/galleta-champana-pavesi-325-grs/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Alfajor Beni mazapán bolsa 3 un",
+        "marca": "Artesanias Beni",
+        "sku": "49462",
+        "precio": 3290,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/221270/foto_preparacion.jpg?v=637709586894770000",
+        "url_producto": "https://www.unimarc.cl/bolsa-alfajor-mazapan-artesania-beni-3un/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Guaguitas Merello bolsa 70 g",
+        "marca": "Merello",
+        "sku": "33981",
+        "precio": 730,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/248079/000000000000156053-UN-01.jpg.jpg?v=638802399517600000",
+        "url_producto": "https://www.unimarc.cl/guaguitas-merello-70-grs/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Gomitas acidas Tento aros sabores frutales 80 g",
+        "marca": "Tento",
+        "sku": "82081",
+        "precio": 850,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/228107/000000000000657221-UN-01.jpg?v=637933424708970000",
+        "url_producto": "https://www.unimarc.cl/gomitas-aro-acidas-sab-frutal-tento-80g/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Tolines Forno 80 g",
+        "marca": "Forno",
+        "sku": "43733",
+        "precio": 1610,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/220770/000000000000210109-UN-01.jpg?v=637692983001970000",
+        "url_producto": "https://www.unimarc.cl/tolines-forno-80-grs/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Gomitas Fini tubos frutilla ácida 40 g",
+        "marca": "Fini",
+        "sku": "91334",
+        "precio": 790,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/248275/000000000000674510-UN-01.jpg?v=638809523187300000",
+        "url_producto": "https://www.unimarc.cl/gomitas-tubos-frutilla-acida-fini-40-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Masticable barra Colombina crunchy fresa 360 g",
+        "marca": "Colombina",
+        "sku": "87434",
+        "precio": 2990,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/239905/000000000668733002-UN-01.jpg?v=638525087351000000",
+        "url_producto": "https://www.unimarc.cl/mastic-barra-crunchy-colom-360gr-fresa/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Marshmallow fruta Forno 80 g",
+        "marca": "Forno",
+        "sku": "43734",
+        "precio": 1610,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/220772/000000000000210111-UN-01.jpg?v=637692983595800000",
+        "url_producto": "https://www.unimarc.cl/marsmallows-fruta-forno-80-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Galleta bocanboca tomate albaca artesanal 170g",
+        "marca": "Bocanboca",
+        "sku": "85753",
+        "precio": 3980,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/235828/000000000663285003-UN-01.jpg?v=638321948804900000",
+        "url_producto": "https://www.unimarc.cl/galleta-art-bocanboca-170g-tomate-alba/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Galleta bocanboca artesanal finas hierbas 170g",
+        "marca": "Bocanboca",
+        "sku": "85751",
+        "precio": 3980,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/235826/000000000663285001-UN-01.jpg?v=638321948795970000",
+        "url_producto": "https://www.unimarc.cl/galleta-art-bocanboca-170-finas-hierbas/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Tubos Fini frutas silvestres ácidas 70g",
+        "marca": "Fini",
+        "sku": "85172",
+        "precio": 1470,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/246387/000000000000666062-UN-01.jpg?v=638730706623800000",
+        "url_producto": "https://www.unimarc.cl/tubos-cintas-frut-silv-acida-fini-70-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Manjar Río Bueno bolsa 1 Kg",
+        "marca": "Rio Bueno",
+        "sku": "91298",
+        "precio": 5259,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/248296/000000000000675587-UN-01.jpg?v=638809523241430000",
+        "url_producto": "https://www.unimarc.cl/manjar-rio-bueno-bolsa-1kg/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Caramelo Forno rocks naranja y limón 115 g",
+        "marca": "Forno",
+        "sku": "44090",
+        "precio": 1270,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/220767/000000000000277020-UN-01.jpg?v=637692980276330000",
+        "url_producto": "https://www.unimarc.cl/caramelo-rocks-naranja-limon-forno-115-g/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Alfajor blanco Lilis papaya 3 un de 50 g",
+        "marca": "D Lilis",
+        "sku": "89337",
+        "precio": 3490,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/244656/000000000000671812-UN-01.jpg?v=638641694599300000",
+        "url_producto": "https://www.unimarc.cl/alfajor-blanco-de-papaya-lilis-3x50gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Galleta bocanboca artesanal original 170g",
+        "marca": "Bocanboca",
+        "sku": "85752",
+        "precio": 3980,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/235827/000000000663285002-UN-01.jpg?v=638321948801600000",
+        "url_producto": "https://www.unimarc.cl/galleta-art-bocanboca-170g-original/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Gomitas ambrosaurio Ambrosoli 90 g",
+        "marca": "Ambrosoli",
+        "sku": "91342",
+        "precio": 1180,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/248279/000000000000675130-UN-01.jpg?v=638809523198830000",
+        "url_producto": "https://www.unimarc.cl/gomita-ambrosaurio-ambrosoli-90gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Gomitas Fini gusanos ácidos 35 g",
+        "marca": "Fini",
+        "sku": "91335",
+        "precio": 790,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/248277/000000000000674571-UN-01.jpg?v=638809523193500000",
+        "url_producto": "https://www.unimarc.cl/gomitas-gusanos-acidos-fini-35-gr/p",
+        "sellos_advertencia": "dos_sellos"
+    },
+    {
+        "nombre": "Alfajor negro Lilis nuez 3 un de 50 g",
+        "marca": "D Lilis",
+        "sku": "89335",
+        "precio": 3490,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/244654/000000000000671769-UN-01.jpg?v=638641694589770000",
+        "url_producto": "https://www.unimarc.cl/alfajor-negro-de-nuez-lilis-3x50gr/p",
+        "sellos_advertencia": "dos_sellos"
+    }
+]

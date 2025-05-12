@@ -6,9 +6,9 @@ from datetime import datetime
 
 # URLs por tipo de sello
 urls = {
-    "sin_sellos": "https://www.unimarc.cl/category/desayuno-y-dulces/chocolates-y-confites?warningStamps=sin-sellos",
-    "un_sello": "https://www.unimarc.cl/category/desayuno-y-dulces/chocolates-y-confites?warningStamps=un-sello",
-    "dos_sellos": "https://www.unimarc.cl/category/desayuno-y-dulces/chocolates-y-confites?warningStamps=dos-sellos"
+    "sin_sellos": "https://www.unimarc.cl/category/desayuno-y-dulces?warningStamps=sin-sellos",
+    "un_sello": "https://www.unimarc.cl/category/desayuno-y-dulces?warningStamps=un-sello",
+    "dos_sellos": "https://www.unimarc.cl/category/desayuno-y-dulces?warningStamps=dos-sellos"
 }
 
 # Encabezados para simular un navegador
