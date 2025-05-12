@@ -1,7 +1,28 @@
 # Archivo de configuración para URLs de scraping de Unimarc
 # Formato: tipo_de_sello=URL
 # Cada línea debe contener un tipo de sello y su URL correspondiente
+Esto debe ir al final de cada url por el momento, ya que estamos con Unimarc.cl:
 
 sin_sellos=https://www.unimarc.cl/category/desayuno-y-dulces?warningStamps=sin-sellos
 un_sello=https://www.unimarc.cl/category/desayuno-y-dulces?warningStamps=un-sello
 dos_sellos=https://www.unimarc.cl/category/desayuno-y-dulces?warningStamps=dos-sellos
+
+
+
+
+?warningStamps=sin-sellos
+?warningStamps=un-sello
+?warningStamps=dos-sellos
+Esta es la estructura:
+
+Categorías:
+
+miel-y-salsas
+cereales
+cafe-te-y-hierbas
+galletas-y-colaciones dulces
+cafe-te-y-hierbas
+"https://www.unimarc.cl/category/desayuno-y-dulces/{Categorías}"
+
+
+
