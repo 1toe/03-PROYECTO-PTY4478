@@ -1,0 +1,731 @@
+[
+    {
+        "nombre": "Avena Vivo instantánea 800 g",
+        "marca": "Vivo",
+        "sku": "70944",
+        "precio": 1990,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/230783/000000000000646200-UN-01.png?v=638048049344770000",
+        "url_producto": "https://www.unimarc.cl/avena-instantanea-vivo-800-gr/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Barra cereal Wild Protein choco maní 5 un de 45 g",
+        "marca": "Wild Protein",
+        "sku": "75566",
+        "precio": 6390,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/231756/000000000649915002-DIS-01.jpg?v=638084392524030000",
+        "url_producto": "https://www.unimarc.cl/barra-cereal-wild-protein-45-choco-mani/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Barra cereal Wild Protein chocolate 5 un de 45 g",
+        "marca": "Wild Protein",
+        "sku": "75565",
+        "precio": 6390,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/231763/000000000649915001-DIS-01.jpg?v=638084449024630000",
+        "url_producto": "https://www.unimarc.cl/barra-cereal-wild-protein-45g-chocolate/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Galletas de arroz Mizos manzana 16 g",
+        "marca": "Mizos",
+        "sku": "14839",
+        "precio": 470,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/218819/000000000000778435-UN-01.jpg?v=637647225483030000",
+        "url_producto": "https://www.unimarc.cl/galletas-de-arroz-manzana-mizos-16-gr/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Manjar Daily con alulosa doypack 400 g",
+        "marca": "Daily",
+        "sku": "74015",
+        "precio": 3050,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/213741/000000000000648558-UN-01.jpg?v=637551480470870000",
+        "url_producto": "https://www.unimarc.cl/manjar-daily-c-alulosa-doypack-400gr/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Crema para café Coffee Mate Nestlé original 435 g",
+        "marca": "Nestle",
+        "sku": "20034",
+        "precio": 4450,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/197844/000000000000579837-UN-01.jpg?v=637284817333400000",
+        "url_producto": "https://www.unimarc.cl/crema-para-cafe-coffee-mate-original-435-g/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Barra cereal Wild Protein chocolate coco 5 un de 45 g",
+        "marca": "Wild Protein",
+        "sku": "77600",
+        "precio": 6390,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/231754/000000000651395002-DIS-01.jpg?v=638084388574300000",
+        "url_producto": "https://www.unimarc.cl/cereal-b-choc-wild-protein-45gr-coco/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Mermelada Vivo sabor frambuesa 200 g",
+        "marca": "Vivo",
+        "sku": "13451",
+        "precio": 1360,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/191150/000000000622768001-UN-01.jpg?v=637151288798630000",
+        "url_producto": "https://www.unimarc.cl/mermelada-vivo-200-gr-frambuesa/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Café Waitrose colombiano molido 227 g",
+        "marca": "Waitrose",
+        "sku": "58520",
+        "precio": 6750,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/200943/000000000000638107-UN-01.jpg?v=637340157472530000",
+        "url_producto": "https://www.unimarc.cl/cafe-molido-colombiano-waitrose-227-gr/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Mermelada St. Dalfour frambuesa frasco 284 g",
+        "marca": "St Dalfour",
+        "sku": "7515",
+        "precio": 3850,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/236827/000000000402238004-UN-01.jpg?v=638385253246500000",
+        "url_producto": "https://www.unimarc.cl/mermelada-dalfour-284-gr-frambuesa/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Mermelada Vivo sabor mora 200 g",
+        "marca": "Vivo",
+        "sku": "13452",
+        "precio": 1360,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/213205/000000000622768002-UN-01.jpg?v=637533284989300000",
+        "url_producto": "https://www.unimarc.cl/mermelada-vivo-200-gr-mora/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Chicle Orbit menta botella 46 g",
+        "marca": "Orbit",
+        "sku": "55907",
+        "precio": 3350,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/200447/000000000000632199-UN-01.jpg?v=637330337949570000",
+        "url_producto": "https://www.unimarc.cl/chicle-s-menta-orbit-botella-46-un/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Mermelada Vivo sabor durazno 200 g",
+        "marca": "Vivo",
+        "sku": "13454",
+        "precio": 1360,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/213201/000000000622768004-UN-01.jpg?v=637533283118570000",
+        "url_producto": "https://www.unimarc.cl/mermelada-vivo-200-gr-durazno/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Mermelada Vivo sabor mango 200 g",
+        "marca": "Vivo",
+        "sku": "13455",
+        "precio": 1360,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/213203/000000000622768005-UN-01.jpg?v=637533284181070000",
+        "url_producto": "https://www.unimarc.cl/mermelada-vivo-200-gr-mango/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Avena Selecta instantánea 800 g",
+        "marca": "Selecta",
+        "sku": "70943",
+        "precio": 2190,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/210901/000000000000646198-UN-01.jpg?v=637520479302230000",
+        "url_producto": "https://www.unimarc.cl/avena-instantanea-selecta-800-gr/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Chicle Bigtime sandía 11 g",
+        "marca": "Bigtime",
+        "sku": "883",
+        "precio": 450,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/162460/215483.jpg?v=636493047027330000",
+        "url_producto": "https://www.unimarc.cl/chicle-sandia-bigtime-11-gr/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Galletas de arroz Mizos arándano 16 g",
+        "marca": "Mizos",
+        "sku": "48456",
+        "precio": 470,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/218818/000000000000778436-UN-01.jpg?v=637647224635430000",
+        "url_producto": "https://www.unimarc.cl/galletas-de-arroz-arandano-mizos-16-gr/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Mermelada Vivo sabor berries 200 g",
+        "marca": "Vivo",
+        "sku": "13453",
+        "precio": 1360,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/213207/000000000622768003-UN-01.jpg?v=637533285739430000",
+        "url_producto": "https://www.unimarc.cl/mermelada-vivo-200-gr-berries/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Mermelada Vivo sabor damasco 200 g",
+        "marca": "Vivo",
+        "sku": "42226",
+        "precio": 1360,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/191151/000000000622768006-UN-01.jpg?v=637151289982300000",
+        "url_producto": "https://www.unimarc.cl/mermelada-vivo-200-gr-damasco/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Avena Quínoa Vivo 600 g.",
+        "marca": "Vivo",
+        "sku": "12330",
+        "precio": 2990,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/217838/000000000000615218-UN-01.jpg?v=637619877215630000",
+        "url_producto": "https://www.unimarc.cl/avena-quinoa-vivo-600-gr/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Avena multisemillas Vivo 4 semillas 700 g",
+        "marca": "Vivo",
+        "sku": "6023",
+        "precio": 2990,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/237753/000000000000616209-UN-01.jpg?v=638436262469900000",
+        "url_producto": "https://www.unimarc.cl/avena-4-semillas-vivo-700-gr/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Cereal Vivo shot check cacao 30 g",
+        "marca": "Vivo",
+        "sku": "11186",
+        "precio": 500,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/210905/000000000000614340-UN-01.jpg?v=637520509066500000",
+        "url_producto": "https://www.unimarc.cl/vivo-shot-check-cacao-costa-30-gr/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Mermelada Watt's 0% azúcar durazno bolsa 200 g",
+        "marca": "Watts",
+        "sku": "4225",
+        "precio": 1700,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/227178/000000000000178087-UN-01.jpg?v=637901281366770000",
+        "url_producto": "https://www.unimarc.cl/mermelada-durazno-s-azucar-watts-200-grs/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Mermelada Watt's 0% azúcar mora bolsa 200 g",
+        "marca": "Watts",
+        "sku": "667",
+        "precio": 1700,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/227181/000000000000178089-UN-01.jpg?v=637901283046270000",
+        "url_producto": "https://www.unimarc.cl/mermelada-s-azucar-mora-watt-s-bolsa-200-g/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Granola Wild Protein crunchy mix 300 g",
+        "marca": "Wild Protein",
+        "sku": "75562",
+        "precio": 6150,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/231744/000000000000649916-UN-01.jpg?v=638083767199630000",
+        "url_producto": "https://www.unimarc.cl/granola-crunchy-mix-wild-protein-350-gr/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Galletas Selz de arroz 100 g",
+        "marca": "Selz",
+        "sku": "1632",
+        "precio": 1990,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/163049/000000000000882757-UN-01.jpg?v=636522369434000000",
+        "url_producto": "https://www.unimarc.cl/galletas-selz-de-arroz-100-g/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Galletas de arroz Baby Mum Mum manzana y calabaza 50 g",
+        "marca": "Baby Mum Mum",
+        "sku": "72895",
+        "precio": 3920,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/239327/000000000646123002-UN-01.jpg?v=638508678738370000",
+        "url_producto": "https://www.unimarc.cl/galleta-arroz-baby-mum-m-50gr-manzana/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Cereal Fitness Nestlé hojuela integral 330 g",
+        "marca": "Fitness",
+        "sku": "1320",
+        "precio": 3280,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/232833/000000000000613555-UN-01.jpg?v=638176199537730000",
+        "url_producto": "https://www.unimarc.cl/cereal-fitness-nestle-330-g/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Cereal Chocapic Nestlé bolsa 30 g",
+        "marca": "Chocapic",
+        "sku": "57",
+        "precio": 630,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/246856/000000000000007172-UN-01.jpg.jpg?v=638750764461270000",
+        "url_producto": "https://www.unimarc.cl/cereal-chocapic-nestle-bolsa-indv-30-g/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Chocolate con almendras Nuss En Línea sin azúcar 50 g",
+        "marca": "En Linea",
+        "sku": "78923",
+        "precio": 2690,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/223534/000000000000652772-UN-01.jpg?v=637787335341170000",
+        "url_producto": "https://www.unimarc.cl/chocolate-c-almen-nuss-en-linea-50-gr/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Dulce de membrillo Eckart sin azúcar pote 330 g",
+        "marca": "Eckart",
+        "sku": "4427",
+        "precio": 3400,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/179550/000000000000186838-UN.jpg?v=636753872912500000",
+        "url_producto": "https://www.unimarc.cl/dulce-de-membrillo-s-azucar-eckart-330gr/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Cereal En Línea granola sin azúcar cranberries 320 g",
+        "marca": "En Linea",
+        "sku": "57616",
+        "precio": 2980,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/188118/Cereal-En-Linea-granola-sin-azucar-cranberries-320-g-2-65543.jpg?v=637037217465030000",
+        "url_producto": "https://www.unimarc.cl/granola-s-azucar-en-linea-3-cranberries/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Mermelada Watt's 0% azúcar frambuesa bolsa 200 g",
+        "marca": "Watts",
+        "sku": "4226",
+        "precio": 1700,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/227180/000000000000178088-UN-01.jpg?v=637901282599870000",
+        "url_producto": "https://www.unimarc.cl/mermelada-frambuesa-s-azucar-watts-200gr/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Barra cereal Soul Bar maqui chía 5 un de 25 g",
+        "marca": "Soul Bar",
+        "sku": "75564",
+        "precio": 3700,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/219502/000000000649914002-DIS-01.jpg?v=637661914006600000",
+        "url_producto": "https://www.unimarc.cl/barra-cereal-soul-bar-25gr-maqui-chia/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Dulce de leche En Línea sin azúcar 380 g",
+        "marca": "En Linea",
+        "sku": "14172",
+        "precio": 4190,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/174795/000000000000763302-UN.png?v=636651174218500000",
+        "url_producto": "https://www.unimarc.cl/dulce-de-leche-enlinea-0-azucar/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Cereal En Línea granola sin azúcar almendra 320 g",
+        "marca": "En Linea",
+        "sku": "57615",
+        "precio": 2980,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/188137/Cereal-En-Linea-granola-sin-azucar-almendra-320-g-1-65542.jpg?v=637037217518530000",
+        "url_producto": "https://www.unimarc.cl/granola-s-azucar-en-linea-320g-almendra/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Mermelada Watt´s 0% azúcar damasco bolsa 200 g",
+        "marca": "Watts",
+        "sku": "4224",
+        "precio": 1700,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/227182/000000000000178086-UN-01.jpg?v=637901283502330000",
+        "url_producto": "https://www.unimarc.cl/mermelada-damasco-s-azucar-watts-200-gr/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Granola proteína En Línea con almendras y coco 300 g",
+        "marca": "En Linea",
+        "sku": "78690",
+        "precio": 4390,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/221392/000000000000652507-UN-01.jpg?v=637714572850630000",
+        "url_producto": "https://www.unimarc.cl/granola-proteina-alm-coco-en-linea-300gr/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Galletas Kupiec de arroz tradicional 90 g",
+        "marca": "Kupiec",
+        "sku": "1127",
+        "precio": 2950,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/179767/000000000000556705-UN.jpg?v=636755457826000000",
+        "url_producto": "https://www.unimarc.cl/galletas-kupiec-de-arroz-tradicional-90-g/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Jarabe de maple Manare orgánico botella 250 ml",
+        "marca": "Manare",
+        "sku": "79683",
+        "precio": 8590,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/222207/000000000000653169-UN-01.jpg?v=637746580801870000",
+        "url_producto": "https://www.unimarc.cl/jarabe-de-maple-organico-manare-250-ml/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Chicle Bigtime ultra cleanmint 12 un",
+        "marca": "Bigtime",
+        "sku": "58823",
+        "precio": 1430,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/186193/Chicle-Bigtime-ultra-cleanmint-12-un-1-66805.jpg?v=636991513560700000",
+        "url_producto": "https://www.unimarc.cl/chicle-ultra-bigtime-12un-cleanmint/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Barra cereal Soul Bar manzana canela 5 un de 25 g",
+        "marca": "Soul Bar",
+        "sku": "75563",
+        "precio": 3700,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/219503/000000000649914001-DIS-01.jpg?v=637661915014670000",
+        "url_producto": "https://www.unimarc.cl/barra-cereal-soul-bar-25gr-manz-canela/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Muesli En Línea multi semilla 700 g",
+        "marca": "En Linea",
+        "sku": "81839",
+        "precio": 4310,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/227110/000000000655977003-UN-01.jpg?v=637897803463500000",
+        "url_producto": "https://www.unimarc.cl/muesli-en-linea-700-gr-multi-semilla/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Cereal En Línea anillo de frutas 330 g",
+        "marca": "En Linea",
+        "sku": "40849",
+        "precio": 2790,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/180069/632244.jpg?v=636761572832100000",
+        "url_producto": "https://www.unimarc.cl/cereal-anillos-frutales-enlinea-330gr/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Almendras En línea cubiertas con chocolate 85% cacao 100 g",
+        "marca": "En Linea",
+        "sku": "78381",
+        "precio": 4190,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/218890/000000000000652405-UN-01.jpg?v=637647469259170000",
+        "url_producto": "https://www.unimarc.cl/almendras-85-cacao-en-linea-100-gr/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Mermelada Watt´s 0% azúcar arándano bolsa 200 g",
+        "marca": "Watts",
+        "sku": "4775",
+        "precio": 1700,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/227179/000000000000216367-UN-01.jpg?v=637901282009700000",
+        "url_producto": "https://www.unimarc.cl/mermelada-arandano-s-azucar-watts-200-gr/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Miel abejas Morelli multiflora 200 g",
+        "marca": "Morelli",
+        "sku": "55113",
+        "precio": 2670,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/181922/000000000000635805-UN.jpg?v=636809141139470000",
+        "url_producto": "https://www.unimarc.cl/miel-abejas-multiflora-morelli-200-gr/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Rolls En Línea crocantes de chocolate sin azúcar 90 g",
+        "marca": "En Linea",
+        "sku": "78380",
+        "precio": 3240,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/218894/000000000000652404-UN-01.jpg?v=637647473634530000",
+        "url_producto": "https://www.unimarc.cl/rolls-chocolate-crocante-en-linea-90-gr/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Muesli En Línea cacao 700 g",
+        "marca": "En Linea",
+        "sku": "81838",
+        "precio": 4310,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/227109/000000000655977002-UN-01.jpg?v=637897799472630000",
+        "url_producto": "https://www.unimarc.cl/muesli-en-linea-700-gr-cacao/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Muesli En Línea frutal 700 g",
+        "marca": "En Linea",
+        "sku": "81837",
+        "precio": 4310,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/227107/000000000655977001-UN-01.jpg?v=637897793040330000",
+        "url_producto": "https://www.unimarc.cl/muesli-en-linea-700-gr-frutal/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Miel de abeja Ambrosoli untable 350 g",
+        "marca": "Ambrosoli",
+        "sku": "13434",
+        "precio": 4390,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/196095/000000000000010192-UN-01.jpg?v=637267883647900000",
+        "url_producto": "https://www.unimarc.cl/miel-abeja-unt-colmena-ambrosoli-350-gr/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Miel de abejas Trapense pote 500 g",
+        "marca": "Trapense",
+        "sku": "11045",
+        "precio": 5190,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/220736/000000000000568558-UN-01.jpg?v=637692383824100000",
+        "url_producto": "https://www.unimarc.cl/miel-de-abejas-polipapel-trapense-500-gr/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Miel Morelli 100% pura de abeja 1 Kg",
+        "marca": "Morelli",
+        "sku": "4776",
+        "precio": 11890,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/166892/miel-de-abeja-multiflora-morelli-1-kg.jpg?v=636543723115130000",
+        "url_producto": "https://www.unimarc.cl/miel-de-abeja-multiflora-morelli-1-kg/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Miel abejas Morelli multiflora 450 g",
+        "marca": "Morelli",
+        "sku": "55112",
+        "precio": 5990,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/181921/000000000000635804-UN.jpg?v=636809139980600000",
+        "url_producto": "https://www.unimarc.cl/miel-abejas-multiflora-morelli-450-gr/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Salsa Gourmet chocolate light 280 g",
+        "marca": "Gourmet",
+        "sku": "4768",
+        "precio": 2990,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/245491/000000000000215981-UN-01.jpg?v=638677957944800000",
+        "url_producto": "https://www.unimarc.cl/salsa-chocolate-s-azucar-gourmet-280-gr/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Chicle Bigtime ultra greenmint 12 un",
+        "marca": "Bigtime",
+        "sku": "58824",
+        "precio": 1430,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/189036/000000000637342003-UN-01-66806.jpg?v=637037241507070000",
+        "url_producto": "https://www.unimarc.cl/chicle-ultra-bigtime-12un-greenmint/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Miel de ulmo Colmenares Ralún 1 Kg",
+        "marca": "Colmenares Ralun",
+        "sku": "14529",
+        "precio": 11690,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/220774/000000000000291789-UN-01.jpg?v=637692986710670000",
+        "url_producto": "https://www.unimarc.cl/miel-de-ulmo-centrif-ralun-1-kg/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Pack Cereal barra Nakd cocoa delight 4 un de 35 g",
+        "marca": "Nakd",
+        "sku": "78254",
+        "precio": 5690,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/221777/000000000652217001-DIS-01.jpg?v=638387812753400000",
+        "url_producto": "https://www.unimarc.cl/cereal-barra-nakd-35gr-cocoa-delight/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Pack cereal barra Nakd berry delight 4 un de 35 g",
+        "marca": "Nakd",
+        "sku": "78255",
+        "precio": 5690,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/221779/000000000652217002-DIS-01.jpg?v=638387812760900000",
+        "url_producto": "https://www.unimarc.cl/cereal-barra-nakd-35gr-berry-delight/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Miel de abeja Villa Alemana frasco 1 Kg",
+        "marca": "Villa Alemana",
+        "sku": "10861",
+        "precio": 11590,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/220718/000000000000145966-UN-01.jpg?v=637692319668500000",
+        "url_producto": "https://www.unimarc.cl/miel-de-abeja-villa-alemana-1-kg/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Café Gold descafeinado lata 170 g",
+        "marca": "Gold",
+        "sku": "94",
+        "precio": 8650,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/234399/000000000000010529-UN-01.jpg?v=638247658714070000",
+        "url_producto": "https://www.unimarc.cl/cafe-gold-descafeinado-lata-170-g/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Cereal En Línea Kids hojuelas de chocolate 330 g",
+        "marca": "En Linea",
+        "sku": "11145",
+        "precio": 2790,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/180773/612516.jpg?v=636773788957370000",
+        "url_producto": "https://www.unimarc.cl/cereales-hojuela-choc-en-linea-kids-330g/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Galletas Kupiec de arroz con sésamo 90 g",
+        "marca": "Kupiec",
+        "sku": "5401",
+        "precio": 2950,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/179766/000000000000556702-UN.jpg?v=636755456826470000",
+        "url_producto": "https://www.unimarc.cl/galleta-de-arroz-sesamo-kupiec-90-gr/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Miel de abeja Trapense frasco 1 Kg",
+        "marca": "Trapense",
+        "sku": "10981",
+        "precio": 11550,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/220722/000000000000337908-UN-01.jpg?v=637692322112000000",
+        "url_producto": "https://www.unimarc.cl/miel-de-abeja-trapense-1-kg/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Pack cereal barra Nakd blueberry muffin 4 un de 35 g",
+        "marca": "Nakd",
+        "sku": "78256",
+        "precio": 5690,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/221781/000000000652217003-DIS-01.jpg?v=638387812768970000",
+        "url_producto": "https://www.unimarc.cl/cereal-barra-nakd-35gr-blueberry-muffin/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Miel de ulmo Colmenares Ralún 250 g",
+        "marca": "Colmenares Ralun",
+        "sku": "14531",
+        "precio": 2990,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/220773/000000000000291791-UN-01.jpg?v=637692986069900000",
+        "url_producto": "https://www.unimarc.cl/miel-de-ulmo-ralun-250-gr/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Miel de ulmo Colmenares Ralún 500 g",
+        "marca": "Colmenares Ralun",
+        "sku": "54711",
+        "precio": 5850,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/220776/000000000000291793-UN-01.jpg?v=637692988982500000",
+        "url_producto": "https://www.unimarc.cl/miel-de-ulmo-ralun-500-gr/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Miel de abeja Villa Alemana 200 g",
+        "marca": "Villa Alemana",
+        "sku": "43087",
+        "precio": 2600,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/220712/000000000000147151-UN-01.jpg?v=637692315570070000",
+        "url_producto": "https://www.unimarc.cl/miel-de-abeja-villa-alemana-200-gr/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Infusión Incluyete menta limón 15 bolsitas",
+        "marca": "Incluyete",
+        "sku": "81089",
+        "precio": 4190,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/224964/000000000655603001-UN-01.jpg?v=637830582905630000",
+        "url_producto": "https://www.unimarc.cl/infusion-incluyete-15-un-menta-limon/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Miel de ulmo Colmenares Ralún 340 g",
+        "marca": "Colmenares Ralun",
+        "sku": "54710",
+        "precio": 3960,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/220777/000000000000291792-UN-01.jpg?v=637692989839900000",
+        "url_producto": "https://www.unimarc.cl/miel-de-ulmo-ralun-340-gr/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Infusión Incluyete salvia lemongrass 15 bolsitas",
+        "marca": "Incluyete",
+        "sku": "81092",
+        "precio": 4190,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/224961/000000000655603004-UN-01.jpg?v=637830563701100000",
+        "url_producto": "https://www.unimarc.cl/infusion-incluyete-15-un-salvia-lemon/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Dulce de coco Be Organics orgánico original 200 g",
+        "marca": "Be Organics",
+        "sku": "80097",
+        "precio": 5010,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/221648/000000000000652158-UN-01.jpg?v=637727602893100000",
+        "url_producto": "https://www.unimarc.cl/dulce-coco-orig-organico-b-organics-200g/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Miel de ulmo Colmenares Ralún 1 Kg",
+        "marca": "Colmenares Ralun",
+        "sku": "14530",
+        "precio": 11590,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/220775/000000000000291790-UN-01.jpg?v=637692988321600000",
+        "url_producto": "https://www.unimarc.cl/miel-de-ulmo-ralun-1-kg/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Miel de abeja Villa Alemana 500 g",
+        "marca": "Villa Alemana",
+        "sku": "14475",
+        "precio": 6050,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/220720/000000000000145965-UN-01.jpg?v=637692320583800000",
+        "url_producto": "https://www.unimarc.cl/miel-pura-de-abeja-villa-alemana-500-gr/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Infusión Incluyete melisa limón 15 bolsitas",
+        "marca": "Incluyete",
+        "sku": "81091",
+        "precio": 4190,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/224962/000000000655603003-UN-01.jpg?v=637830573254400000",
+        "url_producto": "https://www.unimarc.cl/infusion-incluyete-15-un-melissa-limon/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Cereal Grana clásico semillas y almendras bolsa 260 g",
+        "marca": "Grana",
+        "sku": "14661",
+        "precio": 5590,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/190061/000000000000603739-UN-01.jpg?v=637122113040170000",
+        "url_producto": "https://www.unimarc.cl/mix-semi-granos-y-almendra-grana-260-gr/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Jarabe de coco Be Organics orgánico 420 ml",
+        "marca": "Be Organics",
+        "sku": "80096",
+        "precio": 8290,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/221644/000000000000652157-UN-01.jpg?v=637727597764770000",
+        "url_producto": "https://www.unimarc.cl/jarabe-coco-organico-be-organics-420-ml/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Café Gold Premier frasco 170 g",
+        "marca": "Gold",
+        "sku": "36403",
+        "precio": 9090,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/234405/000000000000612525-UN-01.jpg?v=638247661492870000",
+        "url_producto": "https://www.unimarc.cl/cafe-premier-frasco-gold-170g/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Miel de abeja Villa Alemana pote 400 g",
+        "marca": "Villa Alemana",
+        "sku": "10863",
+        "precio": 6450,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/220715/000000000000147150-UN-01.jpg?v=637692318165030000",
+        "url_producto": "https://www.unimarc.cl/miel-de-abeja-villa-alemana-400-gr/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Infusión Incluyete menta jengibre 15 bolsitas",
+        "marca": "Incluyete",
+        "sku": "81090",
+        "precio": 4190,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/224963/000000000655603002-UN-01.jpg?v=637830576044930000",
+        "url_producto": "https://www.unimarc.cl/infusion-incluyete-15-un-menta-jengibre/p",
+        "sellos_advertencia": "sin_sellos"
+    },
+    {
+        "nombre": "Capri relleno sabor Almendra 30 Gr.",
+        "marca": "Nestle",
+        "sku": "10334",
+        "precio": 240,
+        "url_imagen": "https://unimarc.vtexassets.com/arquivos/ids/170684/7613034279743-frontal-capri.jpg?v=636602558501600000",
+        "url_producto": "https://www.unimarc.cl/chocolate-almendra-fondant-nestle-30gr/p",
+        "sellos_advertencia": "sin_sellos"
+    }
+]
