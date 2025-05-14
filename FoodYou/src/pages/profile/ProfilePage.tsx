@@ -22,6 +22,7 @@ import { logOut, settings, person, moon, notifications } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
 import { AuthService } from '../../services/firebase/auth.service';
 import { UserService } from '../../services/firebase/user.service';
+import { useAuth } from '../../AuthContext';
 import './ProfilePage.css';
 
 const ProfilePage: React.FC = () => {
@@ -30,6 +31,7 @@ const ProfilePage: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showLogoutAlert, setShowLogoutAlert] = useState<boolean>(false);
   const history = useHistory();
+  const { logout } = useAuth();
 
   useEffect(() => {
     const loadUserProfile = async () => {
@@ -42,22 +44,23 @@ const ProfilePage: React.FC = () => {
         try {
           const userProfile = await UserService.getUserProfile(currentUser.uid);
           if (userProfile) {
-            // Aplicar más datos al perfil del usuariol.
           }
         } catch (error) {
           console.error('Error al cargar perfil:', error);
         }
+      } else {
+        history.replace('/login');
       }
     };
 
     loadUserProfile();
-  }, []);
+  }, [history]);
 
   const handleLogout = async () => {
-    setIsLoading(true);
     try {
-      await AuthService.logout();
-      history.replace('/login');
+      setIsLoading(true);
+      await logout();
+      setShowLogoutAlert(false);
     } catch (error) {
       console.error('Error al cerrar sesión:', error);
     } finally {

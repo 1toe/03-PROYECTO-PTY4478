@@ -27,15 +27,6 @@
   margin: 0 auto;
 }
 
-.change-photo-btn {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  --padding-start: 8px;
-  --padding-end: 8px;
-  --border-radius: 50%;
-}
-
 .profile-container {
   padding: 16px;
 }
@@ -58,7 +49,10 @@
 
 .logout-button {
   margin-top: 32px;
-  margin: 30px 16px;
+  margin-bottom: 32px;
+  margin-left: 16px;
+  margin-right: 16px;
+  width: calc(100% - 32px);
 }
 
 .empty-text {

@@ -55,7 +55,10 @@ const LoginPage: React.FC = () => {
     } catch (error: any) {
       console.error('Error al iniciar sesión:', error);
 
-      if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+      if (error.name === 'SupabaseSyncError') {
+        // Mostrar un error específico de sincronización con Supabase
+        setErrorMessage('Tu cuenta fue autenticada pero hubo un problema con la sincronización. Por favor contacta a soporte.');
+      } else if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
         setErrorMessage('Email o contraseña incorrectos');
       } else if (error.code === 'auth/too-many-requests') {
         setErrorMessage('Demasiados intentos fallidos. Por favor, inténtalo más tarde.');
@@ -64,24 +67,6 @@ const LoginPage: React.FC = () => {
       } else {
         setErrorMessage('Error al iniciar sesión');
       }
-      setIsLoading(false);
-    }
-  };
-
-  const handleResetPassword = async () => {
-    if (!email) {
-      setErrorMessage('Ingresa tu correo electrónico para restablecer la contraseña');
-      return;
-    }
-
-    setIsLoading(true);
-    try {
-      await AuthService.resetPassword(email);
-      setShowAlert(true);
-      setIsLoading(false);
-    } catch (error) {
-      console.error('Error al enviar correo de recuperación:', error);
-      setErrorMessage('Error al enviar correo de recuperación');
       setIsLoading(false);
     }
   };
@@ -96,7 +81,7 @@ const LoginPage: React.FC = () => {
           <h1>Iniciar Sesión</h1>
 
           <IonItem>
-            <IonLabel position="floating">Correo electrónico</IonLabel>
+            <IonLabel position="stacked">Correo electrónico</IonLabel>
             <IonInput
               type="email"
               value={email}
@@ -105,20 +90,20 @@ const LoginPage: React.FC = () => {
           </IonItem>
 
           <IonItem>
-            <IonLabel position="floating">Contraseña</IonLabel>
+            <IonLabel position="stacked">Contraseña</IonLabel>
             <IonInput
               type="password"
               value={password}
               onIonChange={e => setPassword(e.detail.value!)}
             />
           </IonItem>
-
-          <IonItem lines="none" className="remember-me-item">
+      
+          <IonItem lines="inset" className="remember-me-item">
             <IonCheckbox
               checked={rememberMe}
               onIonChange={e => setRememberMe(e.detail.checked)}
             />
-            <IonLabel className="remember-me-label">Recordar mi sesión</IonLabel>
+            <IonLabel className="remember-me-label">Mantener sesión</IonLabel>
           </IonItem>
 
           {errorMessage && (
@@ -143,24 +128,16 @@ const LoginPage: React.FC = () => {
           <IonRow className="ion-justify-content-center">
             <IonCol size="12" className="ion-text-center">
               <IonButton
-                fill="clear"
+                fill="default"
                 size="small"
                 onClick={() => history.push('/register')}
-                disabled={isLoading}
+                disabled={isLoading} // Deshabilitar el botón si está cargando
               >
                 ¿No tienes cuenta? Regístrate
               </IonButton>
             </IonCol>
           </IonRow>
         </div>
-
-        <IonAlert
-          isOpen={showAlert}
-          onDidDismiss={() => setShowAlert(false)}
-          header={'Email enviado'}
-          message={'Se ha enviado un correo para restablecer tu contraseña. Revisa tu bandeja de entrada.'}
-          buttons={['Entendido']}
-        />
       </IonContent>
     </IonPage>
   );
