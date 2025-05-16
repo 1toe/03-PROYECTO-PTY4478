@@ -1,0 +1,5 @@
+# Formato: tipo_de_sello=URL
+# Cada línea debe contener un tipo de sello y su URL correspondiente
+sin_sellos=https://www.unimarc.cl/category/desayuno-y-dulces?warningStamps=sin-sellos
+un_sello=https://www.unimarc.cl/category/desayuno-y-dulces?warningStamps=un-sello
+dos_sellos=https://www.unimarc.cl/category/desayuno-y-dulces?warningStamps=dos-sellos

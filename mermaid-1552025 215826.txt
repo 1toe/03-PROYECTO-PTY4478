@@ -1,0 +1,89 @@
+flowchart TB
+    %% Data-Ingestion Layer
+    subgraph "Batch/ETL" 
+        direction TB
+        Scrapers["Scraper Jobs (Python)"]:::ingestion
+        DDL["DDL Scripts: create_tabla_*.sql"]:::ingestion
+    end
+
+    %% Relational Database
+    ProductsDB["Relational DB (MySQL/Postgres)"]:::db
+
+    %% Backend Services (BaaS)
+    subgraph "BaaS Services"
+        direction TB
+        Auth["Firebase Auth"]:::baas
+        Firestore["Firebase Firestore"]:::baas
+        SupabaseAPI["Supabase API (Products & Categories)"]:::baas
+    end
+
+    %% Client Application
+    subgraph "Ionic/React App" 
+        direction TB
+        Context["AuthContext"]:::client
+        ServiceLayer["Service Layer Modules"]:::client
+        UI["UI Components & Pages"]:::client
+        E2E["Cypress E2E Tests"]:::client
+    end
+
+    %% External Map Service
+    MapAPI["External Map API"]:::external
+
+    %% Data Flows
+    Scrapers -->|Creates SQL Inserts| ProductsDB
+    DDL --> ProductsDB
+
+    UI -->|uses| ServiceLayer
+    ServiceLayer -->|REST CRUD| SupabaseAPI
+    ServiceLayer -->|Auth Requests| Auth
+    ServiceLayer -->|Firestore CRUD| Firestore
+    UI -->|calls| MapAPI
+
+    Context --> UI
+    ServiceLayer --> Context
+
+    E2E -.->|tests| UI
+
+    %% Click Events for component mappings
+    click Scrapers "https://github.com/1toe/backu_pty4478/tree/main/Scrapers/"
+    click Scrapers "https://github.com/1toe/backu_pty4478/blob/main/Scrapers/main-scraper-lider.py"
+    click Scrapers "https://github.com/1toe/backu_pty4478/blob/main/Scrapers/main-scraper-santaisabel.py"
+    click Scrapers "https://github.com/1toe/backu_pty4478/blob/main/Scrapers/main-scraper-unimarc.py"
+    click Scrapers "https://github.com/1toe/backu_pty4478/blob/main/Scrapers/generate_insert_queries.py"
+    click Scrapers "https://github.com/1toe/backu_pty4478/blob/main/Scrapers/update_generate_insert_queries.py"
+    click Scrapers "https://github.com/1toe/backu_pty4478/blob/main/Scrapers/update_sql_queries.py"
+    click DDL "https://github.com/1toe/backu_pty4478/blob/main/create_tabla_categorias.sql"
+    click DDL "https://github.com/1toe/backu_pty4478/blob/main/create_tabla_productos.sql"
+    click Auth "https://github.com/1toe/backu_pty4478/blob/main/FoodYou/src/config/firebase.ts"
+    click Auth "https://github.com/1toe/backu_pty4478/blob/main/FoodYou/src/services/firebase/auth.service.ts"
+    click Context "https://github.com/1toe/backu_pty4478/blob/main/FoodYou/src/AuthContext.tsx"
+    click Context "https://github.com/1toe/backu_pty4478/blob/main/FoodYou/src/components/PrivateRoute.tsx"
+    click Firestore "https://github.com/1toe/backu_pty4478/blob/main/FoodYou/src/services/firebase/user.service.ts"
+    click Firestore "https://github.com/1toe/backu_pty4478/blob/main/FoodYou/src/services/firebase/list.service.ts"
+    click SupabaseAPI "https://github.com/1toe/backu_pty4478/blob/main/FoodYou/src/utils/supabase.ts"
+    click SupabaseAPI "https://github.com/1toe/backu_pty4478/blob/main/FoodYou/src/services/supabase/category.service.ts"
+    click SupabaseAPI "https://github.com/1toe/backu_pty4478/blob/main/FoodYou/src/services/supabase/product.service.ts"
+    click UI "https://github.com/1toe/backu_pty4478/blob/main/FoodYou/src/main.tsx"
+    click UI "https://github.com/1toe/backu_pty4478/blob/main/FoodYou/src/App.tsx"
+    click UI "https://github.com/1toe/backu_pty4478/blob/main/FoodYou/ionic.config.json"
+    click UI "https://github.com/1toe/backu_pty4478/blob/main/FoodYou/capacitor.config.ts"
+    click UI "https://github.com/1toe/backu_pty4478/blob/main/FoodYou/src/pages/auth/LoginPage.tsx"
+    click UI "https://github.com/1toe/backu_pty4478/blob/main/FoodYou/src/pages/auth/RegisterPage.tsx"
+    click UI "https://github.com/1toe/backu_pty4478/blob/main/FoodYou/src/pages/home/HomePage.tsx"
+    click UI "https://github.com/1toe/backu_pty4478/blob/main/FoodYou/src/pages/lists/ListsPage.tsx"
+    click UI "https://github.com/1toe/backu_pty4478/blob/main/FoodYou/src/pages/lists/ListDetailsPage.tsx"
+    click UI "https://github.com/1toe/backu_pty4478/blob/main/FoodYou/src/pages/map/MapPage.tsx"
+    click UI "https://github.com/1toe/backu_pty4478/blob/main/FoodYou/src/pages/profile/ProfilePage.tsx"
+    click UI "https://github.com/1toe/backu_pty4478/blob/main/FoodYou/src/pages/recommendations/RecommendationsPage.tsx"
+    click UI "https://github.com/1toe/backu_pty4478/blob/main/FoodYou/src/components/CategoryCard.tsx"
+    click UI "https://github.com/1toe/backu_pty4478/blob/main/FoodYou/src/components/ProductCard.tsx"
+    click UI "https://github.com/1toe/backu_pty4478/blob/main/FoodYou/src/components/PrivateRoute.tsx"
+    click MapAPI "https://github.com/1toe/backu_pty4478/blob/main/FoodYou/src/services/map/map.service.ts"
+    click MapAPI "https://github.com/1toe/backu_pty4478/blob/main/FoodYou/src/pages/map/MapPage.tsx"
+
+    %% Styles
+    classDef ingestion fill:#FFA500,stroke:#333,stroke-width:1px;
+    classDef db fill:#CCCCCC,stroke:#333,stroke-width:1px;
+    classDef baas fill:#00FFFF,stroke:#333,stroke-width:1px;
+    classDef client fill:#00FF00,stroke:#333,stroke-width:1px;
+    classDef external fill:#DDDDDD,stroke:#333,stroke-width:1px;
