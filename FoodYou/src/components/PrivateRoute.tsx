@@ -32,19 +32,8 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ component: Component, ...re
     <Route
       {...rest}
       render={(props) =>
-        currentUser ? (
-          // Si el usuario está autenticado, renderiza el componente solicitado
-          <Component {...props} />
-        ) : (
-          // Si el usuario no está autenticado, redirige a la página de inicio de sesión
-          <Redirect
-            to={{
-              pathname: "/login",
-              // Opcionalmente pasa la ubicación deseada para redirigir después del inicio de sesión  
-              state: { from: props.location }
-            }}
-          />
-        )
+        // BYPASS: Permitir acceso sin autenticación
+        <Component {...props} />
       }
     />
   );

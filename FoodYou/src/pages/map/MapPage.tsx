@@ -11,18 +11,31 @@ import {
 } from '@ionic/react';
 import { locate, locateOutline } from 'ionicons/icons';
 import './MapPage.css';
-import { loadGoogleMaps, initMap } from '../../services/map/map.service';
+import { loadGoogleMaps, initMap, calcularDistanciaMetros, mostrarRuta } from '../../services/map/map.service';
 
 interface Location {
   latitude: number;
   longitude: number;
 }
 
+// Función auxiliar para obtener lat y lng de forma segura
+const getLatLng = (place: google.maps.places.PlaceResult) => {
+  if (place.geometry && place.geometry.location) {
+    return {
+      lat: place.geometry.location.lat(),
+      lng: place.geometry.location.lng()
+    };
+  }
+  return { lat: 0, lng: 0 };
+};
+
 const MapPage: React.FC = () => {
   const [location, setLocation] = useState<Location | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [supermercados, setSupermercados] = useState<google.maps.places.PlaceResult[]>([]);
   const mapRef = useRef<HTMLDivElement | null>(null);
+  const mapInstanceRef = useRef<google.maps.Map | null>(null);
 
   const getLocation = () => {
     if (!navigator.geolocation) {
@@ -41,12 +54,6 @@ const MapPage: React.FC = () => {
         };
         setLocation(loc);
         setLoading(false);
-
-        if (mapRef.current && (window as any).google && (window as any).google.maps) {
-          initMap(mapRef.current, loc.latitude, loc.longitude);
-        } else {
-          setError("Google Maps no está disponible");
-        }
       },
       (error) => {
         setError(`Error al obtener la ubicación: ${error.message}`);
@@ -54,8 +61,8 @@ const MapPage: React.FC = () => {
       },
       {
         enableHighAccuracy: true,
-        timeout: 10000,     // Espera hasta 10 segundos por una ubicación precisa
-        maximumAge: 0       // No reutiliza ubicaciones antiguas
+        timeout: 10000,
+        maximumAge: 0
       }
     );
   };
@@ -64,11 +71,33 @@ const MapPage: React.FC = () => {
     loadGoogleMaps()
       .then(() => {
         if (location && mapRef.current) {
-          initMap(mapRef.current, location.latitude, location.longitude);
+          const map = initMap(mapRef.current, location.latitude, location.longitude, setSupermercados);
+          mapInstanceRef.current = map;
         }
       })
       .catch((err) => setError(err));
   }, [location]);
+
+  const centrarMapaEnSupermercado = (place: google.maps.places.PlaceResult) => {
+    if (!mapInstanceRef.current) return;
+    const { lat, lng } = getLatLng(place);
+    const center = new google.maps.LatLng(lat, lng);
+    mapInstanceRef.current.panTo(center);
+    mapInstanceRef.current.setZoom(16);
+  };
+
+  // ✅ NUEVA FUNCIÓN: Mostrar ruta hacia supermercado
+  const mostrarRutaHaciaSupermercado = (place: google.maps.places.PlaceResult) => {
+    if (!mapInstanceRef.current || !location) return;
+
+    const destino = getLatLng(place);
+    const origen = {
+      lat: location.latitude,
+      lng: location.longitude
+    };
+
+    mostrarRuta(mapInstanceRef.current, origen, destino);
+  };
 
   return (
     <IonPage>
@@ -80,7 +109,67 @@ const MapPage: React.FC = () => {
               <IonCard className="nearby-stores">
                 <IonCardContent>
                   <h3>Tiendas cercanas</h3>
-                  <p>Esta funcionalidad estará disponible próximamente.</p>
+                  {supermercados.length > 0 ? (
+                    <ul>
+                      {supermercados
+                        .slice()
+                        .sort((a, b) => {
+                          const aCoords = getLatLng(a);
+                          const bCoords = getLatLng(b);
+
+                          const distanciaA = calcularDistanciaMetros(
+                            location.latitude,
+                            location.longitude,
+                            aCoords.lat,
+                            aCoords.lng
+                          );
+                          const distanciaB = calcularDistanciaMetros(
+                            location.latitude,
+                            location.longitude,
+                            bCoords.lat,
+                            bCoords.lng
+                          );
+
+                          return distanciaA - distanciaB;
+                        })
+                        .map((lugar, index) => {
+                          if (!lugar.geometry || !lugar.geometry.location) {
+                            return null;
+                          }
+
+                          const latLugar = lugar.geometry.location.lat();
+                          const lngLugar = lugar.geometry.location.lng();
+                          const distancia = calcularDistanciaMetros(
+                            location.latitude,
+                            location.longitude,
+                            latLugar,
+                            lngLugar
+                          );
+
+                          return (
+                            <li key={index} style={{ marginBottom: '10px' }}>
+                              <div
+                                style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}
+                                onClick={() => centrarMapaEnSupermercado(lugar)}
+                              >
+                                {lugar.name} - {(distancia / 1000).toFixed(2)} km
+                              </div>
+
+                              {/* ✅ BOTÓN PARA VER RUTA */}
+                              <IonButton
+                                size="small"
+                                color="primary"
+                                onClick={() => mostrarRutaHaciaSupermercado(lugar)}
+                              >
+                                Ver ruta
+                              </IonButton>
+                            </li>
+                          );
+                        })}
+                    </ul>
+                  ) : (
+                    <p>No se encontraron supermercados cercanos.</p>
+                  )}
                 </IonCardContent>
               </IonCard>
             </div>

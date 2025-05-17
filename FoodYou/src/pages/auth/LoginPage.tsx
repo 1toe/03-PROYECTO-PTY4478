@@ -31,6 +31,8 @@ const LoginPage: React.FC = () => {
   const { currentUser, loading: authLoading } = useAuth();
 
   // Verificar si ya está autenticado al cargar la página
+  // useEffect original comentado para desactivar la restricción de ruteo
+  /*
   useEffect(() => {
     // Solo redirigir si ya tenemos la información de autenticación cargada y el usuario está autenticado
     if (!authLoading && currentUser) {
@@ -39,8 +41,19 @@ const LoginPage: React.FC = () => {
       history.replace(from?.pathname || '/app/home');
     }
   }, [currentUser, authLoading, history, location.state]);
+  */
+
+  // BYPASS: Desactivar restricción de ruteo, permitir acceso sin autenticación
+  useEffect(() => {}, []);
 
   const handleLogin = async () => {
+    // BYPASS: Permitir login sin datos para pruebas
+    if (!email && !password) {
+      // Simula un usuario autenticado
+      history.replace('/app/home');
+      return;
+    }
+
     if (!email || !password) {
       setErrorMessage('Por favor completa todos los campos');
       return;
