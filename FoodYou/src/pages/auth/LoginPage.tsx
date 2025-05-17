@@ -41,10 +41,6 @@ const LoginPage: React.FC = () => {
       history.replace(from?.pathname || '/app/home');
     }
   }, [currentUser, authLoading, history, location.state]);
-  */
-
-  // BYPASS: Desactivar restricción de ruteo, permitir acceso sin autenticación
-  useEffect(() => { }, []);
 
   const handleLogin = async () => {
     // BYPASS: Permitir login sin datos para pruebas
