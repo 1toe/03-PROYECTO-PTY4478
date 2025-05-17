@@ -28,7 +28,7 @@ def generate_insert_queries(products):
     for product in products:
         peso = extract_weight(product['nombre'])
         
-        query = f"""INSERT INTO public."PRODUCTO" (
+        query = f"""INSERT INTO public."TABLA_PRODUCTOS" (
             nombre_producto,
             marca,
             sku,

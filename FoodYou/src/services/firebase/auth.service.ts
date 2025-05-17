@@ -9,6 +9,7 @@ import {
 } from 'firebase/auth';
 import { auth } from '../../config/firebase';
 import { UserService } from './user.service';
+import { AuthSyncService } from '../auth/sync.service';
 
 export class AuthService {
   /**
@@ -17,23 +18,26 @@ export class AuthService {
   static async register(email: string, password: string, name: string): Promise<User> {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      // Actualizar el perfil con el nombre
+
       if (userCredential.user) {
         await updateProfile(userCredential.user, { displayName: name });
 
-        // Crear documento de usuario en Firestore
+        // Crear documento de usuario antes de sincronizar
         await UserService.createUserProfile({
           uid: userCredential.user.uid,
           email: email,
           displayName: name,
-          photoURL: null,
           createdAt: new Date(),
           preferences: {
-            theme: 'system',
-            notifications: true,
             diet: []
           }
         });
+
+        try {
+          await AuthSyncService.syncWithSupabase(userCredential.user);
+        } catch (syncError) {
+          console.warn('Advertencia: Error en sincronización con Supabase', syncError);
+        }
       }
 
       return userCredential.user;
@@ -48,10 +52,20 @@ export class AuthService {
    */
   static async login(email: string, password: string, rememberMe = false): Promise<User> {
     try {
-      // Configurar la persistencia de la sesión (podría implementarse en un futuro)
-      // if (rememberMe) { setPersistence... } 
-
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
+
+      // Sincronizar con Supabase en cada inicio de sesión
+      try {
+        await AuthSyncService.syncWithSupabase(userCredential.user);
+      } catch (syncError: any) {
+        console.error('Error de sincronización con Supabase:', syncError);
+        // Lanzar un error específico que indique que la autenticación en Firebase fue exitosa
+        // pero la sincronización con Supabase falló
+        const error = new Error(`Autenticación en Firebase exitosa, pero falló la sincronización con Supabase: ${syncError.message}`);
+        error.name = 'SupabaseSyncError';
+        throw error;
+      }
+
       return userCredential.user;
     } catch (error) {
       console.error('Error en inicio de sesión:', error);
@@ -70,19 +84,6 @@ export class AuthService {
       throw error;
     }
   }
-
-  /**
-   * Envía un correo de recuperación de contraseña
-   */
-  static async resetPassword(email: string): Promise<void> {
-    try {
-      await sendPasswordResetEmail(auth, email);
-    } catch (error) {
-      console.error('Error al enviar correo de recuperación:', error);
-      throw error;
-    }
-  }
-
   /**
    * Verifica si hay un usuario autenticado
    */

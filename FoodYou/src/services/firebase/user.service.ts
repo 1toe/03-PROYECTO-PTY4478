@@ -8,8 +8,6 @@ import { db } from '../../config/firebase';
 
 // Tipos de datos para el perfil de usuario
 interface UserPreferences {
-  theme: 'light' | 'dark' | 'system';
-  notifications: boolean;
   diet: string[];
 }
 
@@ -17,7 +15,6 @@ export interface UserProfile {
   uid: string;
   email: string;
   displayName: string;
-  photoURL: string | null;
   createdAt: Date;
   preferences: UserPreferences;
 }

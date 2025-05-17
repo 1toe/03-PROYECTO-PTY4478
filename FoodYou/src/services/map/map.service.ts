@@ -224,7 +224,7 @@ export const initMap = (
   if (!(window as any).google || !(window as any).google.maps) {
     console.error("Google Maps API no está disponible.");
     throw new Error("Google Maps API no está disponible.");
-  } 
+  }
 
   const google = (window as any).google;
   const location = { lat, lng };
