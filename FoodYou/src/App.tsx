@@ -3,7 +3,6 @@ import { Redirect, Route } from 'react-router-dom';
 import { IonApp, IonIcon, IonLabel, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs, setupIonicReact, IonSpinner } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 
-// Importar AuthProvider y el hook useAuth
 import { AuthProvider, useAuth } from './AuthContext';
 
 import LoginPage from './pages/auth/LoginPage';
@@ -60,21 +59,24 @@ const LoadingScreen: React.FC = () => {
 };
 
 const RootRedirect: React.FC = () => {
-  const { currentUser, loading } = useAuth();
+  const { user, loading } = useAuth();
 
   if (loading) {
     return <LoadingScreen />;
   }
 
-  return <Redirect to={currentUser ? "/app/home" : "/login"} />;
+  // Siempre redirigir a login si no hay usuario
+  if (!user) {
+    return <Redirect to="/login" />;
+  }
+
+  return <Redirect to="/app/home" />;
 };
 
 const App: React.FC = () => {
   useEffect(() => {
-    // Configurar manejo de eventos táctiles a nivel global
+
     const handleTouchMove = (e: TouchEvent) => {
-      // Permitir el desplazamiento predeterminado en la mayoría de los casos
-      // Solo intervenir cuando sea necesario
 
       if (e.target &&
         (e.target as HTMLElement).classList &&
@@ -85,8 +87,7 @@ const App: React.FC = () => {
       }
     };
 
-    // Configurar con passive: true para mejorar el rendimiento general,
-    // solo intervenimos en casos específicos
+
     document.addEventListener('touchmove', handleTouchMove, { passive: true });
 
     return () => {

@@ -1,0 +1,12 @@
+CREATE TABLE public.TABLA_PRODUCTOS (
+    id bigint primary key generated always as identity,
+    nombre_producto text,
+    categoria_id bigint REFERENCES public.TABLA_CATEGORIAS(id),
+    precio numeric,
+    stock integer,
+    descripcion text,
+    fecha_creacion timestamp with time zone DEFAULT now(),
+    activo boolean DEFAULT true
+) WITH (OIDS=FALSE);
+ALTER TABLE public.TABLA_PRODUCTOS ENABLE ROW LEVEL SECURITY;
+CREATE INDEX idx_tabla_productos_categoria_id ON public.TABLA_PRODUCTOS(categoria_id);

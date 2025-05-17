@@ -20,8 +20,8 @@ import {
 } from '@ionic/react';
 import { logOut, settings, person, moon, notifications } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
-import { AuthService } from '../../services/firebase/auth.service';
-import { UserService } from '../../services/firebase/user.service';
+import { AuthService } from '../../services/supabase/auth.service';
+import { UserService } from '../../services/supabase/user.service'; // Corregir importación
 import { useAuth } from '../../AuthContext';
 import './ProfilePage.css';
 
@@ -35,21 +35,23 @@ const ProfilePage: React.FC = () => {
 
   useEffect(() => {
     const loadUserProfile = async () => {
-      const currentUser = AuthService.getCurrentUser();
-
-      if (currentUser) {
-        setUserName(currentUser.displayName || 'Usuario');
-        setUserEmail(currentUser.email || '');
-
-        try {
-          const userProfile = await UserService.getUserProfile(currentUser.uid);
+      try {
+        const user = await AuthService.getCurrentUser();
+        if (user) {
+          setUserName(user.user_metadata?.name || 'Usuario');
+          setUserEmail(user.email || '');
+          
+          const userProfile = await UserService.getUserProfile(user.id);
           if (userProfile) {
+            // Actualizar datos adicionales del perfil si es necesario
+            setUserName(userProfile.displayName || userName);
+            setUserEmail(userProfile.email || userEmail);
           }
-        } catch (error) {
-          console.error('Error al cargar perfil:', error);
+        } else {
+          history.replace('/login');
         }
-      } else {
-        history.replace('/login');
+      } catch (error) {
+        console.error('Error al cargar perfil:', error);
       }
     };
 

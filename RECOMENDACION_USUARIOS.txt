@@ -1,0 +1,9 @@
+CREATE TABLE public.RECOMENDACION (
+    id bigint primary key generated always as identity,
+    usuario_id bigint REFERENCES public.PERFILES_USUARIOS(id),
+    producto_id bigint,
+    comentario text,
+    fecha_recomendacion timestamp with time zone DEFAULT now()
+) WITH (OIDS=FALSE);
+ALTER TABLE public.RECOMENDACION ENABLE ROW LEVEL SECURITY;
+CREATE INDEX idx_recomendacion_usuario_id ON public.RECOMENDACION(usuario_id);

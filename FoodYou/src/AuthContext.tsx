@@ -1,76 +1,88 @@
-import React, { createContext, useState, useEffect, useContext, ReactNode } from 'react';
-import { User } from 'firebase/auth';
-import { AuthService } from './services/firebase/auth.service';
-import { IonLoading } from '@ionic/react';
-import { useHistory } from 'react-router-dom';
+import React, { createContext, useState, useContext, useEffect } from 'react';
+import { User } from '@supabase/supabase-js';
+import { AuthService } from './services/supabase/auth.service';
+import { UserService } from './services/supabase/user.service';
 
 interface AuthContextType {
-    currentUser: User | null;
+    user: User | null;
+    login: (email: string, password: string) => Promise<void>;
+    logout: () => Promise<void>;
     loading: boolean;
-    logout: () => Promise<void>; // Método para cerrar sesión
+    updateUserPreferences: (preferences: { theme: 'default' | 'custom' }) => Promise<void>;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 
-export const useAuth = () => {
-    const context = useContext(AuthContext);
-    if (context === undefined) {
-        throw new Error('useAuth must be used within an AuthProvider');
-    }
-    return context;
-};
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+    const [user, setUser] = useState<User | null>(null);
+    const [loading, setLoading] = useState(true);
 
-interface AuthProviderProps {
-    children: ReactNode;
-}
+    useEffect(() => {
+        const initAuth = async () => {
+            try {
+                const session = await AuthService.getCurrentSession();
+                setUser(session?.user ?? null);
+            } catch (error) {
+                console.error('Error al verificar usuario:', error);
+                setUser(null);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-    const [currentUser, setCurrentUser] = useState<User | null>(null);
-    const [loading, setLoading] = useState(true); // Start loading initially
-    const history = useHistory();
+        initAuth();
 
-    const handleLogout = async () => {
+
+        AuthService.onAuthStateChange(setUser);
+    }, []);
+
+    const login = async (email: string, password: string) => {
         try {
-            await AuthService.logout();
+            const loggedInUser = await AuthService.login(email, password);
+            setUser(loggedInUser);
         } catch (error) {
-            console.error('Error al cerrar sesión:', error);
+            console.error('Error en login:', error);
+            throw error;
         }
     };
 
-    useEffect(() => {
-        const unsubscribe = AuthService.onAuthStateChange(user => {
-
-            setCurrentUser(user);
-            setLoading(false); // Estado se actualiza cuando se recibe el usuario
-            
-            // Si no hay usuario y ya se ha completado la carga inicial
-            if (!user && !loading) {
-                const currentPath = window.location.pathname;
-                if (!currentPath.includes('/login') && !currentPath.includes('/register')) {
-                    history.replace('/login');
-                }
-            }
-        });
-
-        // Limpiar el listener al desmontar el componente
-        return unsubscribe;
-    }, [history, loading]);
-
-    const value = {
-        currentUser,
-        loading,
-        logout: handleLogout
+    const logout = async () => {
+        try {
+            await AuthService.logout();
+            setUser(null);
+        } catch (error) {
+            console.error('Error en logout:', error);
+            throw error;
+        }
     };
 
-    // Renderizar el loading spinner mientras se carga el estado de autenticación
-    // o si el usuario no está autenticado
-    if (loading) {
-        return <IonLoading isOpen={true} message="Inicializando sesión..." />;
-    }
+    const updateUserPreferences = async (preferences: { theme: 'default' | 'custom' }) => {
+        if (!user) throw new Error('No hay usuario autenticado');
+        try {
+            await UserService.updateUserPreferences(user.id, preferences);
+        } catch (error) {
+            console.error('Error al actualizar preferencias:', error);
+            throw error;
+        }
+    };
 
     return (
-        <AuthContext.Provider value={value}>
+        <AuthContext.Provider value={{ 
+            user, 
+            login, 
+            logout, 
+            loading, 
+            updateUserPreferences 
+        }}>
             {children}
         </AuthContext.Provider>
     );
+};
+
+export const useAuth = () => {
+    const context = useContext(AuthContext);
+    if (!context) {
+        throw new Error('useAuth debe usarse dentro de un AuthProvider');
+    }
+    return context;
 };

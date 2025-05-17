@@ -14,7 +14,7 @@ import {
 import { arrowBack } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
 import './Auth.css';
-import { AuthService } from '../../services/firebase/auth.service';
+import { AuthService } from '../../services/supabase/auth.service';
 
 const RegisterPage: React.FC = () => {
   const [name, setName] = useState('');
