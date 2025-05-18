@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   IonPage,
   IonContent,
@@ -9,47 +9,76 @@ import {
   IonRow,
   IonCol,
   IonText,
-  IonIcon
+  IonIcon,
+  IonLoading
 } from '@ionic/react';
 import { arrowBack } from 'ionicons/icons';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import './Auth.css';
-import { AuthService } from '../../services/supabase/auth.service';
+import { useAuth } from '../../AuthContext';
+import logoImage from '../../assets/logo.png';
 
 const RegisterPage: React.FC = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const history = useHistory();
+  const location = useLocation();
+  const { loading: authLoading, user, register } = useAuth();
 
-  const handleRegister = async () => {
+  // Verificar si ya está autenticado al cargar la página
+  useEffect(() => {
+    if (!authLoading && user) {
+      const from = location.state && (location.state as any).from;
+      const pathname = from?.pathname || '/app/home';
+      history.replace(pathname);
+    }
+  }, [authLoading, user, history, location.state]);
+
+  const handleRegister = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
     if (!name || !email || !password) {
       setErrorMessage('Por favor completa todos los campos');
       return;
     }
 
-
+    if (password.length < 6) {
+      setErrorMessage('La contraseña debe tener al menos 6 caracteres');
+      return;
+    }
 
     setIsLoading(true);
     setErrorMessage('');
 
     try {
-      await AuthService.register(email, password, name);
-      history.push('/app/home');
-    } catch (error: any) {
-      console.error('Error al registrar usuario:', error);
-
-      const errorMessage = error.message || 'Error desconocido';
-      if (errorMessage.includes('email-already-in-use')) {
-        setErrorMessage('Este correo ya está registrado');
-      } else if (errorMessage.includes('invalid-email')) {
-        setErrorMessage('El correo electrónico no es válido');
+      console.log('Intentando registrar:', { email, name });
+      // Prueba con solo los campos esenciales
+      const result = await register(email, password, name);
+      console.log('Resultado del registro:', result);
+      
+      if (result.user) {
+        console.log("Usuario creado exitosamente");
+        history.push('/app/home');
       } else {
-        setErrorMessage('Error al registrar usuario. Por favor, intenta de nuevo.');
+        setErrorMessage('Registro completado. Es posible que necesites confirmar tu email.');
       }
+    } catch (error: any) {
+      console.error('Error detallado al registrar:', error);
+      
+      // Mensajes esepcíficos para el debug
+      if (error.message?.includes('database') || error.message?.includes('Database')) {
+        setErrorMessage('Error en el servidor. Por favor intenta más tarde o contacta a soporte.');
+      } else if (error.message?.includes('already registered')) {
+        setErrorMessage('Este correo ya está registrado');
+      } else if (error.message?.includes('weak')) {
+        setErrorMessage('Tu contraseña es demasiado débil. Usa al menos 6 caracteres.');
+      } else {
+        setErrorMessage(error.message || 'Error al registrar usuario');
+      }
+    } finally {
       setIsLoading(false);
     }
   };
@@ -57,6 +86,8 @@ const RegisterPage: React.FC = () => {
   return (
     <IonPage>
       <IonContent className="ion-padding">
+        <IonLoading isOpen={authLoading} message="Verificando sesión..." />
+        
         <div className="back-button-container">
           <IonButton fill="clear" onClick={() => history.push('/login')}>
             <IonIcon slot="icon-only" icon={arrowBack} />
@@ -64,49 +95,55 @@ const RegisterPage: React.FC = () => {
         </div>
 
         <div className="register-container">
+          <img src={logoImage} alt="FoodYou" className="logo" />
           <h1>Crear cuenta</h1>
           <p>Completa tus datos para registrarte</p>
 
-          <IonItem>
-            <IonLabel position="stacked">Nombre completo</IonLabel>
-            <IonInput
-              value={name}
-              onIonChange={e => setName(e.detail.value!)}
-            />
-          </IonItem>
+          <form onSubmit={handleRegister}>
+            <IonItem>
+              <IonLabel position="stacked">Nombre completo</IonLabel>
+              <IonInput
+                value={name}
+                onIonChange={e => setName(e.detail.value!)}
+                required
+              />
+            </IonItem>
 
-          <IonItem>
-            <IonLabel position="stacked">Correo electrónico</IonLabel>
-            <IonInput
-              type="email"
-              value={email}
-              onIonChange={e => setEmail(e.detail.value!)}
-            />
-          </IonItem>
+            <IonItem>
+              <IonLabel position="stacked">Correo electrónico</IonLabel>
+              <IonInput
+                type="email"
+                value={email}
+                onIonChange={e => setEmail(e.detail.value!)}
+                required
+              />
+            </IonItem>
 
-          <IonItem>
-            <IonLabel position="stacked">Contraseña</IonLabel>
-            <IonInput
-              type="password"
-              value={password}
-              onIonChange={e => setPassword(e.detail.value!)}
-            />
-          </IonItem>
+            <IonItem>
+              <IonLabel position="stacked">Contraseña</IonLabel>
+              <IonInput
+                type="password"
+                value={password}
+                onIonChange={e => setPassword(e.detail.value!)}
+                required
+              />
+            </IonItem>
 
-          {errorMessage && (
-            <IonText color="danger" className="error-message">
-              {errorMessage}
-            </IonText>
-          )}
+            {errorMessage && (
+              <IonText color="danger" className="error-message">
+                {errorMessage}
+              </IonText>
+            )}
 
-          <IonButton
-            expand="block"
-            onClick={handleRegister}
-            className="register-button"
-            disabled={isLoading}
-          >
-            Registrarse
-          </IonButton>
+            <IonButton
+              expand="block"
+              type="submit"
+              className="register-button"
+              disabled={isLoading}
+            >
+              Registrarse
+            </IonButton>
+          </form>
 
           <IonRow className="ion-justify-content-center">
             <IonCol size="12" className="ion-text-center">

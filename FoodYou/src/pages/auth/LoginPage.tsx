@@ -19,7 +19,7 @@ import {
 } from '@ionic/react';
 import { useHistory, useLocation } from 'react-router-dom';
 import './Auth.css';
-import { AuthService } from '../../services/supabase/auth.service'; // Corregir importación
+import { AuthService } from '../../services/supabase/auth.service';
 import { useAuth } from '../../AuthContext';
 import logoImage from '../../assets/logo.png';
 
@@ -32,16 +32,18 @@ const LoginPage: React.FC = () => {
   const [showAlert, setShowAlert] = useState(false);
   const history = useHistory();
   const location = useLocation();
-  const { loading: authLoading, login } = useAuth();
+  const { loading: authLoading, user, login } = useAuth();
   const [present] = useIonToast();
 
   // Verificar si ya está autenticado al cargar la página
   useEffect(() => {
-    if (!authLoading) {
-      const { from } = location.state as { from?: { pathname: string } } || { from: { pathname: '/app/home' } };
-      history.replace(from?.pathname || '/app/home');
+    // SOLo!!! redirigir si ya existe sesión
+    if (!authLoading && user) {
+      const from = location.state && (location.state as any).from;
+      const pathname = from?.pathname || '/app/home';
+      history.replace(pathname);
     }
-  }, [authLoading, history, location.state]);
+  }, [authLoading, user, history, location.state]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -49,17 +51,31 @@ const LoginPage: React.FC = () => {
     setErrorMessage('');
 
     try {
-      await login(email, password); // Usar el hook useAuth directamente
+      console.log('Intentando login con:', email, password);
+      const result = await login(email, password);
+      console.log('Login exitoso:', result);
+      present({
+        message: 'Inicio de sesión exitoso',
+        duration: 2000,
+        color: 'success'
+      });
       history.replace('/app/home');
     } catch (error: any) {
       console.error('Error al iniciar sesión:', error);
-      setErrorMessage(error.message || 'Error al iniciar sesión');
+      // Mejores mensajes para el debug via consola
+      if (error.message?.includes('Invalid login')) {
+        setErrorMessage('Usuario o contraseña incorrectos');
+      } else if (error.message?.includes('Email not confirmed')) {
+        setErrorMessage('Email no confirmado. Por favor verifica tu bandeja de entrada.');
+      } else {
+        setErrorMessage(error.message || 'Error al iniciar sesión');
+      }
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleResetPassword = async () => {
+  const handleResetPassword = async () => { // Evaluar implementación (ver si es necesario)
     if (!email) {
       setErrorMessage('Ingresa tu correo electrónico para restablecer la contraseña');
       return;
@@ -80,9 +96,6 @@ const LoginPage: React.FC = () => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
-          <IonTitle>Iniciar Sesión</IonTitle>
-        </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
         <IonLoading isOpen={authLoading} message="Verificando sesión..." />

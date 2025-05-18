@@ -16,12 +16,12 @@ import {
   IonIcon,
   IonList,
   IonAlert,
-  IonLoading
+  IonLoading,
+  useIonToast
 } from '@ionic/react';
 import { logOut, settings, person, moon, notifications } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
 import { AuthService } from '../../services/supabase/auth.service';
-import { UserService } from '../../services/supabase/user.service'; // Corregir importación
 import { useAuth } from '../../AuthContext';
 import './ProfilePage.css';
 
@@ -31,7 +31,8 @@ const ProfilePage: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showLogoutAlert, setShowLogoutAlert] = useState<boolean>(false);
   const history = useHistory();
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
+  const [presentToast] = useIonToast();
 
   useEffect(() => {
     const loadUserProfile = async () => {
@@ -40,13 +41,6 @@ const ProfilePage: React.FC = () => {
         if (user) {
           setUserName(user.user_metadata?.name || 'Usuario');
           setUserEmail(user.email || '');
-          
-          const userProfile = await UserService.getUserProfile(user.id);
-          if (userProfile) {
-            // Actualizar datos adicionales del perfil si es necesario
-            setUserName(userProfile.displayName || userName);
-            setUserEmail(userProfile.email || userEmail);
-          }
         } else {
           history.replace('/login');
         }
@@ -62,11 +56,22 @@ const ProfilePage: React.FC = () => {
     try {
       setIsLoading(true);
       await logout();
-      setShowLogoutAlert(false);
+      presentToast({
+        message: 'Has cerrado sesión correctamente',
+        duration: 2000,
+        color: 'success'
+      });
+      history.replace('/login');
     } catch (error) {
       console.error('Error al cerrar sesión:', error);
+      presentToast({
+        message: 'Error al cerrar sesión',
+        duration: 2000,
+        color: 'danger'
+      });
     } finally {
       setIsLoading(false);
+      setShowLogoutAlert(false);
     }
   };
 
@@ -110,17 +115,12 @@ const ProfilePage: React.FC = () => {
               <IonIcon slot="start" icon={notifications} />
               <IonLabel>Notificaciones</IonLabel>
             </IonItem>
-          </IonList>
 
-          <IonButton
-            expand="block"
-            color="danger"
-            className="logout-button"
-            onClick={() => setShowLogoutAlert(true)}
-          >
-            <IonIcon slot="start" icon={logOut} />
-            Cerrar sesión
-          </IonButton>
+            <IonItem button onClick={() => setShowLogoutAlert(true)}>
+              <IonIcon slot="start" icon={logOut} color="danger" />
+              <IonLabel color="danger">Cerrar sesión</IonLabel>
+            </IonItem>
+          </IonList>
         </div>
 
         <IonAlert
