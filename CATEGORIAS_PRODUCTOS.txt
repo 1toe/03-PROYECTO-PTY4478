@@ -1,8 +1,0 @@
-CREATE TABLE public.TABLA_CATEGORIAS (
-    id bigint primary key generated always as identity,
-    nombre_categoria text,
-    descripcion text,
-    fecha_creacion timestamp with time zone DEFAULT now(),
-    activo boolean DEFAULT true
-) WITH (OIDS=FALSE);
-ALTER TABLE public.TABLA_CATEGORIAS ENABLE ROW LEVEL SECURITY;
