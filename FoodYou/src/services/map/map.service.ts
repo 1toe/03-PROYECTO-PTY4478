@@ -135,8 +135,11 @@ export const mostrarRuta = (
   }
 
   // Creamos un nuevo renderer y lo guardamos
-  currentDirectionsRenderer = new google.maps.DirectionsRenderer();
-  currentDirectionsRenderer.setMap(map);
+  currentDirectionsRenderer = new google.maps.DirectionsRenderer({
+  suppressMarkers: true
+});
+currentDirectionsRenderer.setMap(map);
+
 
   directionsService.route(
     {
@@ -269,13 +272,14 @@ export const initMap = (
 
       lugaresFiltrados.forEach((lugar) => {
         const marker = new google.maps.Marker({
-          map,
-          position: lugar.geometry.location,
-          title: lugar.name,
-          icon: {
-            url: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png'
-          }
-        });
+  position: lugar.geometry.location,
+  title: lugar.name,
+  icon: {
+    url: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png'
+  }
+  // NO asignamos el mapa aquí (quedará invisible)
+});
+
         marcadoresSupermercados.push(marker);
       });
 
