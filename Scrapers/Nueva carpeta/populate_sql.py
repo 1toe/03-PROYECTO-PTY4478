@@ -3,10 +3,85 @@ import os
 import re
 
 # --- Configuration ---
-# Define the input and output filenames
-INPUT_FILENAME = "json_combinado_20250520_215411.json" # INPUT DEL JSON 
-OUTPUT_FILENAME = "populate_unimarc_products.sql"
+# Get the directory where the script is located
+# __file__ is the path to the current script.
+# os.path.abspath(__file__) gets its absolute path.
+# os.path.dirname(...) gets the directory part of that path.
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# Define the names of the directories relative to the script's location
+# Based on your tree, these directories are in the same folder as populate_sql.py
+INPUT_DIRECTORY_NAME = "Resultados JSON Unificados"
+OUTPUT_BASE_DIRECTORY_NAME = "Outputs Poblacion SQLs"
+
+# Construct absolute paths by joining the script's directory with the relative names
+INPUT_DIRECTORY = os.path.join(SCRIPT_DIR, INPUT_DIRECTORY_NAME)
+OUTPUT_BASE_DIR = os.path.join(SCRIPT_DIR, OUTPUT_BASE_DIRECTORY_NAME)
+
 SCHEMA_NAME = "public" # Define the schema name for Supabase
+
+
+# --- Dynamic Input File Selection ---
+def select_input_file():
+    """Lists JSON files in INPUT_DIRECTORY and prompts user for selection."""
+    # INPUT_DIRECTORY is now an absolute path, so os.path.isdir will check the correct location
+    if not os.path.isdir(INPUT_DIRECTORY):
+        print(f"Error: Input directory not found: {INPUT_DIRECTORY}") # Will now print the absolute path
+        print(f"Please ensure the directory '{INPUT_DIRECTORY_NAME}' exists in the same folder as the script.")
+        exit(1)
+
+    json_files = [f for f in os.listdir(INPUT_DIRECTORY) if f.endswith('.json') and os.path.isfile(os.path.join(INPUT_DIRECTORY, f))]
+
+    if not json_files:
+        print(f"No JSON files found in directory: {INPUT_DIRECTORY}")
+        exit(1)
+
+    print("\nAvailable JSON files for processing:")
+    for i, filename in enumerate(json_files):
+        print(f"  {i + 1}. {filename}")
+
+    selected_index = -1
+    while True:
+        try:
+            choice = input(f"Enter the number of the JSON file to process (1-{len(json_files)}): ")
+            selected_index = int(choice) - 1
+            if 0 <= selected_index < len(json_files):
+                break
+            else:
+                print(f"Invalid choice. Please enter a number between 1 and {len(json_files)}.")
+        except ValueError:
+            print("Invalid input. Please enter a number.")
+
+    selected_filename = json_files[selected_index]
+    input_filepath = os.path.join(INPUT_DIRECTORY, selected_filename) # This will also be an absolute path
+    print(f"\nSelected file for processing: {input_filepath}")
+    return input_filepath, selected_filename
+
+# Determine INPUT_FILENAME and OUTPUT_FILENAME dynamically
+INPUT_FILENAME, SELECTED_JSON_FILENAME = select_input_file()
+
+# Create a more specific output filename based on the input
+# e.g., if input is "json_combinado_xxx.json", output will be "populate_unimarc_products_from_json_combinado_xxx.sql"
+base_input_name = os.path.splitext(SELECTED_JSON_FILENAME)[0]
+# OUTPUT_BASE_DIR is already an absolute path
+OUTPUT_FILENAME = os.path.join(OUTPUT_BASE_DIR, f"populate_unimarc_products_from_{base_input_name}.sql")
+
+if not os.path.exists(OUTPUT_BASE_DIR):
+    try:
+        os.makedirs(OUTPUT_BASE_DIR)
+        print(f"Created output directory: {OUTPUT_BASE_DIR}")
+    except OSError as e:
+        print(f"Error creating output directory {OUTPUT_BASE_DIR}: {e}")
+        exit(1)
+
+
+# --- Helper Functions ---
+# ... (rest of your script remains the same) ...
+
+if not os.path.exists(OUTPUT_BASE_DIR):
+    os.makedirs(OUTPUT_BASE_DIR)
+    print(f"Created output directory: {OUTPUT_BASE_DIR}")
+
 
 # --- Helper Functions ---
 
@@ -152,7 +227,7 @@ product_raw_data_list = []
 
 
 # --- Main Processing (Collection Pass) ---
-print(f"Starting data collection from {INPUT_FILENAME}...")
+print(f"\nStarting data collection from {INPUT_FILENAME}...")
 try:
     with open(INPUT_FILENAME, 'r', encoding='utf-8') as f:
         # Load the root JSON object
@@ -169,7 +244,7 @@ try:
     processed_count = 0
 
     # --- Debugging Start ---
-    print("\n--- Debugging Product Processing Loop ---")
+    # print("\n--- Debugging Product Processing Loop ---") # Kept for potential future use
     # Iterate through the VALUES of the 'datos' dictionary
     for filename_key, full_response in product_data_dict.items():
         # print(f"\nAttempting to process entry with key: {filename_key}")
@@ -204,11 +279,13 @@ try:
              # print(f"  Skipping entry '{filename_key}': Missing 'ean' within item data.")
              continue # Skip if EAN is missing
 
-        # Basic validation for EAN format
-        if not re.fullmatch(r'\d{13}', ean):
-             print(f"Warning: Skipping entry '{filename_key}' with invalid EAN format: {ean}")
-             continue # Skip if EAN format is invalid
-
+        # No hay que validar el EAN, ya que el JSON de Unimarc no tiene un formato específico para el EAN.
+        # print(f"  Found EAN: {ean}")
+        # Check if EAN is a valid string (not None or empty)
+        if not isinstance(ean, str) or not ean.strip():
+            # print(f"  Skipping entry '{filename_key}': Invalid EAN format.")
+            continue
+        
         # print(f"  Successfully identified Product EAN: {ean}")
 
         processed_count += 1
@@ -226,7 +303,8 @@ try:
              query_state = safe_get(query, ['state'])
 
              # Check if it's potentially the EAN query
-             if isinstance(query_key, list) and safe_get(query_key, [0]) == 'getProductDetailByEan' and safe_get(query_key, [1]) == ean:
+             # Ensure ean is string for comparison with query_key[1]
+             if isinstance(query_key, list) and safe_get(query_key, [0]) == 'getProductDetailByEan' and safe_get(query_key, [1]) == str(ean):
                   if safe_get(query_state, ['status']) == 'success':
                        ean_detail_data_payload = safe_get(query_state, ['data', 'data'])
                        if ean_detail_data_payload:
@@ -271,16 +349,15 @@ try:
         if ean_detail_data:
             # --- Ingredients, Allergens, Traces (collect names and json_ingredient_id) ---
             ingredients_sets = safe_get(ean_detail_data, ['ingredients_sets'], [])
-            allergens_list = safe_get(ean_detail_data, ['allergens'], []) # Renamed to avoid potential conflict
-            traces_list = safe_get(ean_detail_data, ['traces'], []) # Renamed to avoid potential conflict
+            allergens_list_data = safe_get(ean_detail_data, ['allergens'], []) # Renamed to avoid conflict
+            traces_list_data = safe_get(ean_detail_data, ['traces'], []) # Renamed to avoid conflict
 
             all_ing_like_items = []
             for ing_set in ingredients_sets:
                  all_ing_like_items.extend(safe_get(ing_set, ['ingredients'], []))
 
-            # Use the explicitly named variables
-            all_ing_like_items.extend(allergens_list)
-            all_ing_like_items.extend(traces_list)
+            all_ing_like_items.extend(allergens_list_data)
+            all_ing_like_items.extend(traces_list_data)
 
             for ing in all_ing_like_items:
                  ing_id = safe_get(ing, ['ingredient_id'])
@@ -337,14 +414,14 @@ try:
 
         # Store the raw data for this specific product for later SQL generation
         product_raw_data_list.append({
-             'ean': ean,
+             'ean': str(ean), # Ensure EAN is stored as string
              'item': item_data,
              'price': safe_get(product_item_data, ['price']), # Get the price object
              'promotion': safe_get(product_item_data, ['promotion']), # Get the promotion object
              'ean_data': ean_detail_data # This is the inner 'response' object if found, else None
         })
 
-    print("\n--- Debugging Product Processing Loop End ---")
+    # print("\n--- Debugging Product Processing Loop End ---") # Kept for potential future use
     print(f"\nFinished data collection. Successfully processed {processed_count} valid product entries.")
 
 
@@ -356,7 +433,6 @@ except json.JSONDecodeError:
     exit(1)
 except Exception as e:
     print(f"An unexpected error occurred during data collection: {e}")
-    # Optional: print traceback for debugging
     import traceback
     traceback.print_exc()
     exit(1)
@@ -366,7 +442,7 @@ except Exception as e:
 sql_statements = []
 
 sql_statements.append("-- SQL script to populate Unimarc product data")
-sql_statements.append("-- Generated by populate_sql.py")
+sql_statements.append(f"-- Generated by populate_sql.py from {SELECTED_JSON_FILENAME}")
 sql_statements.append(f"-- Target Schema: {SCHEMA_NAME}")
 sql_statements.append("-- Note: This script generates PostgreSQL syntax for ON CONFLICT (upsert).")
 sql_statements.append("-- If using MySQL, you would need to replace INSERT ... ON CONFLICT DO ... with INSERT IGNORE INTO ... or REPLACE INTO ...")
@@ -513,7 +589,7 @@ sql_statements.append("-- Inserts for list/link tables (images, ingredients, etc
 print(f"\nGenerating SQL for {len(product_raw_data_list)} products...")
 for i, product_data in enumerate(product_raw_data_list):
     # Note: product_data_list contains the already extracted dictionaries
-    ean = product_data['ean']
+    ean = product_data['ean'] # Already ensured to be string
     item_data = product_data['item']
     price_data = product_data['price']
     promotion_data = product_data['promotion']
@@ -696,9 +772,9 @@ for i, product_data in enumerate(product_raw_data_list):
 
 
         # Product Allergens (DELETE + INSERT)
-        allergens_list = safe_get(ean_detail_data, ['allergens'], []) # Use _list suffix
+        allergens_list_data = safe_get(ean_detail_data, ['allergens'], []) # Use _list_data suffix from collection
         sql_statements.append(f"DELETE FROM {SCHEMA_NAME}.product_allergens_unimarc WHERE product_ean = '{ean}';")
-        for ing in allergens_list: # Use _list suffix
+        for ing in allergens_list_data: 
              ing_name = safe_get(ing, ['ingredient_name'])
              if ing_name and ing_name.strip(): # Only insert if name is non-empty
                 cleaned_ing_name = ing_name.strip()
@@ -709,9 +785,9 @@ for i, product_data in enumerate(product_raw_data_list):
                 );""")
 
         # Product Traces (DELETE + INSERT)
-        traces_list = safe_get(ean_detail_data, ['traces'], []) # Use _list suffix
+        traces_list_data = safe_get(ean_detail_data, ['traces'], []) # Use _list_data suffix from collection
         sql_statements.append(f"DELETE FROM {SCHEMA_NAME}.product_traces_unimarc WHERE product_ean = '{ean}';")
-        for ing in traces_list: # Use _list suffix
+        for ing in traces_list_data: 
              ing_name = safe_get(ing, ['ingredient_name'])
              if ing_name and ing_name.strip(): # Only insert if name is non-empty
                  cleaned_ing_name = ing_name.strip()
@@ -807,17 +883,19 @@ for i, product_data in enumerate(product_raw_data_list):
 
 
                 # Check if required lookup entries were successfully collected.
-                # This ensures FKs will likely succeed *if* the lookup tables were fully pre-populated
-                # or populated by this script's first pass with comprehensive data.
-                # Checking against the collected sets is the best we can do here.
-                # Note: We check `certifier_id` lookup below directly in the SQL.
-                # For Type, Degree, Country, we check against the collected sets.
-                type_code_exists_in_lookup = (type_code.strip() if type_code else None, safe_get(cert, ['certification_type_name'])) in unique_cert_types
-                degree_id_exists_in_lookup = (degree_id, safe_get(certifier_instance, ['certification_degree_name'])) in unique_cert_degrees
-                country_id_exists_in_lookup = (country_id, safe_get(certifier_instance, ['certification_country_name'])) in unique_countries
+                type_code_stripped = type_code.strip() if type_code else None
+                cert_type_name_from_data = safe_get(cert, ['certification_type_name'])
+                degree_name_from_data = safe_get(certifier_instance, ['certification_degree_name'])
+                country_name_from_data = safe_get(certifier_instance, ['certification_country_name'])
+
+                # Check against unique sets using stripped names for consistency
+                type_code_exists_in_lookup = any(uc_code == type_code_stripped for uc_code, _ in unique_cert_types) if type_code_stripped else False
+                degree_id_exists_in_lookup = any(ud_id == degree_id for ud_id, _ in unique_cert_degrees) if degree_id is not None else False
+                country_id_exists_in_lookup = any(ucn_id == country_id for ucn_id, _ in unique_countries) if country_id is not None else False
 
 
                 if not (type_code_exists_in_lookup and degree_id_exists_in_lookup and country_id_exists_in_lookup):
+                     # print(f"Debug: Skipping certification for EAN {ean} due to missing lookup. Type: {type_code_stripped} ({type_code_exists_in_lookup}), Degree: {degree_id} ({degree_id_exists_in_lookup}), Country: {country_id} ({country_id_exists_in_lookup})")
                      continue # Skip if any required lookup entry seems missing based on our collection
 
 
@@ -840,10 +918,10 @@ for i, product_data in enumerate(product_raw_data_list):
                 );""")
 
 
-print("Finished generating SQL statements.")
+print("\nFinished generating SQL statements.")
 
 # --- Write SQL to File ---
-print(f"Writing SQL statements to {OUTPUT_FILENAME}...")
+print(f"\nWriting SQL statements to {OUTPUT_FILENAME}...")
 try:
     with open(OUTPUT_FILENAME, 'w', encoding='utf-8') as f:
         # f.write("BEGIN;\n") # Uncomment if you prefer manual transaction control (already added 'BEGIN;' earlier)

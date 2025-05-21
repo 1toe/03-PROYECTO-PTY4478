@@ -6,6 +6,17 @@ OUTPUT_FILENAME = "create_unimarc_tables.sql"
 
 # --- SQL Schema ---
 # Store the full SQL schema as a multi-line string
+# Este código Python genera un archivo SQL que define la estructura de una base de datos
+# para almacenar información de productos, incluyendo marcas, categorías, precios, promociones,
+# imágenes, ingredientes, información nutricional y certificaciones.
+# El esquema incluye tablas para productos, marcas, categorías, precios, promociones,
+# imágenes, ingredientes, información nutricional y certificaciones.
+
+# El esquema también incluye relaciones entre las tablas, como claves foráneas y
+# restricciones de integridad referencial. Las tablas están diseñadas para manejar
+# información compleja y permitir consultas eficientes sobre los productos y sus atributos.
+
+# NO incluye datos de ejemplo, solo la estructura de las tablas.
 sql_schema = """
 -- Drop tables in dependency order to avoid foreign key issues if rerunning
 DROP TABLE IF EXISTS product_certifications_unimarc CASCADE;
