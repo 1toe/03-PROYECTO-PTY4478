@@ -5,9 +5,6 @@ import {
   IonHeader,
   IonToolbar,
   IonTitle,
-  IonSegment,
-  IonSegmentButton,
-  IonLabel,
   IonSearchbar,
   IonGrid,
   IonRow,
@@ -25,63 +22,56 @@ import {
   IonInfiniteScroll,
   IonInfiniteScrollContent,
   IonBadge,
-  IonChip
+  IonChip,
+  IonBackButton,
+  IonButtons
 } from '@ionic/react';
-import { add, cart, storefront, pricetag } from 'ionicons/icons';
-import { CategoryService, Categoria } from '../../services/supabase/category.service';
-import { ProductService, Producto } from '../../services/supabase/product.service';
-import './ListsPage.css';
+import { useParams } from 'react-router-dom';
+import { cart, pricetag, arrowBack } from 'ionicons/icons';
+import { CategoryService } from '../../services/supabase/category.service';
+import { Producto } from '../../services/supabase/product.service';
+import './CategoryPage.css';
 
-const ListsPage: React.FC = () => {
-  const [segment, setSegment] = useState<'lists' | 'categories'>('categories');
-  const [categories, setCategories] = useState<Categoria[]>([]);
+interface CategoryPageParams {
+  categoryId: string;
+}
+
+const CategoryPage: React.FC = () => {
+  const { categoryId } = useParams<CategoryPageParams>();
   const [products, setProducts] = useState<Producto[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [categoryName, setCategoryName] = useState<string>('');
   const [searchText, setSearchText] = useState('');
-  const [loading, setLoading] = useState(true);
   const [loadingProducts, setLoadingProducts] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const [totalProducts, setTotalProducts] = useState(0);
   const [hasMoreData, setHasMoreData] = useState(true);
   const pageSize = 20;
-  // Cargar categorías al inicio
-  useEffect(() => {
-    loadCategories();
-  }, []);
 
-  // Cargar productos cuando se selecciona una categoría
   useEffect(() => {
-    if (selectedCategory) {
-      resetProductsAndLoad(selectedCategory);
+    if (categoryId) {
+      loadCategoryInfo();
+      resetProductsAndLoad();
     }
-  }, [selectedCategory]);
+  }, [categoryId]);
 
-  const loadCategories = async () => {
+  const loadCategoryInfo = async () => {
     try {
-      setLoading(true);
-      const categorias = await CategoryService.getAllCategories();
-      setCategories(categorias);
-      
-      // Si hay categorías, seleccionar la primera por defecto
-      if (categorias.length > 0 && !selectedCategory) {
-        setSelectedCategory(categorias[0].category_vtex_id);
-      }
-      
-      setLoading(false);
+      const categories = await CategoryService.getAllCategories();
+      const category = categories.find(cat => cat.category_vtex_id === categoryId);
+      setCategoryName(category?.name || 'Categoría');
     } catch (error) {
-      console.error('Error al cargar categorías:', error);
-      setLoading(false);
+      console.error('Error al cargar información de categoría:', error);
     }
   };
 
-  const resetProductsAndLoad = async (categoryId: string) => {
+  const resetProductsAndLoad = async () => {
     setProducts([]);
     setCurrentPage(0);
     setHasMoreData(true);
-    await loadProductsByCategory(categoryId, 0);
+    await loadProductsByCategory(0);
   };
 
-  const loadProductsByCategory = async (categoryId: string, page: number = 0) => {
+  const loadProductsByCategory = async (page: number = 0) => {
     try {
       if (page === 0) setLoadingProducts(true);
       
@@ -115,7 +105,6 @@ const ListsPage: React.FC = () => {
         const result = await CategoryService.searchProducts(query, 0, pageSize);
         setProducts(result.products);
         setTotalProducts(result.total);
-        setSelectedCategory(null);
         setCurrentPage(0);
         setHasMoreData(result.products.length === pageSize);
         setLoadingProducts(false);
@@ -123,8 +112,8 @@ const ListsPage: React.FC = () => {
         console.error('Error en la búsqueda:', error);
         setLoadingProducts(false);
       }
-    } else if (query.length === 0 && selectedCategory) {
-      resetProductsAndLoad(selectedCategory);
+    } else if (query.length === 0) {
+      resetProductsAndLoad();
     }
   };
 
@@ -140,9 +129,10 @@ const ListsPage: React.FC = () => {
       if (searchText.length > 2) {
         const result = await CategoryService.searchProducts(searchText, nextPage, pageSize);
         setProducts(prev => [...prev, ...result.products]);
+        setCurrentPage(nextPage);
         setHasMoreData(result.products.length === pageSize && (nextPage + 1) * pageSize < result.total);
-      } else if (selectedCategory) {
-        await loadProductsByCategory(selectedCategory, nextPage);
+      } else {
+        await loadProductsByCategory(nextPage);
       }
     } catch (error) {
       console.error('Error al cargar más productos:', error);
@@ -150,58 +140,16 @@ const ListsPage: React.FC = () => {
 
     event.target.complete();
   };
+
   const handleRefresh = async (event: any) => {
-    await loadCategories();
-    if (selectedCategory) {
-      await resetProductsAndLoad(selectedCategory);
+    if (searchText.length > 2) {
+      await handleSearch({ detail: { value: searchText } } as CustomEvent);
+    } else {
+      await resetProductsAndLoad();
     }
     event.detail.complete();
   };
-  const renderCategories = () => {
-    if (loading && categories.length === 0) {
-      return (
-        <div className="loading-container">
-          <IonSpinner />
-          <p>Cargando categorías...</p>
-        </div>
-      );
-    }
 
-    if (categories.length === 0) {
-      return (
-        <div className="no-lists-found">
-          <IonIcon icon={storefront} className="empty-icon" />
-          <h2>No se encontraron categorías</h2>
-          <p>No hay categorías disponibles en este momento.</p>
-        </div>
-      );
-    }
-
-    return (
-      <IonGrid>
-        <IonRow>
-          {categories.map((category) => (
-            <IonCol size="6" sizeMd="4" key={category.category_vtex_id}>
-              <IonCard 
-                className={selectedCategory === category.category_vtex_id ? 'selected-category' : ''}
-                onClick={() => setSelectedCategory(category.category_vtex_id)}
-                button
-              >
-                <IonCardHeader>
-                  <IonCardTitle>{category.name}</IonCardTitle>
-                </IonCardHeader>
-                {category.category_okto_name && (
-                  <IonCardContent>
-                    <p className="category-description">{category.category_okto_name}</p>
-                  </IonCardContent>
-                )}
-              </IonCard>
-            </IonCol>
-          ))}
-        </IonRow>
-      </IonGrid>
-    );
-  };
   const renderProducts = () => {
     if (loadingProducts && products.length === 0) {
       return (
@@ -216,7 +164,7 @@ const ListsPage: React.FC = () => {
       return (
         <div className="no-products">
           <h3>No hay productos en esta categoría</h3> 
-          <p>Intenta seleccionar otra categoría o buscar un producto diferente.</p>
+          <p>Intenta buscar un producto diferente.</p>
         </div>
       );
     }
@@ -287,7 +235,10 @@ const ListsPage: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar color="primary">
-          <IonTitle>Listas y Categorías</IonTitle>
+          <IonButtons slot="start">
+            <IonBackButton defaultHref="/app/lists" />
+          </IonButtons>
+          <IonTitle>{categoryName}</IonTitle>
         </IonToolbar>
       </IonHeader>
       
@@ -295,59 +246,22 @@ const ListsPage: React.FC = () => {
         <IonRefresher slot="fixed" onIonRefresh={handleRefresh}>
           <IonRefresherContent />
         </IonRefresher>
-
-        <div className="segment-container">
-          <IonSegment value={segment} onIonChange={e => setSegment(e.detail.value as 'lists' | 'categories')}>
-            <IonSegmentButton value="lists">
-              <IonLabel>MIS LISTAS</IonLabel>
-            </IonSegmentButton>
-            <IonSegmentButton value="categories">
-              <IonLabel>CATEGORÍAS</IonLabel>
-            </IonSegmentButton>
-          </IonSegment>
-        </div>
         
         <div className="search-bar">
           <IonSearchbar 
-            placeholder="Buscar productos"
+            placeholder="Buscar productos en esta categoría"
             value={searchText}
             onIonChange={handleSearch}
             debounce={500}
           />
         </div>
 
-        {segment === 'categories' && (
-          <>
-            <div className="categories-container">
-              {renderCategories()}
-            </div>
-              {selectedCategory && (
-              <>
-                <h3 className="category-title">
-                  Productos en {categories.find(cat => cat.category_vtex_id === selectedCategory)?.name || 'Categoría'}
-                </h3>
-                <div className="products-container">
-                  {renderProducts()}
-                </div>
-              </>
-            )}
-          </>
-        )}
-        
-        {segment === 'lists' && (
-          <div className="no-lists-found">
-            <IonIcon name="list-outline" className="empty-icon" />
-            <h2>No se encontraron listas</h2>
-            <p>Crea una nueva lista para empezar a añadir productos.</p>
-            <IonButton expand="block">
-              <IonIcon slot="start" icon={add} />
-              Crear lista
-            </IonButton>
-          </div>
-        )}
+        <div className="products-container">
+          {renderProducts()}
+        </div>
       </IonContent>
     </IonPage>
   );
 };
 
-export default ListsPage;
+export default CategoryPage;
