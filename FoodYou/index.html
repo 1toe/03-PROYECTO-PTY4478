@@ -6,6 +6,7 @@
     
     <base href="/" />
     
+    <!-- Cambiar para permitir tanto light como dark mode, pero con preferencia por modo md -->
     <meta name="color-scheme" content="light dark" />
     <meta
       name="viewport"
@@ -13,6 +14,11 @@
     />
     <meta name="format-detection" content="telephone=no" />
     <meta name="msapplication-tap-highlight" content="no" />
+    
+    <!-- Forzar el modo Material Design -->
+    <script>
+      document.documentElement.setAttribute('mode', 'md');
+    </script>
     
     <link rel="manifest" href="/manifest.json" />
     
