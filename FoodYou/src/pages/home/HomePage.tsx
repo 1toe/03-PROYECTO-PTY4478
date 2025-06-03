@@ -15,7 +15,7 @@ import {
   IonRefresher, 
   IonRefresherContent
 } from '@ionic/react';
-import { listOutline, cartOutline } from 'ionicons/icons';
+import { listOutline, cartOutline, sparkles } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
 import './HomePage.css';
 
@@ -75,8 +75,7 @@ const HomePage: React.FC = () => {
           <h1>¡Bienvenido a FoodYou!</h1>
           <p>Tu asistente de compras inteligente</p>
         </div>
-        
-        <IonGrid>
+          <IonGrid>
           <IonRow>
             <IonCol size="6">
               <IonButton 
@@ -96,6 +95,18 @@ const HomePage: React.FC = () => {
               >
                 <IonIcon slot="start" icon={cartOutline} />
                 Sugerencias
+              </IonButton>
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol size="12">
+              <IonButton 
+                expand="block" 
+                color="primary"
+                onClick={() => history.push('/app/chat')}
+              >
+                <IonIcon slot="start" icon={sparkles} />
+                Chat con IA - Asistente de Compras
               </IonButton>
             </IonCol>
           </IonRow>

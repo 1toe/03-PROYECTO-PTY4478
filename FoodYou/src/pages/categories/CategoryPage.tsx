@@ -74,19 +74,19 @@ const CategoryPage: React.FC = () => {
   const loadProductsByCategory = async (page: number = 0) => {
     try {
       if (page === 0) setLoadingProducts(true);
-      
+
       const result = await CategoryService.getProductsByCategory(categoryId, page, pageSize);
-      
+
       if (page === 0) {
         setProducts(result.products);
       } else {
         setProducts(prev => [...prev, ...result.products]);
       }
-      
+
       setTotalProducts(result.total);
       setCurrentPage(page);
       setHasMoreData(result.products.length === pageSize && (page + 1) * pageSize < result.total);
-      
+
       if (page === 0) setLoadingProducts(false);
     } catch (error) {
       console.error('Error al cargar productos:', error);
@@ -97,7 +97,7 @@ const CategoryPage: React.FC = () => {
   const handleSearch = async (e: CustomEvent) => {
     const query = e.detail.value?.toLowerCase() || '';
     setSearchText(query);
-    
+
     if (query.length > 2) {
       try {
         setLoadingProducts(true);
@@ -124,7 +124,7 @@ const CategoryPage: React.FC = () => {
     }
 
     const nextPage = currentPage + 1;
-    
+
     try {
       if (searchText.length > 2) {
         const result = await CategoryService.searchProducts(searchText, nextPage, pageSize);
@@ -163,7 +163,7 @@ const CategoryPage: React.FC = () => {
     if (products.length === 0) {
       return (
         <div className="no-products">
-          <h3>No hay productos en esta categoría</h3> 
+          <h3>No hay productos en esta categoría</h3>
           <p>Intenta buscar un producto diferente.</p>
         </div>
       );
@@ -220,7 +220,7 @@ const CategoryPage: React.FC = () => {
             ))}
           </IonRow>
         </IonGrid>
-        
+
         <IonInfiniteScroll onIonInfinite={loadMore} threshold="100px" disabled={!hasMoreData}>
           <IonInfiniteScrollContent
             loadingSpinner="bubbles"
@@ -241,14 +241,14 @@ const CategoryPage: React.FC = () => {
           <IonTitle>{categoryName}</IonTitle>
         </IonToolbar>
       </IonHeader>
-      
+
       <IonContent>
         <IonRefresher slot="fixed" onIonRefresh={handleRefresh}>
           <IonRefresherContent />
         </IonRefresher>
-        
+
         <div className="search-bar">
-          <IonSearchbar 
+          <IonSearchbar
             placeholder="Buscar productos en esta categoría"
             value={searchText}
             onIonChange={handleSearch}

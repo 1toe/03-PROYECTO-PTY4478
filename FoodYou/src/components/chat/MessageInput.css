@@ -1,0 +1,52 @@
+.message-input-form {
+  padding: 8px;
+  background-color: var(--ion-color-light);
+  border-top: 1px solid var(--ion-color-medium);
+}
+
+.message-input-item {
+  --background: transparent;
+  --border-color: var(--ion-color-medium);
+  --border-radius: 20px;
+  --padding-start: 16px;
+  --padding-end: 8px;
+  --min-height: 44px;
+  background-color: var(--ion-item-background);
+  border-radius: 20px;
+  margin: 0;
+}
+
+.message-textarea {
+  --padding-top: 12px;
+  --padding-bottom: 12px;
+  --padding-start: 0;
+  --padding-end: 8px;
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+.send-button {
+  --color: var(--ion-color-primary);
+  --padding-start: 8px;
+  --padding-end: 8px;
+  margin: 0;
+  min-width: 44px;
+  height: 44px;
+  border-radius: 50%;
+}
+
+.send-button[disabled] {
+  --color: var(--ion-color-medium);
+}
+
+/* Dark theme support */
+.ios.dark .message-input-form,
+.md.dark .message-input-form {
+  background-color: var(--ion-color-dark);
+  border-top-color: var(--ion-color-medium);
+}
+
+.ios.dark .message-input-item,
+.md.dark .message-input-item {
+  background-color: var(--ion-color-step-100);
+}

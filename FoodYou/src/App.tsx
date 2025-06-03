@@ -10,12 +10,13 @@ import RegisterPage from './pages/auth/RegisterPage';
 import HomePage from './pages/home/HomePage';
 import ProfilePage from './pages/profile/ProfilePage';
 import MapPage from './pages/map/MapPage';
+import ChatPage from './pages/chat/ChatPage';
 import ListsPage from './pages/lists/ListsPage';
 import ListDetailsPage from './pages/lists/ListDetailsPage';
 import RecommendationsPage from './pages/recommendations/RecommendationsPage';
 import PrivateRoute from './components/PrivateRoute';
 
-import { home, map, person, list, newspaper } from 'ionicons/icons';
+import { home, map, person, list, newspaper, chatbubbles } from 'ionicons/icons';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -120,31 +121,34 @@ const App: React.FC = () => {
 
             {/* Rutas de la aplicación protegidas con sistema de tabs */}
             <Route path="/app">
-              <IonTabs>
-                <IonRouterOutlet>
-                  <PrivateRoute exact path="/app/home" component={HomePage} />
-                  <PrivateRoute exact path="/app/map" component={MapPage} />
-                  <PrivateRoute exact path="/app/profile" component={ProfilePage} />
-                  <PrivateRoute exact path="/app/lists" component={ListsPage} />
-                  <PrivateRoute exact path="/app/lists/create" component={ListDetailsPage} />
-                  <PrivateRoute exact path="/app/lists/edit/:id" component={ListDetailsPage} />
-                  <PrivateRoute exact path="/app/lists/:id" component={ListDetailsPage} />
-                  <PrivateRoute exact path="/app/recommendations" component={RecommendationsPage} />
+              <IonTabs>                <IonRouterOutlet>
+                <PrivateRoute exact path="/app/home" component={HomePage} />
+                <PrivateRoute exact path="/app/map" component={MapPage} />
+                <PrivateRoute exact path="/app/chat" component={ChatPage} />
+                <PrivateRoute exact path="/app/profile" component={ProfilePage} />
+                <PrivateRoute exact path="/app/lists" component={ListsPage} />
+                <PrivateRoute exact path="/app/lists/create" component={ListDetailsPage} />
+                <PrivateRoute exact path="/app/lists/edit/:id" component={ListDetailsPage} />
+                <PrivateRoute exact path="/app/lists/:id" component={ListDetailsPage} />
+                <PrivateRoute exact path="/app/recommendations" component={RecommendationsPage} />
 
-                  <Route>
-                    <Redirect to="/app/home" />
-                  </Route>
-                </IonRouterOutlet>
+                <Route>
+                  <Redirect to="/app/home" />
+                </Route>
+              </IonRouterOutlet>
 
                 <IonTabBar slot="bottom">
                   <IonTabButton tab="home" href="/app/home">
                     <IonIcon icon={home} />
                     <IonLabel>Inicio</IonLabel>
-                  </IonTabButton>
-
-                  <IonTabButton tab="lists" href="/app/lists">
+                  </IonTabButton>                  <IonTabButton tab="lists" href="/app/lists">
                     <IonIcon icon={list} />
                     <IonLabel>Listas</IonLabel>
+                  </IonTabButton>
+
+                  <IonTabButton tab="chat" href="/app/chat">
+                    <IonIcon icon={chatbubbles} />
+                    <IonLabel>Chat IA</IonLabel>
                   </IonTabButton>
 
                   <IonTabButton tab="map" href="/app/map">

@@ -1,0 +1,16 @@
+/* Chat page specific styles */
+.chat-page {
+  height: 100vh;
+}
+
+.chat-page ion-content {
+  --background: var(--ion-background-color);
+}
+
+.chat-page .chat-content {
+  height: 100%;
+}
+
+.chat-page .ion-page {
+  contain: none;
+}
