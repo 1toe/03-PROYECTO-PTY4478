@@ -203,12 +203,10 @@ const CategoryPage: React.FC = () => {
                       <p className="product-brand">{product.marca}</p>
                     )}
                   </IonCardHeader>
-                  <IonCardContent>
-
-                    <div className="product-details">
+                  <IonCardContent>                    <div className="product-details">
                       <div className="product-price">
                         <IonIcon icon={pricetag} />
-                        {product.precio ? (product.precio) : '$0'}
+                        {product.precio ? formatPrice(product.precio) : '$0'}
                       </div>
                       {product.peso_gramos && (
                         <IonChip outline>

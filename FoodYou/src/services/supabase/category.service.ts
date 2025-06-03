@@ -55,7 +55,7 @@ export const CategoryService = {
         .from('products_unimarc')
         .select(`
           *,
-          brands_unimarc!inner(name),
+          brands_unimarc(name),
           product_prices_unimarc(price_current, is_in_offer),
           product_images_unimarc(image_url, is_primary)
         `)
@@ -66,15 +66,13 @@ export const CategoryService = {
       if (error) {
         console.error('Error al obtener productos:', error);
         throw error;
-      }
-
-      // Transformar los datos al formato esperado
+      }      // Transformar los datos al formato esperado
       const products: Producto[] = (data || []).map(product => ({
         id: product.ean,
         nombre_producto: product.name_vtex || product.name_okto,
         marca: product.brands_unimarc?.name || '',
         sku: product.sku_item_vtex || '',
-        precio: product.product_prices_unimarc?.[0]?.price_current || 0,
+        precio: parseFloat(product.product_prices_unimarc?.[0]?.price_current) || 0,
         url_imagen: product.product_images_unimarc?.find((img: any) => img.is_primary)?.image_url ||
           product.product_images_unimarc?.[0]?.image_url || '',
         categoria: categoryId,
@@ -125,15 +123,13 @@ export const CategoryService = {
       if (error) {
         console.error('Error en la búsqueda:', error);
         throw error;
-      }
-
-      // Transformar los datos al formato esperado
+      }      // Transformar los datos al formato esperado
       const products: Producto[] = (data || []).map(product => ({
         id: product.ean,
         nombre_producto: product.name_vtex || product.name_okto,
         marca: product.brands_unimarc?.name || '',
         sku: product.sku_item_vtex || '',
-        precio: product.product_prices_unimarc?.[0]?.price_current || 0,
+        precio: parseFloat(product.product_prices_unimarc?.[0]?.price_current) || 0,
         url_imagen: product.product_images_unimarc?.find((img: any) => img.is_primary)?.image_url ||
           product.product_images_unimarc?.[0]?.image_url || '',
         categoria: product.category_vtex_id,

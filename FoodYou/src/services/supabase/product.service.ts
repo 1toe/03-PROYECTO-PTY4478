@@ -5,7 +5,7 @@ export interface Producto {
   nombre_producto: string;
   marca: string;
   sku: string;
-  precio: string | number;
+  precio: number;
   url_imagen?: string;
   url_producto?: string;
   fecha_creacion?: string;
@@ -23,13 +23,12 @@ export const ProductService = {
    * Obtiene todos los productos
    */
   async getAllProducts(): Promise<Producto[]> {
-    try {
-      const { data, error } = await supabase
+    try {      const { data, error } = await supabase
         .from('products_unimarc')
         .select(`
           *,
           brands_unimarc(name),
-          product_prices_unimarc(price_current),
+          product_prices_unimarc(price_current, is_in_offer),
           product_images_unimarc(image_url, is_primary)
         `)
         .order('name_vtex');
@@ -37,17 +36,13 @@ export const ProductService = {
       if (error) {
         console.error('Error al obtener productos:', error);
         throw error;
-      }
-
-      // Transformar los datos al formato esperado
-      // productos -> En supabase es products_unimarc
-      // brands -> En supabase es brands_unimarc
+      }      // Transformar los datos al formato esperado
       const products: Producto[] = (data || []).map(product => ({
         id: product.ean,
         nombre_producto: product.name_vtex || product.name_okto,
         marca: product.brands_unimarc?.name || '',
         sku: product.sku_item_vtex || '',
-        precio: product.product_prices_unimarc?.[0]?.price_current || 0,
+        precio: parseFloat(product.product_prices_unimarc?.[0]?.price_current) || 0,
         url_imagen: product.product_images_unimarc?.find((img: any) => img.is_primary)?.image_url ||
           product.product_images_unimarc?.[0]?.image_url || '',
         categoria: product.category_vtex_id,
@@ -67,12 +62,11 @@ export const ProductService = {
    * Obtiene un producto por su ID
    */
   async getProductById(productId: string): Promise<Producto | null> {
-    try {
-      const { data, error } = await supabase
+    try {      const { data, error } = await supabase
         .from('products_unimarc')
         .select(`
           *,
-          brands_unimarc!inner(name),
+          brands_unimarc(name),
           product_prices_unimarc(price_current, is_in_offer),
           product_images_unimarc(image_url, is_primary)
         `)
@@ -82,15 +76,13 @@ export const ProductService = {
       if (error) {
         console.error(`Error al obtener el producto ${productId}:`, error);
         return null;
-      }
-
-      // Transformar los datos al formato esperado
+      }      // Transformar los datos al formato esperado
       return {
         id: data.ean,
         nombre_producto: data.name_vtex || data.name_okto,
         marca: data.brands_unimarc?.name || '',
         sku: data.sku_item_vtex || '',
-        precio: data.product_prices_unimarc?.[0]?.price_current || 0,
+        precio: parseFloat(data.product_prices_unimarc?.[0]?.price_current) || 0,
         url_imagen: data.product_images_unimarc?.find((img: any) => img.is_primary)?.image_url ||
           data.product_images_unimarc?.[0]?.image_url || '',
         categoria: data.category_vtex_id,
@@ -108,12 +100,11 @@ export const ProductService = {
    * Busca productos por texto
    */
   async searchProducts(searchText: string): Promise<Producto[]> {
-    try {
-      const { data, error } = await supabase
+    try {      const { data, error } = await supabase
         .from('products_unimarc')
         .select(`
           *,
-          brands_unimarc!inner(name),
+          brands_unimarc(name),
           product_prices_unimarc(price_current, is_in_offer),
           product_images_unimarc(image_url, is_primary)
         `)
@@ -124,15 +115,13 @@ export const ProductService = {
       if (error) {
         console.error('Error en la búsqueda:', error);
         throw error;
-      }
-
-      // Transformar los datos al formato esperado
+      }      // Transformar los datos al formato esperado
       const products: Producto[] = (data || []).map(product => ({
         id: product.ean,
         nombre_producto: product.name_vtex || product.name_okto,
         marca: product.brands_unimarc?.name || '',
         sku: product.sku_item_vtex || '',
-        precio: product.product_prices_unimarc?.[0]?.price_current || 0,
+        precio: parseFloat(product.product_prices_unimarc?.[0]?.price_current) || 0,
         url_imagen: product.product_images_unimarc?.find((img: any) => img.is_primary)?.image_url ||
           product.product_images_unimarc?.[0]?.image_url || '',
         categoria: product.category_vtex_id,

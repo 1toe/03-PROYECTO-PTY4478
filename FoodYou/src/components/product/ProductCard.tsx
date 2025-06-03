@@ -37,11 +37,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
       <IonCardHeader>
         <IonCardTitle className="product-title">{product.nombre_producto}</IonCardTitle>
       </IonCardHeader>
-      <IonCardContent>
-        <div className="product-details">
+      <IonCardContent>        <div className="product-details">
           <div className="product-price">
             <IonIcon icon={pricetag} />
-            {product.precio ? (product.precio) : '$0'}
+            {product.precio ? formatPrice(product.precio) : '$0'}
           </div>
           {product.peso_gramos && (
             <div className="product-weight">
