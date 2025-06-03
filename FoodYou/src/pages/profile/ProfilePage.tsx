@@ -33,16 +33,22 @@ const ProfilePage: React.FC = () => {
   const history = useHistory();
   const { logout, user } = useAuth();
   const [presentToast] = useIonToast();
-
   useEffect(() => {
     const loadUserProfile = async () => {
       try {
-        const user = await AuthService.getCurrentUser();
-        if (user) {
-          setUserName(user.user_metadata?.name || 'Usuario');
-          setUserEmail(user.email || '');
+        // Verificar primero si hay un usuario en el contexto
+        if (!user) {
+          console.log('No hay usuario en contexto, no cargando perfil');
+          return;
+        }
+
+        const currentUser = await AuthService.getCurrentUser();
+        if (currentUser) {
+          setUserName(currentUser.user_metadata?.name || 'Usuario');
+          setUserEmail(currentUser.email || '');
         } else {
-          history.replace('/login');
+          console.log('No se pudo obtener usuario actual');
+          // No hacer redirección manual aquí, dejar que PrivateRoute lo maneje
         }
       } catch (error) {
         console.error('Error al cargar perfil:', error);
@@ -50,18 +56,18 @@ const ProfilePage: React.FC = () => {
     };
 
     loadUserProfile();
-  }, [history]);
-
+  }, [user]); // Agregar user como dependencia
   const handleLogout = async () => {
     try {
       setIsLoading(true);
       await logout();
+      // Mostrar mensaje de éxito
       presentToast({
         message: 'Has cerrado sesión correctamente',
         duration: 2000,
         color: 'success'
       });
-      history.replace('/login');
+      // No hacemos redirección manual, el PrivateRoute se encargará
     } catch (error) {
       console.error('Error al cerrar sesión:', error);
       presentToast({

@@ -41,7 +41,6 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
-// Configurar Ionic para usar el modo Material Design y plataforma de escritorio
 setupIonicReact({
   mode: 'md',
   rippleEffect: true,
@@ -71,7 +70,6 @@ const RootRedirect: React.FC = () => {
     return <LoadingScreen />;
   }
 
-  // Siempre redirigir a login si no hay usuario
   if (!user) {
     return <Redirect to="/login" />;
   }
@@ -81,24 +79,6 @@ const RootRedirect: React.FC = () => {
 
 const App: React.FC = () => {
   useEffect(() => {
-
-    const handleTouchMove = (e: TouchEvent) => {
-
-      if (e.target &&
-        (e.target as HTMLElement).classList &&
-        (e.target as HTMLElement).classList.contains('prevent-touch')) {
-        if (e.cancelable) {
-          e.preventDefault();
-        }
-      }
-    };
-
-
-    document.addEventListener('touchmove', handleTouchMove, { passive: true });
-
-    return () => {
-      document.removeEventListener('touchmove', handleTouchMove);
-    };
   }, []);
 
   return (

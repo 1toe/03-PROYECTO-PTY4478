@@ -34,32 +34,87 @@ const LoginPage: React.FC = () => {
   const location = useLocation();
   const { loading: authLoading, user, login } = useAuth();
   const [present] = useIonToast();
-
   // Verificar si ya está autenticado al cargar la página
   useEffect(() => {
-    // SOLo!!! redirigir si ya existe sesión
+    // Solo redirigir si ya existe sesión y no está cargando
     if (!authLoading && user) {
       const from = location.state && (location.state as any).from;
       const pathname = from?.pathname || '/app/home';
+      console.log('Usuario ya autenticado, redirigiendo a:', pathname);
       history.replace(pathname);
     }
-  }, [authLoading, user, history, location.state]);
+  }, [authLoading, user, history, location.state]);  // Cargar preferencia de "recordar sesión" desde localStorage
+  useEffect(() => {
+    const savedRememberMe = localStorage.getItem('rememberMe');
+    if (savedRememberMe !== null) {
+      setRememberMe(JSON.parse(savedRememberMe));
+    }
+  }, []);
+
+  // Guardar preferencia de "recordar sesión" cuando cambie
+  useEffect(() => {
+    localStorage.setItem('rememberMe', JSON.stringify(rememberMe));
+  }, [rememberMe]);  // Manejar cambios en los inputs de forma más explícita
+  const handleEmailChange = (e: CustomEvent) => {
+    const value = e.detail.value || '';
+    console.log('Email cambiando a:', value, 'length:', value.length);
+    setEmail(value);
+  };
+
+  const handlePasswordChange = (e: CustomEvent) => {
+    const value = e.detail.value || '';
+    console.log('Password cambiando, length:', value.length);
+    setPassword(value);
+  };
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setErrorMessage('');
 
+    // Debug: verificar valores antes de enviar
+    console.log('HandleLogin - valores del formulario:', {
+      email: email,
+      emailLength: email?.length,
+      emailTrimmed: email?.trim(),
+      emailTrimmedLength: email?.trim()?.length,
+      password: password ? '***' : 'undefined',
+      passwordLength: password?.length,
+      passwordTrimmed: password ? '***' : 'undefined',
+      passwordTrimmedLength: password?.trim()?.length,
+      rememberMe: rememberMe,
+      emailType: typeof email,
+      passwordType: typeof password
+    });
+
+    // Validación local
+    if (!email || !password) {
+      setErrorMessage('Por favor ingresa email y contraseña');
+      setIsLoading(false);
+      return;
+    }
+
+    // Validación adicional
+    if (!email.trim() || !password.trim()) {
+      setErrorMessage('Email y contraseña no pueden estar vacíos');
+      setIsLoading(false);
+      return;
+    }
+
     try {
-      console.log('Intentando login con:', email, password);
-      const result = await login(email, password);
+      console.log('Intentando login con:', email.trim(), 'Recordar:', rememberMe);
+      const result = await login(email.trim(), password.trim(), rememberMe);
       console.log('Login exitoso:', result);
       present({
         message: 'Inicio de sesión exitoso',
         duration: 2000,
         color: 'success'
       });
-      history.replace('/app/home');
+      
+      // Pequeña pausa para asegurar que el estado se actualice correctamente
+      setTimeout(() => {
+        history.replace('/app/home');
+      }, 100);
     } catch (error: any) {
       console.error('Error al iniciar sesión:', error);
       // Mejores mensajes para el debug via consola
@@ -104,14 +159,14 @@ const LoginPage: React.FC = () => {
           <img src={logoImage} alt="FoodYou" className="logo" />
           <h1>Iniciar Sesión</h1>
 
-          <form onSubmit={handleLogin}>
-            <IonItem>
+          <form onSubmit={handleLogin}>            <IonItem>
               <IonLabel position="floating">Correo electrónico</IonLabel>
               <IonInput
                 type="email"
                 value={email}
-                onIonChange={e => setEmail(e.detail.value!)}
+                onIonInput={handleEmailChange}
                 required
+                clearInput
               />
             </IonItem>
 
@@ -120,8 +175,9 @@ const LoginPage: React.FC = () => {
               <IonInput
                 type="password"
                 value={password}
-                onIonChange={e => setPassword(e.detail.value!)}
+                onIonInput={handlePasswordChange}
                 required
+                clearInput
               />
             </IonItem>
 
