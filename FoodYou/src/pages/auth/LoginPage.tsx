@@ -34,16 +34,17 @@ const LoginPage: React.FC = () => {
   const location = useLocation();
   const { loading: authLoading, user, login } = useAuth();
   const [present] = useIonToast();
-  // Verificar si ya está autenticado al cargar la página
+
   useEffect(() => {
-    // Solo redirigir si ya existe sesión y no está cargando
+
     if (!authLoading && user) {
       const from = location.state && (location.state as any).from;
       const pathname = from?.pathname || '/app/home';
-      console.log('Usuario ya autenticado, redirigiendo a:', pathname);
+      console.log('LoginPage: Usuario ya autenticado, redirigiendo a:', pathname);
       history.replace(pathname);
     }
-  }, [authLoading, user, history, location.state]);  // Cargar preferencia de "recordar sesión" desde localStorage
+  }, [authLoading, user, history, location.state]);
+
   useEffect(() => {
     const savedRememberMe = localStorage.getItem('rememberMe');
     if (savedRememberMe !== null) {
@@ -51,19 +52,17 @@ const LoginPage: React.FC = () => {
     }
   }, []);
 
-  // Guardar preferencia de "recordar sesión" cuando cambie
   useEffect(() => {
     localStorage.setItem('rememberMe', JSON.stringify(rememberMe));
-  }, [rememberMe]);  // Manejar cambios en los inputs de forma más explícita
+  }, [rememberMe]);
+
   const handleEmailChange = (e: CustomEvent) => {
     const value = e.detail.value || '';
-    console.log('Email cambiando a:', value, 'length:', value.length);
     setEmail(value);
   };
 
   const handlePasswordChange = (e: CustomEvent) => {
     const value = e.detail.value || '';
-    console.log('Password cambiando, length:', value.length);
     setPassword(value);
   };
 
@@ -72,29 +71,12 @@ const LoginPage: React.FC = () => {
     setIsLoading(true);
     setErrorMessage('');
 
-    // Debug: verificar valores antes de enviar
-    console.log('HandleLogin - valores del formulario:', {
-      email: email,
-      emailLength: email?.length,
-      emailTrimmed: email?.trim(),
-      emailTrimmedLength: email?.trim()?.length,
-      password: password ? '***' : 'undefined',
-      passwordLength: password?.length,
-      passwordTrimmed: password ? '***' : 'undefined',
-      passwordTrimmedLength: password?.trim()?.length,
-      rememberMe: rememberMe,
-      emailType: typeof email,
-      passwordType: typeof password
-    });
-
-    // Validación local
     if (!email || !password) {
       setErrorMessage('Por favor ingresa email y contraseña');
       setIsLoading(false);
       return;
     }
 
-    // Validación adicional
     if (!email.trim() || !password.trim()) {
       setErrorMessage('Email y contraseña no pueden estar vacíos');
       setIsLoading(false);
@@ -102,22 +84,17 @@ const LoginPage: React.FC = () => {
     }
 
     try {
-      console.log('Intentando login con:', email.trim(), 'Recordar:', rememberMe);
+      console.log('LoginPage: Intentando login con:', email.trim(), 'Recordar:', rememberMe);
       const result = await login(email.trim(), password.trim(), rememberMe);
-      console.log('Login exitoso:', result);
+      console.log('LoginPage: Login exitoso:', result);
       present({
         message: 'Inicio de sesión exitoso',
         duration: 2000,
         color: 'success'
       });
-      
-      // Pequeña pausa para asegurar que el estado se actualice correctamente
-      setTimeout(() => {
-        history.replace('/app/home');
-      }, 100);
+
     } catch (error: any) {
-      console.error('Error al iniciar sesión:', error);
-      // Mejores mensajes para el debug via consola
+      console.error('LoginPage: Error al iniciar sesión:', error);
       if (error.message?.includes('Invalid login')) {
         setErrorMessage('Usuario o contraseña incorrectos');
       } else if (error.message?.includes('Email not confirmed')) {
@@ -130,36 +107,20 @@ const LoginPage: React.FC = () => {
     }
   };
 
-  const handleResetPassword = async () => { // Evaluar implementación (ver si es necesario)
-    if (!email) {
-      setErrorMessage('Ingresa tu correo electrónico para restablecer la contraseña');
-      return;
-    }
-
-    setIsLoading(true);
-    try {
-      await AuthService.resetPassword(email);
-      setShowAlert(true);
-      setIsLoading(false);
-    } catch (error) {
-      console.error('Error al enviar correo de recuperación:', error);
-      setErrorMessage('Error al enviar correo de recuperación');
-      setIsLoading(false);
-    }
-  };
-
   return (
     <IonPage>
       <IonHeader>
       </IonHeader>
       <IonContent className="ion-padding">
+        {/* Aquí se usa authLoading del AuthContext */}
         <IonLoading isOpen={authLoading} message="Verificando sesión..." />
 
         <div className="login-container">
           <img src={logoImage} alt="FoodYou" className="logo" />
           <h1>Iniciar Sesión</h1>
 
-          <form onSubmit={handleLogin}>            <IonItem>
+          <form onSubmit={handleLogin}>
+            <IonItem>
               <IonLabel position="floating">Correo electrónico</IonLabel>
               <IonInput
                 type="email"

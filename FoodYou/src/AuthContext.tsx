@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useRef } from 'react'; // Importar useRef
+import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 import supabase, { User } from './utils/supabase';
 
 type AuthContextType = {
@@ -13,86 +13,73 @@ const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
-  const tempSessionActiveRef = useRef(false); // Usar ref para manejar el estado de la sesión temporal
+  const [loading, setLoading] = useState(true); 
+  const tempSessionActiveRef = useRef(false);
 
-
-  // useEffect 1: Inicialización de la sesión y escucha de cambios de autenticación
   useEffect(() => {
-    // 1. Cargar la sesión inicial
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
-      setLoading(false);
-      tempSessionActiveRef.current = sessionStorage.getItem('temporarySession') === 'true'; // Actualizar ref
-    });
+    const fetchInitialSession = async () => {
+      const { data: { session }, error } = await supabase.auth.getSession();
+      if (error) {
+        console.error("Error al obtener sesión inicial:", error);
+        setUser(null);
+      } else {
+        console.log('Sesión inicial cargada:', session?.user?.email || 'No hay sesión');
+        setUser(session?.user ?? null);
+      }
+      setLoading(false); 
+      tempSessionActiveRef.current = sessionStorage.getItem('temporarySession') === 'true';
+    };
+
+    fetchInitialSession();
 
     const { data: listener } = supabase.auth.onAuthStateChange(async (event, session) => {
-      setLoading(true);
+      console.log('Cambio de autenticación:', event, session?.user?.email || 'No hay usuario');
 
       if (event === 'SIGNED_OUT') {
+        console.log('Usuario deslogueado completamente (listener)');
         setUser(null);
-        sessionStorage.removeItem('temporarySession'); // Asegurarse de limpiar esto
-        tempSessionActiveRef.current = false; // Actualizar ref
+        sessionStorage.removeItem('temporarySession');
+        tempSessionActiveRef.current = false;
+        setLoading(false); 
       } else if (session?.user) {
+        console.log('Usuario autenticado (listener):', session.user.email);
         setUser(session.user);
+        setLoading(false);
       } else {
-
+        console.log('Sesión vacía (listener)');
         setUser(null);
+        setLoading(false);
       }
-      setLoading(false);
     });
 
-    // Función de limpieza para desuscribirse al desmontar
     return () => {
       listener.subscription.unsubscribe();
     };
-  }, []); // Se ejecuta solo una vez al montar el componente
+  }, []);
 
-
-  // useEffect 2: Gestión del listener beforeunload para sesiones temporales
   useEffect(() => {
     const handleBeforeUnload = () => {
-      // Solo hacer signOut si la sesión es temporal y aún está activa
       if (tempSessionActiveRef.current) {
         supabase.auth.signOut();
       }
     };
-
     window.addEventListener('beforeunload', handleBeforeUnload);
-
-    // Limpieza: Remover el listener cuando el componente se desmonte
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
-  }, []); // Este efecto se ejecuta solo una vez al montar
+  }, []);
 
   const login = async (email: string, password: string, rememberMe: boolean = true) => {
     try {
-
-      if (!email || !password) {
-        throw new Error('Email y contraseña son requeridos');
-      }
-
-      if (typeof email !== 'string' || typeof password !== 'string') {
-        throw new Error('Email y contraseña deben ser strings válidos');
-      }
-
+      console.log('Login - parámetros recibidos:', { email, rememberMe });
+      if (!email || !password) throw new Error('Email y contraseña son requeridos');
       const cleanEmail = email.trim();
       const cleanPassword = password.trim();
-
-
-
-      if (!cleanEmail || !cleanPassword) {
-        throw new Error('Email y contraseña no pueden estar vacíos después de limpiar');
-      }
-
-      setLoading(true); // Indicar que se está cargando durante el login
+      if (!cleanEmail || !cleanPassword) throw new Error('Email y contraseña no pueden estar vacíos después de limpiar');
       const { data, error } = await supabase.auth.signInWithPassword({
         email: cleanEmail,
         password: cleanPassword
       });
-
-
       if (error) throw error;
 
       if (!rememberMe && data.session) {
@@ -102,29 +89,29 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         sessionStorage.removeItem('temporarySession');
         tempSessionActiveRef.current = false;
       }
-
       return data;
     } catch (error) {
       console.error('Error en contexto de autenticación (login):', error);
-      setLoading(false);
+      setLoading(false); 
       throw error;
     }
   };
 
   const logout = async () => {
     try {
-      setLoading(true); // Indicar que se está cargando durante el logout
       await supabase.auth.signOut();
     } catch (error) {
+      console.error('Error en logout:', error);
       setUser(null);
       sessionStorage.removeItem('temporarySession');
       tempSessionActiveRef.current = false;
+      setLoading(false); 
     } finally {
-      // No es necesario setLoading(false) aquí, lo gestiona el onAuthStateChange
     }
   };
 
   const register = async (email: string, password: string, name: string) => {
+    console.log('Iniciando registro con datos completos:', { email, name });
     try {
       const { data, error } = await supabase.auth.signUp({
         email,
@@ -133,12 +120,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           data: { name }
         }
       });
-
       if (error) {
+        console.error('Error en Supabase signUp:', error);
         throw error;
       }
+      console.log('Registro exitoso en contexto:', data);
       return data;
     } catch (error: any) {
+      console.error('Error completo en registro:', error);
       throw error;
     }
   };
