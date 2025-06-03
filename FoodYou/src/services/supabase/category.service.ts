@@ -8,6 +8,7 @@ export interface Categoria {
   category_okto_id?: string;
   category_okto_name?: string;
   created_at?: string;
+  image_url?: string;
 }
 
 export const CategoryService = {
@@ -49,9 +50,7 @@ export const CategoryService = {
       const { count } = await supabase
         .from('products_unimarc')
         .select('*', { count: 'exact', head: true })
-        .eq('category_vtex_id', categoryId);
-
-      // Luego obtener los productos con paginación
+        .eq('category_vtex_id', categoryId);      // Luego obtener los productos con paginación
       const { data, error } = await supabase
         .from('products_unimarc')
         .select(`
@@ -110,14 +109,12 @@ export const CategoryService = {
       const { count } = await supabase
         .from('products_unimarc')
         .select('*', { count: 'exact', head: true })
-        .or(`name_vtex.ilike.%${searchText}%,name_okto.ilike.%${searchText}%,description_short_vtex.ilike.%${searchText}%`);
-
-      // Luego obtener los productos con paginación
+        .or(`name_vtex.ilike.%${searchText}%,name_okto.ilike.%${searchText}%,description_short_vtex.ilike.%${searchText}%`);      // Luego obtener los productos con paginación
       const { data, error } = await supabase
         .from('products_unimarc')
         .select(`
           *,
-          brands_unimarc!inner(name),
+          brands_unimarc(name),
           product_prices_unimarc(price_current, is_in_offer),
           product_images_unimarc(image_url, is_primary)
         `)

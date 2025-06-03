@@ -29,6 +29,14 @@ import {
 } from '@ionic/react';
 import { add, cart, storefront, pricetag } from 'ionicons/icons';
 import { CategoryService, Categoria } from '../../services/supabase/category.service';
+
+const formatPrice = (price: number): string => {
+  return new Intl.NumberFormat('es-CL', { 
+    style: 'currency', 
+    currency: 'CLP',
+    minimumFractionDigits: 0
+  }).format(price);
+};
 import { ProductService, Producto } from '../../services/supabase/product.service';
 import './ListsPage.css';
 
@@ -248,10 +256,9 @@ const ListsPage: React.FC = () => {
                     )}
                   </IonCardHeader>
                   <IonCardContent>
-                    <div className="product-details">
-                      <div className="product-price">
+                    <div className="product-details">                      <div className="product-price">
                         <IonIcon icon={pricetag} />
-                        ${product.precio?.toLocaleString() || 'N/A'}
+                        {product.precio ? formatPrice(product.precio) : '$0'}
                       </div>
                       {product.peso_gramos && (
                         <IonChip outline>

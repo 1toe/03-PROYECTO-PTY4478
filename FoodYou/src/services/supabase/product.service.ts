@@ -5,7 +5,7 @@ export interface Producto {
   nombre_producto: string;
   marca: string;
   sku: string;
-  precio: number;
+  precio: string | number;
   url_imagen?: string;
   url_producto?: string;
   fecha_creacion?: string;
@@ -28,26 +28,28 @@ export const ProductService = {
         .from('products_unimarc')
         .select(`
           *,
-          brands_unimarc!inner(name),
-          product_prices_unimarc(price_current, is_in_offer),
+          brands_unimarc(name),
+          product_prices_unimarc(price_current),
           product_images_unimarc(image_url, is_primary)
         `)
         .order('name_vtex');
-        
+
       if (error) {
         console.error('Error al obtener productos:', error);
         throw error;
       }
 
       // Transformar los datos al formato esperado
+      // productos -> En supabase es products_unimarc
+      // brands -> En supabase es brands_unimarc
       const products: Producto[] = (data || []).map(product => ({
         id: product.ean,
         nombre_producto: product.name_vtex || product.name_okto,
         marca: product.brands_unimarc?.name || '',
         sku: product.sku_item_vtex || '',
         precio: product.product_prices_unimarc?.[0]?.price_current || 0,
-        url_imagen: product.product_images_unimarc?.find((img: any) => img.is_primary)?.image_url || 
-                   product.product_images_unimarc?.[0]?.image_url || '',
+        url_imagen: product.product_images_unimarc?.find((img: any) => img.is_primary)?.image_url ||
+          product.product_images_unimarc?.[0]?.image_url || '',
         categoria: product.category_vtex_id,
         peso_gramos: product.size_value_okto || null,
         descripcion: product.description_short_vtex || product.description_long_okto || '',
@@ -60,7 +62,7 @@ export const ProductService = {
       throw error;
     }
   },
-  
+
   /**
    * Obtiene un producto por su ID
    */
@@ -76,7 +78,7 @@ export const ProductService = {
         `)
         .eq('ean', productId)
         .single();
-        
+
       if (error) {
         console.error(`Error al obtener el producto ${productId}:`, error);
         return null;
@@ -89,8 +91,8 @@ export const ProductService = {
         marca: data.brands_unimarc?.name || '',
         sku: data.sku_item_vtex || '',
         precio: data.product_prices_unimarc?.[0]?.price_current || 0,
-        url_imagen: data.product_images_unimarc?.find((img: any) => img.is_primary)?.image_url || 
-                   data.product_images_unimarc?.[0]?.image_url || '',
+        url_imagen: data.product_images_unimarc?.find((img: any) => img.is_primary)?.image_url ||
+          data.product_images_unimarc?.[0]?.image_url || '',
         categoria: data.category_vtex_id,
         peso_gramos: data.size_value_okto || null,
         descripcion: data.description_short_vtex || data.description_long_okto || '',
@@ -101,7 +103,7 @@ export const ProductService = {
       return null;
     }
   },
-  
+
   /**
    * Busca productos por texto
    */
@@ -131,8 +133,8 @@ export const ProductService = {
         marca: product.brands_unimarc?.name || '',
         sku: product.sku_item_vtex || '',
         precio: product.product_prices_unimarc?.[0]?.price_current || 0,
-        url_imagen: product.product_images_unimarc?.find((img: any) => img.is_primary)?.image_url || 
-                   product.product_images_unimarc?.[0]?.image_url || '',
+        url_imagen: product.product_images_unimarc?.find((img: any) => img.is_primary)?.image_url ||
+          product.product_images_unimarc?.[0]?.image_url || '',
         categoria: product.category_vtex_id,
         peso_gramos: product.size_value_okto || null,
         descripcion: product.description_short_vtex || product.description_long_okto || '',

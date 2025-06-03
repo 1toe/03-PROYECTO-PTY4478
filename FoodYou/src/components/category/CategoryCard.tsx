@@ -1,5 +1,5 @@
 import React from 'react';
-import { IonCard, IonCardHeader, IonCardTitle, IonCardContent } from '@ionic/react';
+import { IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonImg } from '@ionic/react';
 import { Categoria } from '../../services/supabase/category.service';
 import './CategoryCard.css';
 
@@ -11,7 +11,7 @@ interface CategoryCardProps {
 
 const CategoryCard: React.FC<CategoryCardProps> = ({ category, selected = false, onClick }) => {
   return (
-    <IonCard 
+    <IonCard
       className={`category-card ${selected ? 'selected-category' : ''}`}
       onClick={onClick}
     >      <IonCardHeader>

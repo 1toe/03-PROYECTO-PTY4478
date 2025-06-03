@@ -1,9 +1,7 @@
 import React from 'react';
 import { IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonButton, IonIcon, IonImg } from '@ionic/react';
-import { cart } from 'ionicons/icons';
-import { Producto } from '../../services/supabase/product.service'; // Ajusta la ruta según tu estructura de carpetas
-
-
+import { cart, pricetag } from 'ionicons/icons';
+import { Producto } from '../../services/supabase/product.service';// Ajusta la ruta según tu estructura de carpetas
 
 import './ProductCard.css';
 
@@ -13,8 +11,8 @@ interface ProductCardProps {
 }
 
 const formatPrice = (price: number): string => {
-  return new Intl.NumberFormat('es-CL', { 
-    style: 'currency', 
+  return new Intl.NumberFormat('es-CL', {
+    style: 'currency',
     currency: 'CLP',
     minimumFractionDigits: 0
   }).format(price);
@@ -42,7 +40,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
       <IonCardContent>
         <div className="product-details">
           <div className="product-price">
-            {formatPrice(product.precio)}
+            <IonIcon icon={pricetag} />
+            {product.precio ? (product.precio) : '$0'}
           </div>
           {product.peso_gramos && (
             <div className="product-weight">

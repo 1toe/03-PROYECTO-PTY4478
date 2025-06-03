@@ -29,6 +29,14 @@ import {
 import { useParams } from 'react-router-dom';
 import { cart, pricetag, arrowBack } from 'ionicons/icons';
 import { CategoryService } from '../../services/supabase/category.service';
+
+const formatPrice = (price: number): string => {
+  return new Intl.NumberFormat('es-CL', {
+    style: 'currency',
+    currency: 'CLP',
+    minimumFractionDigits: 0
+  }).format(price);
+};
 import { Producto } from '../../services/supabase/product.service';
 import './CategoryPage.css';
 
@@ -196,10 +204,11 @@ const CategoryPage: React.FC = () => {
                     )}
                   </IonCardHeader>
                   <IonCardContent>
+
                     <div className="product-details">
                       <div className="product-price">
                         <IonIcon icon={pricetag} />
-                        ${product.precio?.toLocaleString() || 'N/A'}
+                        {product.precio ? (product.precio) : '$0'}
                       </div>
                       {product.peso_gramos && (
                         <IonChip outline>
