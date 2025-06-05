@@ -1,20 +1,2 @@
 equipo3godines@gmail.com - Equipo3godines123!
 FoodYou como proyecto de Supabase: equipo3godines@gmail.com - FoodYou#$
-
-
-Hola, consulta. Se debe aplicar la IA Gemini (ya está integrada) pero aún así, debes hacerla funcional, mediante un prompt. Por ejemplo,
-
-" // Respuestas inteligentes sin necesidad de API externa
-const lowerMessage = message.toLowerCase();
-
-"
-
-Debe tener la conexión con Supabase funcional y correctamente. Te adjunto la información de la BD en #file:schema_publico.sql
-
-ESO no debe estar... Ya que la IA de gemini que está en el proyecto #codebase debe tener en cuenta eso en su prompt. Por ende, debes desarrollar correctamente ese prompt, teniendo en cuenta las restricciones de los código de productos, usuario y flujo de este.
-
-Revisa cada carpeta y sus archivos: #file:hooks #file:components #file:chat (la page), servicios #file:ai-product.service.ts #file:category.service.ts #file:product.service.ts #file:chat.types.ts
-
-y lo que sea necesario.
-
-Por ahora, debes hacer lo que te indiqué.

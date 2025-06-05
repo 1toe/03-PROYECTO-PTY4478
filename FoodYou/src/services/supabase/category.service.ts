@@ -9,25 +9,31 @@ export interface Categoria {
   category_okto_name?: string;
   created_at?: string;
   image_url?: string;
+  display_name?: string;
 }
 
 export const CategoryService = {
   /**
    * Obtiene todas las categorías
-   */
-  async getAllCategories(): Promise<Categoria[]> {
+   */  async getAllCategories(): Promise<Categoria[]> {
     try {
       const { data, error } = await supabase
         .from('categories_unimarc')
         .select('*')
-        .order('name');
+        .order('category_okto_name, name'); // Priorizar por category_okto_name
 
       if (error) {
         console.error('Error al obtener categorías:', error);
         throw error;
       }
 
-      return data || [];
+      // Transformar los datos para establecer el nombre principal
+      const categories = (data || []).map(category => ({
+        ...category,
+        display_name: category.category_okto_name || category.name || 'Sin nombre'
+      }));
+
+      return categories;
     } catch (error) {
       console.error('Error al obtener categorías:', error);
       throw error;
