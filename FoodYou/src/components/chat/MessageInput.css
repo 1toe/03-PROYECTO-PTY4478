@@ -1,7 +1,14 @@
 .message-input-form {
+  position: fixed;
+  bottom: 56px; /* Ajustado para dejar espacio para la barra de navegación inferior */
+  left: 0;
+  right: 0;
   padding: 8px;
   background-color: var(--ion-color-light);
   border-top: 1px solid var(--ion-color-medium);
+  z-index: 1000;
+  width: 100%;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .message-input-item {
@@ -39,14 +46,19 @@
   --color: var(--ion-color-medium);
 }
 
-/* Dark theme support */
 .ios.dark .message-input-form,
 .md.dark .message-input-form {
   background-color: var(--ion-color-dark);
   border-top-color: var(--ion-color-medium);
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .ios.dark .message-input-item,
 .md.dark .message-input-item {
   background-color: var(--ion-color-step-100);
+}
+
+/* Ajuste para asegurar que el contenido del chat no quede oculto detrás del input */
+.chat-content {
+  padding-bottom: 108px; /* Espacio para el input y la barra de navegación */
 }

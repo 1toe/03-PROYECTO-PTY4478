@@ -5,7 +5,6 @@ import {
   IonToolbar,
   IonTitle,
   IonButton,
-  IonIcon,
   IonSpinner,
   IonToast,
   IonButtons
@@ -13,8 +12,9 @@ import {
 import { Message, SenderRole, GroundingMetadata, GroundingChunk } from '../../types/chat.types';
 import ChatMessageBubble from './ChatMessageBubble';
 import MessageInput from './MessageInput';
+import ProductListInChat from './ProductListInChat';
 import { ResetChatIcon, AlertTriangleIcon } from './Icons';
-import { GoogleGenAI, Chat, GenerateContentResponse } from "@google/genai";
+import { useAIWithProducts } from '../../hooks/useAIWithProducts';
 import './ChatInterface.css';
 
 interface ChatInterfaceProps {
@@ -24,48 +24,25 @@ interface ChatInterfaceProps {
 const ChatInterface: React.FC<ChatInterfaceProps> = ({ title = "Chat IA" }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState<string>('');
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
-  const [chatSession, setChatSession] = useState<Chat | null>(null);
-  const [apiKeyMissing, setApiKeyMissing] = useState<boolean>(false);
-  const [currentGroundingMetadata, setCurrentGroundingMetadata] = useState<GroundingMetadata | null>(null);
   const [showToast, setShowToast] = useState<boolean>(false);
 
   const contentRef = useRef<HTMLIonContentElement>(null);
-  const genAI = useRef<GoogleGenAI | null>(null);
 
-  useEffect(() => {
+  // Usar el hook de IA con productos
+  const { processMessage, isLoading, error } = useAIWithProducts();
 
-    const key = import.meta.env.VITE_GEMINI_API_KEY;
-    if (!key) {
-      console.error("No hay clave API de Gemini.");
-      setError("Clave API de Gemini no configurada. Contactar a los desarrolladores.");
-      setShowToast(true);
-      setApiKeyMissing(true);
-      return;
-    }
-    setApiKeyMissing(false);
-    genAI.current = new GoogleGenAI({ apiKey: key });
-  }, []);
+  // Verificar API key
+  const apiKeyMissing = !import.meta.env.VITE_GEMINI_API_KEY;
 
+  // Mensaje inicial
   const initializeChat = useCallback(() => {
-    if (!genAI.current) return;
-
-    const newChat = genAI.current.chats.create({
-      model: 'gemini-2.5-flash-preview-04-17',
-      config: {
-        systemInstruction: 'Eres un asistente útil para la app FoodYou, especializado en ayudar con listas de compras, recomendaciones de comida y planificación de comidas. Sé conciso y amigable. Si proporcionas código, usa bloques de código markdown.',
-      },
-    });
-    setChatSession(newChat);
     setMessages([{
       id: 'initial-bot-message',
-      text: "¡Hola! Soy tu asistente de FoodYou. ¿En qué puedo ayudarte hoy?",
+      text: "¡Hola! Soy tu asistente de FoodYou. Puedo ayudarte a buscar productos, comparar precios, y responder preguntas sobre alimentación. ¿En qué puedo ayudarte hoy?",
       sender: SenderRole.BOT,
       timestamp: new Date(),
     }]);
-    setCurrentGroundingMetadata(null);
-  }, [genAI]);
+  }, []);
 
   useEffect(() => {
     if (!apiKeyMissing) {
@@ -79,8 +56,15 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ title = "Chat IA" }) => {
     }
   }, [messages]);
 
+  // Mostrar toast de error
+  useEffect(() => {
+    if (error) {
+      setShowToast(true);
+    }
+  }, [error]);
+
   const handleSendMessage = async (messageText: string) => {
-    if (!messageText.trim() || isLoading || apiKeyMissing || !chatSession) return;
+    if (!messageText.trim() || isLoading || apiKeyMissing) return;
 
     const userMessage: Message = {
       id: `user-${Date.now()}`,
@@ -88,71 +72,39 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ title = "Chat IA" }) => {
       sender: SenderRole.USER,
       timestamp: new Date(),
     };
+
     setMessages(prevMessages => [...prevMessages, userMessage]);
     setInputValue('');
-    setIsLoading(true);
-    setError(null);
-    setCurrentGroundingMetadata(null);
 
     try {
-      const botMessageId = `bot-${Date.now()}`;
-      setMessages(prevMessages => [
-        ...prevMessages,
-        {
-          id: botMessageId,
-          text: '',
-          sender: SenderRole.BOT,
-          timestamp: new Date(),
-          isStreaming: true,
-        },
-      ]);
+      // Procesar mensaje con IA y productos
+      const aiResponse = await processMessage(messageText);
 
-      const stream = await chatSession.sendMessageStream({ message: messageText });
-      let currentText = '';
-      let finalResponse: GenerateContentResponse | null = null;
+      const botMessage: Message = {
+        id: `bot-${Date.now()}`,
+        text: aiResponse.message,
+        sender: SenderRole.BOT,
+        timestamp: new Date(),
+        products: aiResponse.products,
+        isProductSearch: aiResponse.isProductSearch
+      };
 
-      for await (const chunk of stream) {
-        currentText += chunk.text;
-        finalResponse = chunk;
-        setMessages(prevMessages =>
-          prevMessages.map(msg =>
-            msg.id === botMessageId ? { ...msg, text: currentText } : msg
-          )
-        );
-      }
-
-      setMessages(prevMessages =>
-        prevMessages.map(msg =>
-          msg.id === botMessageId ? { ...msg, text: currentText, isStreaming: false } : msg
-        )
-      );
-
-      if (finalResponse?.candidates?.[0]?.groundingMetadata) {
-        setCurrentGroundingMetadata(finalResponse.candidates[0].groundingMetadata);
-      }
+      setMessages(prevMessages => [...prevMessages, botMessage]);
 
     } catch (e: any) {
-      console.error('Error sending message to Gemini:', e);
-      const errorMessage = e.message || 'Error al obtener respuesta de la IA.';
-      setError(errorMessage);
-      setMessages(prevMessages => [
-        ...prevMessages.filter(msg => msg.id !== `bot-${Date.now()}` && !msg.isStreaming),
-        {
-          id: `error-${Date.now()}`,
-          text: `Error: ${errorMessage}`,
-          sender: SenderRole.SYSTEM,
-          timestamp: new Date(),
-        },
-      ]);
-    } finally {
-      setIsLoading(false);
+      console.error('Error sending message:', e);
+      const errorMessage: Message = {
+        id: `error-${Date.now()}`,
+        text: `Error: ${e.message || 'Error al obtener respuesta de la IA.'}`,
+        sender: SenderRole.SYSTEM,
+        timestamp: new Date(),
+      };
+      setMessages(prevMessages => [...prevMessages, errorMessage]);
     }
   };
 
   const clearChat = () => {
     setMessages([]);
-    setCurrentGroundingMetadata(null);
-    setError(null);
     if (!apiKeyMissing) {
       initializeChat();
     }
@@ -181,32 +133,20 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ title = "Chat IA" }) => {
       <IonContent ref={contentRef} className="chat-content">
         <div className="messages-container">
           {messages.map(msg => (
-            <ChatMessageBubble key={msg.id} message={msg} />
+            <div key={msg.id}>
+              <ChatMessageBubble message={msg} />
+              {msg.products && msg.products.length > 0 && (
+                <ProductListInChat products={msg.products} />
+              )}
+            </div>
           ))}
-          {isLoading && messages.length > 0 && !messages[messages.length - 1].isStreaming && (
+          {isLoading && (
             <div className="loading-message">
               <IonSpinner name="dots" />
               <span>La IA está pensando...</span>
             </div>
           )}
         </div>
-
-        {currentGroundingMetadata && currentGroundingMetadata.groundingChunks && currentGroundingMetadata.groundingChunks.length > 0 && (
-          <div className="grounding-sources">
-            <p className="sources-title">Fuentes de información:</p>
-            <ul>
-              {currentGroundingMetadata.groundingChunks.map((chunk: GroundingChunk, index: number) => (
-                chunk.web && chunk.web.uri && (
-                  <li key={index}>
-                    <a href={chunk.web.uri} target="_blank" rel="noopener noreferrer">
-                      {chunk.web.title || chunk.web.uri}
-                    </a>
-                  </li>
-                )
-              ))}
-            </ul>
-          </div>
-        )}
       </IonContent>
 
       <MessageInput
@@ -214,7 +154,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ title = "Chat IA" }) => {
         onChange={setInputValue}
         onSendMessage={handleSendMessage}
         isLoading={isLoading || apiKeyMissing}
-        placeholder={apiKeyMissing ? "API Key no configurada" : "Escribe tu mensaje..."}
+        placeholder={apiKeyMissing ? "API Key no configurada" : "Escribe tu mensaje... Puedes preguntar sobre productos o usar 'buscar [producto]'"}
       />
 
       <IonToast

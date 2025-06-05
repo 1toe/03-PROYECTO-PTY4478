@@ -69,6 +69,7 @@ export const CategoryService = {
       }      // Transformar los datos al formato esperado
       const products: Producto[] = (data || []).map(product => ({
         id: product.ean,
+        ean: product.ean,
         nombre_producto: product.name_vtex || product.name_okto,
         marca: product.brands_unimarc?.name || '',
         sku: product.sku_item_vtex || '',
@@ -126,6 +127,7 @@ export const CategoryService = {
       }      // Transformar los datos al formato esperado
       const products: Producto[] = (data || []).map(product => ({
         id: product.ean,
+        ean: product.ean,
         nombre_producto: product.name_vtex || product.name_okto,
         marca: product.brands_unimarc?.name || '',
         sku: product.sku_item_vtex || '',

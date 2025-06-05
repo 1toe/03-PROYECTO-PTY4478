@@ -37,16 +37,16 @@ export const UserIcon: React.FC<{ className?: string; color?: string }> = ({ cla
 );
 
 export const BotIcon: React.FC<{ className?: string; color?: string }> = ({ className, color }) => (
-  <img 
-    src={manzanitaSvg} 
-    alt="Manzanita AI" 
-    className={className} 
-    style={{ 
-      width: '24px', 
-      height: '24px', 
+  <img
+    src={manzanitaSvg}
+    alt="Manzanita AI"
+    className={className}
+    style={{
+      width: '24px',
+      height: '24px',
       color,
       verticalAlign: 'middle'
-    }} 
+    }}
   />
 );
 

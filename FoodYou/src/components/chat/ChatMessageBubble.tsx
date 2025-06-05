@@ -7,9 +7,6 @@ import './ChatMessageBubble.css';
 interface ChatMessageBubbleProps {
   message: Message;
 }
-
-// Basic Markdown to HTML conversion for code blocks and bold/italics
-// This is a simplified parser. For production, a more robust library is recommended.
 const formatMessageText = (text: string): React.ReactNode => {
   const parts = text.split(/(\`\`\`[\s\S]*?\`\`\`|\*\*.*?\*\*|\*.*?\*|\`.*?\`)/g);
   return parts.map((part, index) => {

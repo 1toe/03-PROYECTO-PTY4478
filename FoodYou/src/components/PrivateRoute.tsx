@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Route, Redirect, RouteProps } from 'react-router-dom';
 import { IonLoading } from '@ionic/react';
 import { useAuth } from '../AuthContext';
@@ -9,17 +9,43 @@ interface PrivateRouteProps extends RouteProps {
 
 const PrivateRoute: React.FC<PrivateRouteProps> = ({ component: Component, ...rest }) => {
   const { user, loading } = useAuth();
+  const [localLoading, setLocalLoading] = useState(true);
+  const [loadingMessage, setLoadingMessage] = useState("Verificando sesión...");
+  
+  // Agregar un timeout adicional a nivel de componente
+  useEffect(() => {
+    const routeTimeout = setTimeout(() => {
+      if (loading) {
+        setLoadingMessage("Tomando más tiempo de lo esperado...");
+        
+        // Timeout adicional para mostrar mensaje actualizado y luego proceder
+        const finalTimeout = setTimeout(() => {
+          setLocalLoading(false);
+        }, 2000);
+        
+        return () => clearTimeout(finalTimeout);
+      }
+    }, 3000);
+    
+    // Actualizar estado local cuando cambie loading del contexto
+    if (!loading) {
+      setLocalLoading(false);
+    }
+    
+    return () => clearTimeout(routeTimeout);
+  }, [loading]);
 
   return (
     <Route
       {...rest}
       render={props => {
-        if (loading) {
-          console.log("PrivateRoute: Verificando autenticación...");
-          return <IonLoading isOpen={true} message="Verificando sesión..." />;
+        // Mostrar pantalla de carga si el contexto o el componente están en loading
+        if (loading && localLoading) {
+          return <IonLoading isOpen={true} message={loadingMessage} />;
         }
+        
+        // Si no hay usuario después de la carga, redirigir al login
         if (!user) {
-          console.log("PrivateRoute: No hay usuario autenticado, redirigiendo a /login desde:", props.location.pathname);
           return (
             <Redirect
               to={{
@@ -30,7 +56,6 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ component: Component, ...re
           );
         }
 
-        console.log("PrivateRoute: Usuario autenticado, cargando componente protegido para:", props.location.pathname);
         return <Component {...props} />;
       }}
     />

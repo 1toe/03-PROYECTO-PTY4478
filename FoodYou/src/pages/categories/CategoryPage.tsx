@@ -24,7 +24,8 @@ import {
   IonBadge,
   IonChip,
   IonBackButton,
-  IonButtons
+  IonButtons,
+  IonText
 } from '@ionic/react';
 import { useParams } from 'react-router-dom';
 import { cart, pricetag, arrowBack } from 'ionicons/icons';
@@ -203,7 +204,8 @@ const CategoryPage: React.FC = () => {
                       <p className="product-brand">{product.marca}</p>
                     )}
                   </IonCardHeader>
-                  <IonCardContent>                    <div className="product-details">
+                  <IonCardContent>
+                    <div className="product-details">
                       <div className="product-price">
                         <IonIcon icon={pricetag} />
                         {product.precio ? formatPrice(product.precio) : '$0'}

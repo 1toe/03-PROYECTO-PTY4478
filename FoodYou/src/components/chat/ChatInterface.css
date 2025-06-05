@@ -2,7 +2,7 @@
   --padding-start: 8px;
   --padding-end: 8px;
   --padding-top: 8px;
-  --padding-bottom: 8px;
+  --padding-bottom: 108px; /* Aumentado para dejar espacio para el input y la barra de navegación */
   height: 100%;
 }
 
@@ -71,6 +71,10 @@
   text-decoration: underline;
 }
 
+/* Asegurar que el último mensaje sea visible y no quede oculto por el input */
+.messages-container > div:last-child {
+  margin-bottom: 16px;
+}
 
 .ios.dark .grounding-sources,
 .md.dark .grounding-sources {

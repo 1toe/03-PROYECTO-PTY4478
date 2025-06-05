@@ -25,7 +25,8 @@ import {
   IonInfiniteScroll,
   IonInfiniteScrollContent,
   IonBadge,
-  IonChip
+  IonChip,
+  IonText
 } from '@ionic/react';
 import { add, cart, storefront, pricetag } from 'ionicons/icons';
 import { CategoryService, Categoria } from '../../services/supabase/category.service';
@@ -52,6 +53,7 @@ const ListsPage: React.FC = () => {
   const [totalProducts, setTotalProducts] = useState(0);
   const [hasMoreData, setHasMoreData] = useState(true);
   const pageSize = 20;
+  
   // Cargar categorías al inicio
   useEffect(() => {
     loadCategories();
@@ -158,6 +160,7 @@ const ListsPage: React.FC = () => {
 
     event.target.complete();
   };
+  
   const handleRefresh = async (event: any) => {
     await loadCategories();
     if (selectedCategory) {
@@ -165,6 +168,7 @@ const ListsPage: React.FC = () => {
     }
     event.detail.complete();
   };
+  
   const renderCategories = () => {
     if (loading && categories.length === 0) {
       return (
@@ -186,30 +190,40 @@ const ListsPage: React.FC = () => {
     }
 
     return (
-      <IonGrid>
-        <IonRow>
-          {categories.map((category) => (
-            <IonCol size="6" sizeMd="4" key={category.category_vtex_id}>
-              <IonCard 
-                className={selectedCategory === category.category_vtex_id ? 'selected-category' : ''}
-                onClick={() => setSelectedCategory(category.category_vtex_id)}
-                button
-              >
-                <IonCardHeader>
-                  <IonCardTitle>{category.name}</IonCardTitle>
-                </IonCardHeader>
-                {category.category_okto_name && (
-                  <IonCardContent>
-                    <p className="category-description">{category.category_okto_name}</p>
-                  </IonCardContent>
-                )}
-              </IonCard>
-            </IonCol>
-          ))}
-        </IonRow>
-      </IonGrid>
+      <div className="categories-scroll-container">
+        <div className="categories-container">
+          <IonGrid>
+            <IonRow>
+              {categories.map((category) => (
+                <IonCol size="auto" key={category.category_vtex_id}>
+                  <IonCard 
+                    className={selectedCategory === category.category_vtex_id ? 'selected-category' : 'category-card'}
+                    onClick={() => setSelectedCategory(category.category_vtex_id)}
+                    button
+                  >
+                    <IonCardHeader>
+                      <IonCardTitle>{category.name}</IonCardTitle>
+                    </IonCardHeader>
+                    {category.category_okto_name && (
+                      <IonCardContent>
+                        <p className="category-description">{category.category_okto_name}</p>
+                      </IonCardContent>
+                    )}
+                  </IonCard>
+                </IonCol>
+              ))}
+            </IonRow>
+          </IonGrid>
+        </div>
+        <div className="scroll-indicator">
+          <IonText color="medium" className="scroll-hint">
+            Desliza para ver más categorías →
+          </IonText>
+        </div>
+      </div>
     );
   };
+  
   const renderProducts = () => {
     if (loadingProducts && products.length === 0) {
       return (
@@ -256,7 +270,8 @@ const ListsPage: React.FC = () => {
                     )}
                   </IonCardHeader>
                   <IonCardContent>
-                    <div className="product-details">                      <div className="product-price">
+                    <div className="product-details">
+                      <div className="product-price">
                         <IonIcon icon={pricetag} />
                         {product.precio ? formatPrice(product.precio) : '$0'}
                       </div>
@@ -325,10 +340,9 @@ const ListsPage: React.FC = () => {
 
         {segment === 'categories' && (
           <>
-            <div className="categories-container">
-              {renderCategories()}
-            </div>
-              {selectedCategory && (
+            {renderCategories()}
+            
+            {selectedCategory && (
               <>
                 <h3 className="category-title">
                   Productos en {categories.find(cat => cat.category_vtex_id === selectedCategory)?.name || 'Categoría'}
@@ -343,7 +357,7 @@ const ListsPage: React.FC = () => {
         
         {segment === 'lists' && (
           <div className="no-lists-found">
-            <IonIcon name="list-outline" className="empty-icon" />
+            <IonIcon icon={add} className="empty-icon" />
             <h2>No se encontraron listas</h2>
             <p>Crea una nueva lista para empezar a añadir productos.</p>
             <IonButton expand="block">

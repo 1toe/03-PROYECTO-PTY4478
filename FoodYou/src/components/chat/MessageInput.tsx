@@ -34,7 +34,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
     if (event) event.preventDefault();
     if (value.trim() && !isLoading) {
       onSendMessage(value);
-      onChange(''); // Clear input after sending
+      onChange('');
     }
   };
 

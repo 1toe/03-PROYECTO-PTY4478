@@ -10,6 +10,8 @@
  *    chat.types.ts ---> AIGroundingService.ts  (Provee tipos para el servicio de fundamentación de IA)
  */
 
+import { Producto } from '../services/supabase/product.service';
+
 // Roles posibles para remitentes de mensajes en el chat (Verificar despues)
 export enum SenderRole {
   USER = 'user',    // Usuario
@@ -27,6 +29,8 @@ export interface Message {
   sender: SenderRole;  // Quién envía
   timestamp: Date;     // Cuándo se envió
   isStreaming?: boolean; // Si está en transmisión
+  products?: Producto[];    // Productos asociados al mensaje (para búsquedas)
+  isProductSearch?: boolean; // Indica si es una búsqueda de productos
 }
 
 // Información sobre fuentes web para respuestas fundamentadas

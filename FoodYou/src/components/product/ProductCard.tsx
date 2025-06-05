@@ -1,7 +1,7 @@
 import React from 'react';
 import { IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonButton, IonIcon, IonImg } from '@ionic/react';
 import { cart, pricetag } from 'ionicons/icons';
-import { Producto } from '../../services/supabase/product.service';// Ajusta la ruta según tu estructura de carpetas
+import { Producto } from '../../services/supabase/product.service';
 
 import './ProductCard.css';
 
