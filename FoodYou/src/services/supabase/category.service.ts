@@ -1,5 +1,5 @@
 import supabase from '../../utils/supabase';
-import { Producto } from './product.service';
+import { Producto, ProductService } from './product.service';
 
 export interface Categoria {
   category_vtex_id: string;
@@ -12,10 +12,14 @@ export interface Categoria {
   display_name?: string;
 }
 
+// Servicio para manejar categorías y productos ProductService
+
+
 export const CategoryService = {
   /**
    * Obtiene todas las categorías
-   */  async getAllCategories(): Promise<Categoria[]> {
+   */  
+  async getAllCategories(): Promise<Categoria[]> {
     try {
       const { data, error } = await supabase
         .from('categories_unimarc')
@@ -40,195 +44,291 @@ export const CategoryService = {
     }
   },
 
+
+
   /**
    * Obtiene productos por categoría con paginación
    */
   async getProductsByCategory(
-    categoryId: string,
-    page: number = 0,
-    pageSize: number = 20
-  ): Promise<{ products: Producto[], total: number }> {
+    categoryId: string, 
+    options: {
+      page?: number;
+      limit?: number;
+      sortBy?: 'name' | 'price' | 'ean';
+      sortOrder?: 'asc' | 'desc';
+    } = {}
+  ): Promise<{
+    products: Producto[];
+    totalCount: number;
+    page: number;
+    totalPages: number;
+    hasMore: boolean;
+  }> {
     try {
-      const start = page * pageSize;
-      const end = start + pageSize - 1;
+      const { page = 1, limit = 20, sortBy = 'name', sortOrder = 'asc' } = options;
+      const offset = (page - 1) * limit;
 
-      // Primero obtener el total de productos
-      const { count } = await supabase
+      // Primero obtener el conteo total
+      const { count, error: countError } = await supabase
         .from('products_unimarc')
         .select('*', { count: 'exact', head: true })
         .eq('category_vtex_id', categoryId);
+
+      if (countError) {
+        console.error('Error al contar productos:', countError);
+        throw countError;
+      }
+
+      const totalCount = count || 0;
+      const totalPages = Math.ceil(totalCount / limit);
+
+      // Configurar el ordenamiento
+      let orderColumn = 'name_vtex';
+      if (sortBy === 'price') {
+        orderColumn = 'product_prices_unimarc.price_current';
+      } else if (sortBy === 'ean') {
+        orderColumn = 'ean';
+      }
+
+      // Obtener productos con toda la información relacionada
       const { data, error } = await supabase
         .from('products_unimarc')
         .select(`
-          *,
+          ean,
+          name_vtex,
+          name_okto,
+          brand_id,
+          category_vtex_id,
+          sku_item_vtex,
+          sku_producto_vtex,
+          description_short_vtex,
+          description_long_okto,
+          net_content_vtex,
+          flavor_okto,
+          size_value_okto,
+          size_unit_okto,
+          packaging_type_okto,
+          origin_country_okto,
+          url_scraped,
+          last_scraped_at,
           brands_unimarc(name),
-          product_prices_unimarc(price_current, is_in_offer, saving_text),
-          product_images_unimarc(image_url, is_primary)
+          categories_unimarc(name, slug),
+          product_prices_unimarc(
+            price_current, 
+            price_list, 
+            is_in_offer, 
+            saving_text
+          ),
+          product_images_unimarc!left(image_url, is_primary),
+          product_warnings_unimarc(
+            warning_code,
+            warning_types_unimarc(description)
+          )
         `)
         .eq('category_vtex_id', categoryId)
-        .range(start, end)
-        .order('name_vtex');
+        .order(orderColumn, { ascending: sortOrder === 'asc' })
+        .range(offset, offset + limit - 1);
 
       if (error) {
-        console.error('Error al obtener productos:', error);
+        console.error('Error al obtener productos por categoría:', error);
         throw error;
-      }      // Transformar los datos al formato esperado
-      const products: Producto[] = (data || []).map(product => {
-        const priceInfo = product.product_prices_unimarc?.[0]; // Acceder al primer elemento del array
-        const currentPrice = priceInfo?.price_current;
-        
-        // DEBUG: Log de información de precios
-        console.log(`[CategoryService] Producto: ${product.name_vtex || product.name_okto}`);
-        console.log(`[CategoryService] Price info:`, priceInfo);
-        console.log(`[CategoryService] Current price raw:`, currentPrice);
-        
-        // Mejorar el procesamiento de precios
-        let precioFinal = 0;
-        let priceCurrentFinal = '';
-        
-        if (currentPrice) {
-          // Remover caracteres no numéricos excepto puntos y comas
-          const cleanPrice = currentPrice.toString().replace(/[^\d.,-]/g, '');
-          console.log(`[CategoryService] Clean price:`, cleanPrice);
-          
-          // Convertir comas a puntos para decimales
-          const normalizedPrice = cleanPrice.replace(',', '.');
-          const parsedPrice = parseFloat(normalizedPrice);
-          
-          if (!isNaN(parsedPrice) && parsedPrice > 0) {
-            precioFinal = parsedPrice;
-            priceCurrentFinal = currentPrice.toString();
-          }
-          
-          console.log(`[CategoryService] Final parsed price:`, precioFinal);
-        }
+      }
 
-        const transformedProduct = {
-          id: product.ean,
-          ean: product.ean,
-          nombre_producto: product.name_vtex || product.name_okto,
-          marca: product.brands_unimarc?.name || '',
-          sku: product.sku_item_vtex || '',
-          precio: precioFinal,
-          price_current: priceCurrentFinal,
-          url_imagen: product.product_images_unimarc?.find((img: any) => img.is_primary)?.image_url ||
-            product.product_images_unimarc?.[0]?.image_url || '',
-          categoria: product.category_vtex_id,
-          peso_gramos: product.size_value_okto || null,
-          descripcion: product.description_short_vtex || product.description_long_okto || '',
-          en_oferta: priceInfo?.is_in_offer || false,
-          is_in_offer: priceInfo?.is_in_offer || false,
-          saving_text: (priceInfo?.is_in_offer && priceInfo?.saving_text) ? priceInfo.saving_text : undefined
-        };
-        
-        console.log(`[CategoryService] Transformed product:`, {
-          nombre: transformedProduct.nombre_producto,
-          precio: transformedProduct.precio,
-          price_current: transformedProduct.price_current
-        });
-        
-        return transformedProduct;
-      });
+      // Transformar los productos usando el método del ProductService
+      const transformedProducts = ProductService.transformProducts(data || []);
 
       return {
-        products,
-        total: count || 0
+        products: transformedProducts,
+        totalCount,
+        page,
+        totalPages,
+        hasMore: page < totalPages
       };
     } catch (error) {
-      console.error(`Error al obtener productos de la categoría ${categoryId}:`, error);
+      console.error('Error al obtener productos por categoría:', error);
       throw error;
     }
   },
 
   /**
-   * Busca productos por texto con paginación
+   * Obtiene TODOS los productos de una categoría (sin paginación) identificados por EAN
    */
-  async searchProducts(
-    searchText: string,
-    page: number = 0,
-    pageSize: number = 20
-  ): Promise<{ products: Producto[], total: number }> {
+  async getAllProductsByCategory(categoryId: string): Promise<Producto[]> {
     try {
-      const start = page * pageSize;
-      const end = start + pageSize - 1;
-
-      // Primero obtener el total de resultados
-      const { count } = await supabase
-        .from('products_unimarc')
-        .select('*', { count: 'exact', head: true })
-        .or(`name_vtex.ilike.%${searchText}%,name_okto.ilike.%${searchText}%,description_short_vtex.ilike.%${searchText}%`);      // Luego obtener los productos con paginación
       const { data, error } = await supabase
         .from('products_unimarc')
         .select(`
-          *,
+          ean,
+          name_vtex,
+          name_okto,
+          brand_id,
+          category_vtex_id,
+          sku_item_vtex,
+          sku_producto_vtex,
+          description_short_vtex,
+          description_long_okto,
+          net_content_vtex,
+          flavor_okto,
+          size_value_okto,
+          size_unit_okto,
+          packaging_type_okto,
+          origin_country_okto,
+          url_scraped,
+          last_scraped_at,
           brands_unimarc(name),
-          product_prices_unimarc(price_current, is_in_offer, saving_text),
-          product_images_unimarc(image_url, is_primary)
+          categories_unimarc(name, slug),
+          product_prices_unimarc(
+            price_current, 
+            price_list, 
+            is_in_offer, 
+            saving_text
+          ),
+          product_images_unimarc!left(image_url, is_primary),
+          product_warnings_unimarc(
+            warning_code,
+            warning_types_unimarc(description)
+          )
         `)
-        .or(`name_vtex.ilike.%${searchText}%,name_okto.ilike.%${searchText}%,description_short_vtex.ilike.%${searchText}%`)
-        .range(start, end)
-        .order('name_vtex');
+        .eq('category_vtex_id', categoryId)
+        .order('ean', { ascending: true }); // Ordenar por EAN para consistencia
 
       if (error) {
-        console.error('Error en la búsqueda:', error);
+        console.error('Error al obtener todos los productos por categoría:', error);
         throw error;
-      }      // Transformar los datos al formato esperado
-      const products: Producto[] = (data || []).map(product => {
-        const priceInfo = product.product_prices_unimarc?.[0];
-        const currentPrice = priceInfo?.price_current;
+      }
 
-        // DEBUG: Log de información de precios para búsqueda
-        console.log(`[CategoryService Search] Producto: ${product.name_vtex || product.name_okto}`);
-        console.log(`[CategoryService Search] Price info:`, priceInfo);
-        console.log(`[CategoryService Search] Current price raw:`, currentPrice);
-        
-        // Mejorar el procesamiento de precios
-        let precioFinal = 0;
-        let priceCurrentFinal = '';
-        
-        if (currentPrice) {
-          // Remover caracteres no numéricos excepto puntos y comas
-          const cleanPrice = currentPrice.toString().replace(/[^\d.,-]/g, '');
-          console.log(`[CategoryService Search] Clean price:`, cleanPrice);
-          
-          // Convertir comas a puntos para decimales
-          const normalizedPrice = cleanPrice.replace(',', '.');
-          const parsedPrice = parseFloat(normalizedPrice);
-          
-          if (!isNaN(parsedPrice) && parsedPrice > 0) {
-            precioFinal = parsedPrice;
-            priceCurrentFinal = currentPrice.toString();
-          }
-          
-          console.log(`[CategoryService Search] Final parsed price:`, precioFinal);
-        }
+      // Transformar los productos usando el método del ProductService
+      return ProductService.transformProducts(data || []);
+    } catch (error) {
+      console.error('Error al obtener todos los productos por categoría:', error);
+      throw error;
+    }
+  },
 
-        return {
-          id: product.ean,
-          ean: product.ean,
-          nombre_producto: product.name_vtex || product.name_okto,
-          marca: product.brands_unimarc?.name || '',
-          sku: product.sku_item_vtex || '',
-          precio: precioFinal,
-          price_current: priceCurrentFinal,
-          url_imagen: product.product_images_unimarc?.find((img: any) => img.is_primary)?.image_url ||
-            product.product_images_unimarc?.[0]?.image_url || '',
-          categoria: product.category_vtex_id,
-          peso_gramos: product.size_value_okto || null,
-          descripcion: product.description_short_vtex || product.description_long_okto || '',
-          en_oferta: priceInfo?.is_in_offer || false,
-          is_in_offer: priceInfo?.is_in_offer || false,
-          saving_text: (priceInfo?.is_in_offer && priceInfo?.saving_text) ? priceInfo.saving_text : undefined
-        };
+  /**
+   * Obtiene productos por múltiples categorías
+   */
+  async getProductsByCategories(categoryIds: string[]): Promise<{
+    [categoryId: string]: Producto[];
+  }> {
+    try {
+      const { data, error } = await supabase
+        .from('products_unimarc')
+        .select(`
+          ean,
+          name_vtex,
+          name_okto,
+          brand_id,
+          category_vtex_id,
+          sku_item_vtex,
+          sku_producto_vtex,
+          description_short_vtex,
+          description_long_okto,
+          net_content_vtex,
+          flavor_okto,
+          size_value_okto,
+          size_unit_okto,
+          packaging_type_okto,
+          origin_country_okto,
+          url_scraped,
+          last_scraped_at,
+          brands_unimarc(name),
+          categories_unimarc(name, slug),
+          product_prices_unimarc(
+            price_current, 
+            price_list, 
+            is_in_offer, 
+            saving_text
+          ),
+          product_images_unimarc!left(image_url, is_primary),
+          product_warnings_unimarc(
+            warning_code,
+            warning_types_unimarc(description)
+          )
+        `)
+        .in('category_vtex_id', categoryIds)
+        .order('category_vtex_id, ean'); // Ordenar por categoría y luego por EAN
+
+      if (error) {
+        console.error('Error al obtener productos por múltiples categorías:', error);
+        throw error;
+      }
+
+      // Transformar los productos
+      const transformedProducts = ProductService.transformProducts(data || []);
+
+      // Agrupar por categoría
+      const result: { [categoryId: string]: Producto[] } = {};
+      
+      categoryIds.forEach(categoryId => {
+        result[categoryId] = transformedProducts.filter(
+          product => product.category_vtex_id === categoryId
+        );
       });
 
-      return {
-        products,
-        total: count || 0
-      };
+      return result;
     } catch (error) {
-      console.error('Error en la búsqueda:', error);
+      console.error('Error al obtener productos por múltiples categorías:', error);
       throw error;
+    }
+  },
+
+  /**
+   * Busca productos por EAN en una categoría específica
+   */
+  async getProductByEanInCategory(ean: string, categoryId: string): Promise<Producto | null> {
+    try {
+      const { data, error } = await supabase
+        .from('products_unimarc')
+        .select(`
+          ean,
+          name_vtex,
+          name_okto,
+          brand_id,
+          category_vtex_id,
+          sku_item_vtex,
+          sku_producto_vtex,
+          description_short_vtex,
+          description_long_okto,
+          net_content_vtex,
+          flavor_okto,
+          size_value_okto,
+          size_unit_okto,
+          packaging_type_okto,
+          origin_country_okto,
+          url_scraped,
+          last_scraped_at,
+          brands_unimarc(name),
+          categories_unimarc(name, slug),
+          product_prices_unimarc(
+            price_current, 
+            price_list, 
+            is_in_offer, 
+            saving_text
+          ),
+          product_images_unimarc!left(image_url, is_primary),
+          product_warnings_unimarc(
+            warning_code,
+            warning_types_unimarc(description)
+          )
+        `)
+        .eq('ean', ean)
+        .eq('category_vtex_id', categoryId)
+        .single();
+
+      if (error) {
+        console.error('Error al obtener producto por EAN en categoría:', error);
+        return null;
+      }
+
+      if (!data) return null;
+
+      // Transformar el producto
+      const transformedProducts = ProductService.transformProducts([data]);
+      return transformedProducts[0] || null;
+    } catch (error) {
+      console.error('Error al obtener producto por EAN en categoría:', error);
+      return null;
     }
   }
 };

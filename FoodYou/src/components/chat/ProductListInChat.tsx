@@ -31,13 +31,6 @@ const ProductListInChat: React.FC<ProductListInChatProps> = ({
   const displayProducts = products.slice(0, maxDisplay);
   const hasMore = products.length > maxDisplay;
 
-  const formatPrice = (product: Producto): string => {
-    const price = product.precio || parseFloat(product.price_current || '0');
-    if (price === 0) return 'Precio no disponible';
-    
-    return `$${price}`;
-  };
-
   const handleAddToCart = (product: Producto) => {
     if (onAddToCart) {
       onAddToCart(product);
@@ -100,7 +93,7 @@ const ProductListInChat: React.FC<ProductListInChatProps> = ({
 
                   <div className="chat-product-price">
                     <IonIcon icon={pricetag} />
-                    <span className="price-text">{formatPrice(product)}</span>
+                    <span className="price-text">{product.price_current}</span>
                   </div>
 
                   {(product.categoria || product.category_name) && (

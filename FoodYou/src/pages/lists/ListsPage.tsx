@@ -28,31 +28,12 @@ import {
   IonChip,
   IonText
 } from '@ionic/react';
-import { add, cart, storefront, pricetag } from 'ionicons/icons';
+import { add, cart, storefront, pricetag, warning, flame } from 'ionicons/icons';
 import { CategoryService, Categoria } from '../../services/supabase/category.service';
-
-const formatPrice = (price: number | string): string => {
-  console.log(`[ListsPage formatPrice] Input price:`, price, typeof price);
-  
-  const numericPrice = typeof price === 'string' ? parseFloat(price.replace(/[^\d.,-]/g, '')) : price;
-  console.log(`[ListsPage formatPrice] Numeric price:`, numericPrice);
-  
-  if (isNaN(numericPrice) || numericPrice <= 0) {
-    console.log(`[ListsPage formatPrice] Invalid price, returning 'Precio no disponible'`);
-    return 'Precio no disponible';
-  }
-  
-  const formattedPrice = new Intl.NumberFormat('es-CL', { 
-    style: 'currency', 
-    currency: 'CLP',
-    minimumFractionDigits: 0
-  }).format(numericPrice);
-  
-  console.log(`[ListsPage formatPrice] Formatted price:`, formattedPrice);
-  return formattedPrice;
-};
-import { ProductService, Producto } from '../../services/supabase/product.service';
+import { Producto } from '../../services/supabase/product.service';
+import '../../components/chat/ProductListInChat.css';
 import './ListsPage.css';
+
 
 const ListsPage: React.FC = () => {
   const [segment, setSegment] = useState<'lists' | 'categories'>('categories');
@@ -66,7 +47,7 @@ const ListsPage: React.FC = () => {
   const [totalProducts, setTotalProducts] = useState(0);
   const [hasMoreData, setHasMoreData] = useState(true);
   const pageSize = 20;
-  
+
   // Cargar categorías al inicio
   useEffect(() => {
     loadCategories();
@@ -84,12 +65,12 @@ const ListsPage: React.FC = () => {
       setLoading(true);
       const categorias = await CategoryService.getAllCategories();
       setCategories(categorias);
-      
+
       // Si hay categorías, seleccionar la primera por defecto
       if (categorias.length > 0 && !selectedCategory) {
         setSelectedCategory(categorias[0].category_vtex_id);
       }
-      
+
       setLoading(false);
     } catch (error) {
       console.error('Error al cargar categorías:', error);
@@ -105,31 +86,17 @@ const ListsPage: React.FC = () => {
   };
   const loadProductsByCategory = async (categoryId: string, page: number = 0) => {
     try {
-      console.log(`[ListsPage] Loading products for category ${categoryId}, page ${page}`);
       if (page === 0) setLoadingProducts(true);
-      
+
       const result = await CategoryService.getProductsByCategory(categoryId, page, pageSize);
-      console.log(`[ListsPage] Products loaded:`, result.products.length, 'total:', result.total);
-      
-      // Log de muestra de productos para debug
-      if (result.products.length > 0) {
-        console.log(`[ListsPage] Sample product:`, {
-          nombre: result.products[0].nombre_producto,
-          precio: result.products[0].precio,
-          price_current: result.products[0].price_current
-        });
-      }
-      
+
       if (page === 0) {
         setProducts(result.products);
       } else {
         setProducts(prev => [...prev, ...result.products]);
       }
-      
-      setTotalProducts(result.total);
       setCurrentPage(page);
-      setHasMoreData(result.products.length === pageSize && (page + 1) * pageSize < result.total);
-      
+
       if (page === 0) setLoadingProducts(false);
     } catch (error) {
       console.error('Error al cargar productos:', error);
@@ -140,7 +107,7 @@ const ListsPage: React.FC = () => {
   const handleSearch = async (e: CustomEvent) => {
     const query = e.detail.value?.toLowerCase() || '';
     setSearchText(query);
-    
+
     if (query.length > 2) {
       try {
         setLoadingProducts(true);
@@ -168,7 +135,7 @@ const ListsPage: React.FC = () => {
     }
 
     const nextPage = currentPage + 1;
-    
+
     try {
       if (searchText.length > 2) {
         const result = await CategoryService.searchProducts(searchText, nextPage, pageSize);
@@ -183,7 +150,7 @@ const ListsPage: React.FC = () => {
 
     event.target.complete();
   };
-  
+
   const handleRefresh = async (event: any) => {
     await loadCategories();
     if (selectedCategory) {
@@ -191,9 +158,9 @@ const ListsPage: React.FC = () => {
     }
     event.detail.complete();
   };
-    const renderCategories = () => {
+  const renderCategories = () => {
     console.log(`[ListsPage] Rendering categories, count: ${categories.length}`);
-    
+
     if (loading && categories.length === 0) {
       return (
         <div className="loading-container">
@@ -212,7 +179,7 @@ const ListsPage: React.FC = () => {
         </div>
       );
     }
-    
+
     console.log(`[ListsPage] Categories sample:`, categories.slice(0, 3).map(c => c.display_name || c.name));
 
     return (
@@ -222,17 +189,17 @@ const ListsPage: React.FC = () => {
             <IonRow className="categories-row">
               {categories.map((category) => (
                 <IonCol size="auto" key={category.category_vtex_id}>
-                  <IonCard 
+                  <IonCard
                     className={selectedCategory === category.category_vtex_id ? 'selected-category' : 'category-card'}
                     onClick={() => setSelectedCategory(category.category_vtex_id)}
                     button
                   >
                     <IonCardHeader>
                       <IonCardTitle>{category.display_name || category.name}</IonCardTitle>
+
                     </IonCardHeader>
                     {category.category_okto_name && category.category_okto_name !== category.name && (
                       <IonCardContent>
-                        <p className="category-description">{category.category_okto_name}</p>
                       </IonCardContent>
                     )}
                   </IonCard>
@@ -241,15 +208,34 @@ const ListsPage: React.FC = () => {
             </IonRow>
           </IonGrid>
         </div>
-        <div className="scroll-indicator">
-          <IonText color="medium" className="scroll-hint">
-            Desliza para ver más categorías →
-          </IonText>
-        </div>
       </div>
     );
   };
-  
+
+  const handleAddToCart = (product: Producto) => {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  };
+
   const renderProducts = () => {
     if (loadingProducts && products.length === 0) {
       return (
@@ -263,7 +249,7 @@ const ListsPage: React.FC = () => {
     if (products.length === 0) {
       return (
         <div className="no-products">
-          <h3>No hay productos en esta categoría</h3> 
+          <h3>No hay productos en esta categoría</h3>
           <p>Intenta seleccionar otra categoría o buscar un producto diferente.</p>
         </div>
       );
@@ -276,59 +262,84 @@ const ListsPage: React.FC = () => {
         </div>
         <IonGrid>
           <IonRow>
-            {products.map((product) => (
-              <IonCol size="6" sizeMd="4" sizeLg="3" key={product.id}>
-                <IonCard className="product-card">
-                  <div className="product-image-container">
-                    {product.url_imagen ? (
-                      <IonImg src={product.url_imagen} alt={product.nombre_producto} className="product-image" />
+            {products.map((product, index) => (
+              <IonCol key={product.ean || index} size="12" sizeMd="6" sizeLg="4">
+                <IonCard className="chat-product-card">
+                  <div className="chat-product-image-container">
+                    {product.url_imagen || product.image_url ? (
+                      <IonImg
+                        src={product.url_imagen || product.image_url}
+                        alt={product.nombre_producto || product.name_vtex || ''}
+                        className="chat-product-image"
+                      />
                     ) : (
-                      <div className="no-image">Sin imagen</div>
-                    )}
-                    {product.en_oferta && (
-                      <IonBadge color="danger" className="offer-badge">OFERTA</IonBadge>
-                    )}
-                  </div>
-                  <IonCardHeader>
-                    <IonCardTitle className="product-title">{product.nombre_producto}</IonCardTitle>
-                    {product.marca && (
-                      <p className="product-brand">{product.marca}</p>
-                    )}
-                  </IonCardHeader>                  <IonCardContent>
-                    <div className="product-details">
-                      <div className="product-price">
-                        <IonIcon icon={pricetag} />
-                        {(() => {
-                          // Debug logging para renderizado de precios
-                          console.log(`[ListsPage Render] Product ${product.nombre_producto}:`, {
-                            precio: product.precio,
-                            price_current: product.price_current,
-                            tipo_precio: typeof product.precio,
-                            tipo_price_current: typeof product.price_current
-                          });
-                          
-                          // Prioridad: precio > price_current > mensaje por defecto
-                          if (product.precio && product.precio > 0) {
-                            return formatPrice(product.precio);
-                          } else if (product.price_current && product.price_current !== '') {
-                            return formatPrice(product.price_current);
-                          } else {
-                            return 'Precio no disponible';
-                          }
-                        })()}
+                      <div className="chat-no-image">
+                        📦 Sin imagen
                       </div>
-                      {product.peso_gramos && (
-                        <IonChip outline>
-                          {product.peso_gramos}g
+                    )}
+
+                    {/* Indicadores de estado */}
+                    <div className="chat-product-badges">
+                      {(product.en_oferta || product.is_in_offer) && (
+                        <IonChip color="danger" className="offer-badge">
+                          <IonIcon icon={flame} />
+                          <IonLabel>Oferta</IonLabel>
+                        </IonChip>
+                      )}
+                      {product.warnings && product.warnings.length > 0 && (
+                        <IonChip color="warning" className="warning-badge">
+                          <IonIcon icon={warning} />
+                          <IonLabel>{product.warnings.length}</IonLabel>
                         </IonChip>
                       )}
                     </div>
-                    {product.descripcion && (
-                      <p className="product-description">{product.descripcion}</p>
+                  </div>
+
+                  <IonCardHeader className="chat-product-header">
+                    <IonCardTitle className="chat-product-title">
+                      {product.nombre_producto || product.name_vtex || product.name_okto}
+                    </IonCardTitle>
+                  </IonCardHeader>
+
+                  <IonCardContent className="chat-product-content">
+                    {(product.marca || product.brand_name) && (
+                      <div className="chat-product-brand">
+                        🏷️ {product.marca || product.brand_name}
+                      </div>
                     )}
-                    <IonButton expand="block" size="small" fill="solid">
+
+                    <div className="chat-product-price">
+                      <IonIcon icon={pricetag} />
+                      <span className="price-text">{product.price_current}</span>
+                    </div>
+
+                    {(product.categoria || product.category_name) && (
+                      <div className="chat-product-category">
+                        📂 {product.categoria || product.category_name}
+                      </div>
+                    )}
+
+                    {(product.peso_gramos || product.size_value_okto) && (
+                      <div className="chat-product-weight">
+                        ⚖️ {product.peso_gramos || product.size_value_okto}
+                        {product.size_unit_okto || 'g'}
+                      </div>
+                    )}
+
+                    {product.saving_text && (
+                      <div className="chat-product-saving">
+                        💸 {product.saving_text}
+                      </div>
+                    )}
+
+                    <IonButton
+                      expand="block"
+                      size="small"
+                      className="chat-add-to-cart-btn"
+                      onClick={() => handleAddToCart(product)}
+                    >
                       <IonIcon slot="start" icon={cart} />
-                      Agregar
+                      Agregar al carrito
                     </IonButton>
                   </IonCardContent>
                 </IonCard>
@@ -336,7 +347,7 @@ const ListsPage: React.FC = () => {
             ))}
           </IonRow>
         </IonGrid>
-        
+
         <IonInfiniteScroll onIonInfinite={loadMore} threshold="100px" disabled={!hasMoreData}>
           <IonInfiniteScrollContent
             loadingSpinner="bubbles"
@@ -354,7 +365,7 @@ const ListsPage: React.FC = () => {
           <IonTitle>Listas y Categorías</IonTitle>
         </IonToolbar>
       </IonHeader>
-      
+
       <IonContent>
         <IonRefresher slot="fixed" onIonRefresh={handleRefresh}>
           <IonRefresherContent />
@@ -370,9 +381,9 @@ const ListsPage: React.FC = () => {
             </IonSegmentButton>
           </IonSegment>
         </div>
-        
+
         <div className="search-bar">
-          <IonSearchbar 
+          <IonSearchbar
             placeholder="Buscar productos"
             value={searchText}
             onIonChange={handleSearch}
@@ -383,7 +394,7 @@ const ListsPage: React.FC = () => {
         {segment === 'categories' && (
           <>
             {renderCategories()}
-            
+
             {selectedCategory && (
               <>
                 <h3 className="category-title">
@@ -396,7 +407,7 @@ const ListsPage: React.FC = () => {
             )}
           </>
         )}
-        
+
         {segment === 'lists' && (
           <div className="no-lists-found">
             <IonIcon icon={add} className="empty-icon" />
