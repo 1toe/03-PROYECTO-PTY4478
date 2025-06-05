@@ -35,11 +35,7 @@ const ProductListInChat: React.FC<ProductListInChatProps> = ({
     const price = product.precio || parseFloat(product.price_current || '0');
     if (price === 0) return 'Precio no disponible';
     
-    return new Intl.NumberFormat('es-CL', {
-      style: 'currency',
-      currency: 'CLP',
-      minimumFractionDigits: 0
-    }).format(price);
+    return `$${price}`;
   };
 
   const handleAddToCart = (product: Producto) => {

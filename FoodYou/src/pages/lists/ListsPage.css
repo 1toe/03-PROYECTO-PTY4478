@@ -62,34 +62,46 @@
 }
 
 /* Contenedor de categorías con scroll horizontal */
+.categories-scroll-container {
+  position: relative;
+  margin-bottom: 16px;
+}
+
 .categories-container {
   padding: 16px;
   overflow-x: auto;
+  overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */
+  scroll-behavior: smooth;
 }
 
 .categories-container::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera */
 }
 
-/* Grid de categorías horizontal */
+/* Grid de categorías horizontal - MEJORADO */
 .categories-container ion-grid {
   width: max-content;
   min-width: 100%;
+  white-space: nowrap;
 }
 
-.categories-container ion-row {
-  flex-wrap: nowrap;
+.categories-container .categories-row {
+  flex-wrap: nowrap !important;
   width: max-content;
+  display: flex !important;
+  white-space: nowrap;
 }
 
 .categories-container ion-col {
-  width: 150px;
-  min-width: 150px;
-  max-width: 200px;
+  width: 200px;
+  min-width: 200px;
+  max-width: 240px;
   padding: 5px;
+  flex-shrink: 0;
+  display: inline-block;
 }
 
 .selected-category {
@@ -97,6 +109,18 @@
   border: 2px solid var(--ion-color-primary);
   transform: translateY(-3px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.category-card {
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  height: 100%;
+  min-height: 80px;
+}
+
+.category-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .category-title {
@@ -316,23 +340,25 @@
   animation: slideIn 0.3s ease-out;
 }
 
-/* Indicador de scroll horizontal */
+/* Indicador de scroll horizontal - MEJORADO */
 .scroll-indicator {
   display: flex;
   justify-content: center;
-  padding: 8px 0;
+  padding: 8px 16px;
+  margin-bottom: 8px;
 }
 
-.scroll-indicator span {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: var(--ion-color-medium);
-  margin: 0 4px;
-  opacity: 0.3;
+.scroll-indicator .scroll-hint {
+  font-size: 0.85rem;
+  opacity: 0.8;
+  font-style: italic;
+  color: var(--ion-color-medium);
+  animation: pulse 2s infinite;
+  text-align: center;
 }
 
-.scroll-indicator span.active {
-  opacity: 1;
-  background-color: var(--ion-color-primary);
+@keyframes pulse {
+  0% { opacity: 0.5; }
+  50% { opacity: 0.9; }
+  100% { opacity: 0.5; }
 }

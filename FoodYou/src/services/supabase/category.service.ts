@@ -56,13 +56,13 @@ export const CategoryService = {
       const { count } = await supabase
         .from('products_unimarc')
         .select('*', { count: 'exact', head: true })
-        .eq('category_vtex_id', categoryId);      // Luego obtener los productos con paginación
+        .eq('category_vtex_id', categoryId);
       const { data, error } = await supabase
         .from('products_unimarc')
         .select(`
           *,
           brands_unimarc(name),
-          product_prices_unimarc(price_current, is_in_offer),
+          product_prices_unimarc(price_current, is_in_offer, saving_text),
           product_images_unimarc(image_url, is_primary)
         `)
         .eq('category_vtex_id', categoryId)
@@ -73,20 +73,62 @@ export const CategoryService = {
         console.error('Error al obtener productos:', error);
         throw error;
       }      // Transformar los datos al formato esperado
-      const products: Producto[] = (data || []).map(product => ({
-        id: product.ean,
-        ean: product.ean,
-        nombre_producto: product.name_vtex || product.name_okto,
-        marca: product.brands_unimarc?.name || '',
-        sku: product.sku_item_vtex || '',
-        precio: parseFloat(product.product_prices_unimarc?.[0]?.price_current) || 0,
-        url_imagen: product.product_images_unimarc?.find((img: any) => img.is_primary)?.image_url ||
-          product.product_images_unimarc?.[0]?.image_url || '',
-        categoria: categoryId,
-        peso_gramos: product.size_value_okto || null,
-        descripcion: product.description_short_vtex || product.description_long_okto || '',
-        en_oferta: product.product_prices_unimarc?.[0]?.is_in_offer || false
-      }));
+      const products: Producto[] = (data || []).map(product => {
+        const priceInfo = product.product_prices_unimarc?.[0]; // Acceder al primer elemento del array
+        const currentPrice = priceInfo?.price_current;
+        
+        // DEBUG: Log de información de precios
+        console.log(`[CategoryService] Producto: ${product.name_vtex || product.name_okto}`);
+        console.log(`[CategoryService] Price info:`, priceInfo);
+        console.log(`[CategoryService] Current price raw:`, currentPrice);
+        
+        // Mejorar el procesamiento de precios
+        let precioFinal = 0;
+        let priceCurrentFinal = '';
+        
+        if (currentPrice) {
+          // Remover caracteres no numéricos excepto puntos y comas
+          const cleanPrice = currentPrice.toString().replace(/[^\d.,-]/g, '');
+          console.log(`[CategoryService] Clean price:`, cleanPrice);
+          
+          // Convertir comas a puntos para decimales
+          const normalizedPrice = cleanPrice.replace(',', '.');
+          const parsedPrice = parseFloat(normalizedPrice);
+          
+          if (!isNaN(parsedPrice) && parsedPrice > 0) {
+            precioFinal = parsedPrice;
+            priceCurrentFinal = currentPrice.toString();
+          }
+          
+          console.log(`[CategoryService] Final parsed price:`, precioFinal);
+        }
+
+        const transformedProduct = {
+          id: product.ean,
+          ean: product.ean,
+          nombre_producto: product.name_vtex || product.name_okto,
+          marca: product.brands_unimarc?.name || '',
+          sku: product.sku_item_vtex || '',
+          precio: precioFinal,
+          price_current: priceCurrentFinal,
+          url_imagen: product.product_images_unimarc?.find((img: any) => img.is_primary)?.image_url ||
+            product.product_images_unimarc?.[0]?.image_url || '',
+          categoria: product.category_vtex_id,
+          peso_gramos: product.size_value_okto || null,
+          descripcion: product.description_short_vtex || product.description_long_okto || '',
+          en_oferta: priceInfo?.is_in_offer || false,
+          is_in_offer: priceInfo?.is_in_offer || false,
+          saving_text: (priceInfo?.is_in_offer && priceInfo?.saving_text) ? priceInfo.saving_text : undefined
+        };
+        
+        console.log(`[CategoryService] Transformed product:`, {
+          nombre: transformedProduct.nombre_producto,
+          precio: transformedProduct.precio,
+          price_current: transformedProduct.price_current
+        });
+        
+        return transformedProduct;
+      });
 
       return {
         products,
@@ -120,7 +162,7 @@ export const CategoryService = {
         .select(`
           *,
           brands_unimarc(name),
-          product_prices_unimarc(price_current, is_in_offer),
+          product_prices_unimarc(price_current, is_in_offer, saving_text),
           product_images_unimarc(image_url, is_primary)
         `)
         .or(`name_vtex.ilike.%${searchText}%,name_okto.ilike.%${searchText}%,description_short_vtex.ilike.%${searchText}%`)
@@ -131,20 +173,54 @@ export const CategoryService = {
         console.error('Error en la búsqueda:', error);
         throw error;
       }      // Transformar los datos al formato esperado
-      const products: Producto[] = (data || []).map(product => ({
-        id: product.ean,
-        ean: product.ean,
-        nombre_producto: product.name_vtex || product.name_okto,
-        marca: product.brands_unimarc?.name || '',
-        sku: product.sku_item_vtex || '',
-        precio: parseFloat(product.product_prices_unimarc?.[0]?.price_current) || 0,
-        url_imagen: product.product_images_unimarc?.find((img: any) => img.is_primary)?.image_url ||
-          product.product_images_unimarc?.[0]?.image_url || '',
-        categoria: product.category_vtex_id,
-        peso_gramos: product.size_value_okto || null,
-        descripcion: product.description_short_vtex || product.description_long_okto || '',
-        en_oferta: product.product_prices_unimarc?.[0]?.is_in_offer || false
-      }));
+      const products: Producto[] = (data || []).map(product => {
+        const priceInfo = product.product_prices_unimarc?.[0];
+        const currentPrice = priceInfo?.price_current;
+
+        // DEBUG: Log de información de precios para búsqueda
+        console.log(`[CategoryService Search] Producto: ${product.name_vtex || product.name_okto}`);
+        console.log(`[CategoryService Search] Price info:`, priceInfo);
+        console.log(`[CategoryService Search] Current price raw:`, currentPrice);
+        
+        // Mejorar el procesamiento de precios
+        let precioFinal = 0;
+        let priceCurrentFinal = '';
+        
+        if (currentPrice) {
+          // Remover caracteres no numéricos excepto puntos y comas
+          const cleanPrice = currentPrice.toString().replace(/[^\d.,-]/g, '');
+          console.log(`[CategoryService Search] Clean price:`, cleanPrice);
+          
+          // Convertir comas a puntos para decimales
+          const normalizedPrice = cleanPrice.replace(',', '.');
+          const parsedPrice = parseFloat(normalizedPrice);
+          
+          if (!isNaN(parsedPrice) && parsedPrice > 0) {
+            precioFinal = parsedPrice;
+            priceCurrentFinal = currentPrice.toString();
+          }
+          
+          console.log(`[CategoryService Search] Final parsed price:`, precioFinal);
+        }
+
+        return {
+          id: product.ean,
+          ean: product.ean,
+          nombre_producto: product.name_vtex || product.name_okto,
+          marca: product.brands_unimarc?.name || '',
+          sku: product.sku_item_vtex || '',
+          precio: precioFinal,
+          price_current: priceCurrentFinal,
+          url_imagen: product.product_images_unimarc?.find((img: any) => img.is_primary)?.image_url ||
+            product.product_images_unimarc?.[0]?.image_url || '',
+          categoria: product.category_vtex_id,
+          peso_gramos: product.size_value_okto || null,
+          descripcion: product.description_short_vtex || product.description_long_okto || '',
+          en_oferta: priceInfo?.is_in_offer || false,
+          is_in_offer: priceInfo?.is_in_offer || false,
+          saving_text: (priceInfo?.is_in_offer && priceInfo?.saving_text) ? priceInfo.saving_text : undefined
+        };
+      });
 
       return {
         products,

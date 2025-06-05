@@ -31,12 +31,25 @@ import {
 import { add, cart, storefront, pricetag } from 'ionicons/icons';
 import { CategoryService, Categoria } from '../../services/supabase/category.service';
 
-const formatPrice = (price: number): string => {
-  return new Intl.NumberFormat('es-CL', { 
+const formatPrice = (price: number | string): string => {
+  console.log(`[ListsPage formatPrice] Input price:`, price, typeof price);
+  
+  const numericPrice = typeof price === 'string' ? parseFloat(price.replace(/[^\d.,-]/g, '')) : price;
+  console.log(`[ListsPage formatPrice] Numeric price:`, numericPrice);
+  
+  if (isNaN(numericPrice) || numericPrice <= 0) {
+    console.log(`[ListsPage formatPrice] Invalid price, returning 'Precio no disponible'`);
+    return 'Precio no disponible';
+  }
+  
+  const formattedPrice = new Intl.NumberFormat('es-CL', { 
     style: 'currency', 
     currency: 'CLP',
     minimumFractionDigits: 0
-  }).format(price);
+  }).format(numericPrice);
+  
+  console.log(`[ListsPage formatPrice] Formatted price:`, formattedPrice);
+  return formattedPrice;
 };
 import { ProductService, Producto } from '../../services/supabase/product.service';
 import './ListsPage.css';
@@ -90,12 +103,22 @@ const ListsPage: React.FC = () => {
     setHasMoreData(true);
     await loadProductsByCategory(categoryId, 0);
   };
-
   const loadProductsByCategory = async (categoryId: string, page: number = 0) => {
     try {
+      console.log(`[ListsPage] Loading products for category ${categoryId}, page ${page}`);
       if (page === 0) setLoadingProducts(true);
       
       const result = await CategoryService.getProductsByCategory(categoryId, page, pageSize);
+      console.log(`[ListsPage] Products loaded:`, result.products.length, 'total:', result.total);
+      
+      // Log de muestra de productos para debug
+      if (result.products.length > 0) {
+        console.log(`[ListsPage] Sample product:`, {
+          nombre: result.products[0].nombre_producto,
+          precio: result.products[0].precio,
+          price_current: result.products[0].price_current
+        });
+      }
       
       if (page === 0) {
         setProducts(result.products);
@@ -168,8 +191,9 @@ const ListsPage: React.FC = () => {
     }
     event.detail.complete();
   };
-  
-  const renderCategories = () => {
+    const renderCategories = () => {
+    console.log(`[ListsPage] Rendering categories, count: ${categories.length}`);
+    
     if (loading && categories.length === 0) {
       return (
         <div className="loading-container">
@@ -188,12 +212,14 @@ const ListsPage: React.FC = () => {
         </div>
       );
     }
+    
+    console.log(`[ListsPage] Categories sample:`, categories.slice(0, 3).map(c => c.display_name || c.name));
 
     return (
       <div className="categories-scroll-container">
         <div className="categories-container">
           <IonGrid>
-            <IonRow>
+            <IonRow className="categories-row">
               {categories.map((category) => (
                 <IonCol size="auto" key={category.category_vtex_id}>
                   <IonCard 
@@ -202,9 +228,9 @@ const ListsPage: React.FC = () => {
                     button
                   >
                     <IonCardHeader>
-                      <IonCardTitle>{category.name}</IonCardTitle>
+                      <IonCardTitle>{category.display_name || category.name}</IonCardTitle>
                     </IonCardHeader>
-                    {category.category_okto_name && (
+                    {category.category_okto_name && category.category_okto_name !== category.name && (
                       <IonCardContent>
                         <p className="category-description">{category.category_okto_name}</p>
                       </IonCardContent>
@@ -268,12 +294,28 @@ const ListsPage: React.FC = () => {
                     {product.marca && (
                       <p className="product-brand">{product.marca}</p>
                     )}
-                  </IonCardHeader>
-                  <IonCardContent>
+                  </IonCardHeader>                  <IonCardContent>
                     <div className="product-details">
                       <div className="product-price">
                         <IonIcon icon={pricetag} />
-                        {product.precio ? formatPrice(product.precio) : '$0'}
+                        {(() => {
+                          // Debug logging para renderizado de precios
+                          console.log(`[ListsPage Render] Product ${product.nombre_producto}:`, {
+                            precio: product.precio,
+                            price_current: product.price_current,
+                            tipo_precio: typeof product.precio,
+                            tipo_price_current: typeof product.price_current
+                          });
+                          
+                          // Prioridad: precio > price_current > mensaje por defecto
+                          if (product.precio && product.precio > 0) {
+                            return formatPrice(product.precio);
+                          } else if (product.price_current && product.price_current !== '') {
+                            return formatPrice(product.price_current);
+                          } else {
+                            return 'Precio no disponible';
+                          }
+                        })()}
                       </div>
                       {product.peso_gramos && (
                         <IonChip outline>
