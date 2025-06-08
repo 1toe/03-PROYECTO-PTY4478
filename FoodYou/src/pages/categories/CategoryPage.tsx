@@ -181,7 +181,6 @@ const CategoryPage: React.FC = () => {
     return (
       <>
         <div className="products-header">
-          <p>{totalProducts} productos encontrados</p>
         </div>
         <IonGrid>
           <IonRow>
