@@ -30,6 +30,8 @@ import {
 import { useParams } from 'react-router-dom';
 import { cart, pricetag, arrowBack } from 'ionicons/icons';
 import { CategoryService } from '../../services/supabase/category.service';
+import { Producto, ProductService } from '../../services/supabase/product.service';
+import { filterUniqueProducts } from '../../utils/product.utils';
 
 const formatPrice = (price: number): string => {
   return new Intl.NumberFormat('es-CL', {
@@ -38,13 +40,11 @@ const formatPrice = (price: number): string => {
     minimumFractionDigits: 0
   }).format(price);
 };
-import { Producto } from '../../services/supabase/product.service';
 import './CategoryPage.css';
 
 interface CategoryPageParams {
   categoryId: string;
 }
-
 const CategoryPage: React.FC = () => {
   const { categoryId } = useParams<CategoryPageParams>();
   const [products, setProducts] = useState<Producto[]>([]);
@@ -79,22 +79,26 @@ const CategoryPage: React.FC = () => {
     setHasMoreData(true);
     await loadProductsByCategory(0);
   };
-
   const loadProductsByCategory = async (page: number = 0) => {
     try {
       if (page === 0) setLoadingProducts(true);
 
-      const result = await CategoryService.getProductsByCategory(categoryId, page, pageSize);
+      const result = await CategoryService.getProductsByCategory(categoryId, {
+        page: page + 1, // CategoryService espera página basada en 1, no en 0
+        limit: pageSize
+      });
+
+      const uniqueProducts = filterUniqueProducts(result.products);
 
       if (page === 0) {
-        setProducts(result.products);
+        setProducts(uniqueProducts);
       } else {
-        setProducts(prev => [...prev, ...result.products]);
+        setProducts(prev => filterUniqueProducts([...prev, ...uniqueProducts]));
       }
 
-      setTotalProducts(result.total);
+      setTotalProducts(result.totalCount);
       setCurrentPage(page);
-      setHasMoreData(result.products.length === pageSize && (page + 1) * pageSize < result.total);
+      setHasMoreData(result.products.length === pageSize && (page + 1) * pageSize < result.totalCount);
 
       if (page === 0) setLoadingProducts(false);
     } catch (error) {
@@ -102,7 +106,6 @@ const CategoryPage: React.FC = () => {
       if (page === 0) setLoadingProducts(false);
     }
   };
-
   const handleSearch = async (e: CustomEvent) => {
     const query = e.detail.value?.toLowerCase() || '';
     setSearchText(query);
@@ -111,11 +114,12 @@ const CategoryPage: React.FC = () => {
       try {
         setLoadingProducts(true);
         setProducts([]);
-        const result = await CategoryService.searchProducts(query, 0, pageSize);
-        setProducts(result.products);
-        setTotalProducts(result.total);
+        const searchResults = await ProductService.searchProducts(query, pageSize);
+        const uniqueProducts = filterUniqueProducts(searchResults);
+        setProducts(uniqueProducts);
+        setTotalProducts(uniqueProducts.length);
         setCurrentPage(0);
-        setHasMoreData(result.products.length === pageSize);
+        setHasMoreData(searchResults.length === pageSize);
         setLoadingProducts(false);
       } catch (error) {
         console.error('Error en la búsqueda:', error);
@@ -125,7 +129,6 @@ const CategoryPage: React.FC = () => {
       resetProductsAndLoad();
     }
   };
-
   const loadMore = async (event: any) => {
     if (!hasMoreData) {
       event.target.complete();
@@ -136,10 +139,14 @@ const CategoryPage: React.FC = () => {
 
     try {
       if (searchText.length > 2) {
-        const result = await CategoryService.searchProducts(searchText, nextPage, pageSize);
-        setProducts(prev => [...prev, ...result.products]);
+        // Para búsquedas, cargar más productos desde ProductService
+        const searchResults = await ProductService.searchProducts(searchText, (nextPage + 1) * pageSize);
+        const uniqueProducts = filterUniqueProducts(searchResults);
+        // Agregar solo los productos nuevos (skip los ya mostrados)
+        const newProducts = uniqueProducts.slice(currentPage * pageSize);
+        setProducts(prev => filterUniqueProducts([...prev, ...newProducts]));
         setCurrentPage(nextPage);
-        setHasMoreData(result.products.length === pageSize && (nextPage + 1) * pageSize < result.total);
+        setHasMoreData(newProducts.length === pageSize);
       } else {
         await loadProductsByCategory(nextPage);
       }

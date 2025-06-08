@@ -30,7 +30,8 @@ import {
 } from '@ionic/react';
 import { add, cart, storefront, pricetag, warning, flame } from 'ionicons/icons';
 import { CategoryService, Categoria } from '../../services/supabase/category.service';
-import { Producto } from '../../services/supabase/product.service';
+import { Producto, ProductService } from '../../services/supabase/product.service';
+import { filterUniqueProducts } from '../../utils/product.utils';
 import '../../components/chat/ProductListInChat.css';
 import './ListsPage.css';
 
@@ -83,19 +84,23 @@ const ListsPage: React.FC = () => {
     setCurrentPage(0);
     setHasMoreData(true);
     await loadProductsByCategory(categoryId, 0);
-  };
-  const loadProductsByCategory = async (categoryId: string, page: number = 0) => {
+  };  const loadProductsByCategory = async (categoryId: string, page: number = 0) => {
     try {
       if (page === 0) setLoadingProducts(true);
 
-      const result = await CategoryService.getProductsByCategory(categoryId, page, pageSize);
+      const result = await CategoryService.getProductsByCategory(categoryId, { 
+        page: page + 1, // CategoryService espera página basada en 1, no en 0
+        limit: pageSize 
+      });
 
       if (page === 0) {
         setProducts(result.products);
       } else {
         setProducts(prev => [...prev, ...result.products]);
       }
+      setTotalProducts(result.totalCount);
       setCurrentPage(page);
+      setHasMoreData(result.products.length === pageSize && (page + 1) * pageSize < result.totalCount);
 
       if (page === 0) setLoadingProducts(false);
     } catch (error) {
@@ -103,7 +108,6 @@ const ListsPage: React.FC = () => {
       if (page === 0) setLoadingProducts(false);
     }
   };
-
   const handleSearch = async (e: CustomEvent) => {
     const query = e.detail.value?.toLowerCase() || '';
     setSearchText(query);
@@ -112,12 +116,12 @@ const ListsPage: React.FC = () => {
       try {
         setLoadingProducts(true);
         setProducts([]);
-        const result = await CategoryService.searchProducts(query, 0, pageSize);
-        setProducts(result.products);
-        setTotalProducts(result.total);
+        const searchResults = await ProductService.searchProducts(query, pageSize);
+        setProducts(searchResults);
+        setTotalProducts(searchResults.length);
         setSelectedCategory(null);
         setCurrentPage(0);
-        setHasMoreData(result.products.length === pageSize);
+        setHasMoreData(searchResults.length === pageSize);
         setLoadingProducts(false);
       } catch (error) {
         console.error('Error en la búsqueda:', error);
@@ -127,7 +131,6 @@ const ListsPage: React.FC = () => {
       resetProductsAndLoad(selectedCategory);
     }
   };
-
   const loadMore = async (event: any) => {
     if (!hasMoreData) {
       event.target.complete();
@@ -138,9 +141,13 @@ const ListsPage: React.FC = () => {
 
     try {
       if (searchText.length > 2) {
-        const result = await CategoryService.searchProducts(searchText, nextPage, pageSize);
-        setProducts(prev => [...prev, ...result.products]);
-        setHasMoreData(result.products.length === pageSize && (nextPage + 1) * pageSize < result.total);
+        // Para búsquedas, cargar más productos desde ProductService
+        const searchResults = await ProductService.searchProducts(searchText, (nextPage + 1) * pageSize);
+        // Agregar solo los productos nuevos (skip los ya mostrados)
+        const newProducts = searchResults.slice(currentPage * pageSize);
+        setProducts(prev => [...prev, ...newProducts]);
+        setCurrentPage(nextPage);
+        setHasMoreData(newProducts.length === pageSize);
       } else if (selectedCategory) {
         await loadProductsByCategory(selectedCategory, nextPage);
       }
