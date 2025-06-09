@@ -40,7 +40,7 @@ const LoginPage: React.FC = () => {
     if (!authLoading && user) {
       const from = location.state && (location.state as any).from;
       const pathname = from?.pathname || '/app/home';
-      
+
       if (location.pathname !== pathname) {
         console.log('✅ Usuario autenticado, redirigiendo a:', pathname);
         history.replace(pathname);
@@ -150,13 +150,6 @@ const LoginPage: React.FC = () => {
               />
             </IonItem>
 
-            <IonItem lines="none" className="remember-me-item">
-              <IonCheckbox
-                checked={rememberMe}
-                onIonChange={e => setRememberMe(e.detail.checked)}
-              />
-              <IonLabel className="remember-me-label">Recordar mi sesión</IonLabel>
-            </IonItem>
 
             {errorMessage && (
               <IonText color="danger" className="error-message">
