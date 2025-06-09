@@ -19,7 +19,6 @@ import {
 } from '@ionic/react';
 import { useHistory, useLocation } from 'react-router-dom';
 import './Auth.css';
-import { AuthService } from '../../services/supabase/auth.service';
 import { useAuth } from '../../AuthContext';
 import logoImage from '../../assets/logo.png';
 
@@ -30,29 +29,24 @@ const LoginPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [showAlert, setShowAlert] = useState(false);
-  const [redirected, setRedirected] = useState(false); // Nuevo estado para evitar redirecciones múltiples
+
   const history = useHistory();
   const location = useLocation();
   const { loading: authLoading, user, login } = useAuth();
   const [present] = useIonToast();
 
+
   useEffect(() => {
-    // Solo redirigir si no estamos cargando, hay usuario y no hemos redirigido ya
-    if (!authLoading && user && !redirected) {
+    if (!authLoading && user) {
       const from = location.state && (location.state as any).from;
       const pathname = from?.pathname || '/app/home';
-      console.log('LoginPage: Usuario ya autenticado, redirigiendo a:', pathname);
-      setRedirected(true); // Marcar como redirigido
-      history.replace(pathname);
+      
+      if (location.pathname !== pathname) {
+        console.log('✅ Usuario autenticado, redirigiendo a:', pathname);
+        history.replace(pathname);
+      }
     }
-  }, [authLoading, user, history, location.state, redirected]);
-
-  // Resetear redirected cuando no hay usuario
-  useEffect(() => {
-    if (!user) {
-      setRedirected(false);
-    }
-  }, [user]);
+  }, [authLoading, user, history, location.state, location.pathname]);
 
   useEffect(() => {
     const savedRememberMe = localStorage.getItem('rememberMe');
@@ -80,22 +74,16 @@ const LoginPage: React.FC = () => {
     setIsLoading(true);
     setErrorMessage('');
 
-    if (!email || !password) {
+    if (!email?.trim() || !password?.trim()) {
       setErrorMessage('Por favor ingresa email y contraseña');
       setIsLoading(false);
       return;
     }
 
-    if (!email.trim() || !password.trim()) {
-      setErrorMessage('Email y contraseña no pueden estar vacíos');
-      setIsLoading(false);
-      return;
-    }
-
     try {
-      console.log('LoginPage: Intentando login con:', email.trim(), 'Recordar:', rememberMe);
-      const result = await login(email.trim(), password.trim(), rememberMe);
-      console.log('LoginPage: Login exitoso:', result);
+      console.log('🔄 Intentando login...');
+      await login(email.trim(), password.trim(), rememberMe);
+
       present({
         message: 'Inicio de sesión exitoso',
         duration: 2000,
@@ -103,11 +91,15 @@ const LoginPage: React.FC = () => {
       });
 
     } catch (error: any) {
-      console.error('LoginPage: Error al iniciar sesión:', error);
-      if (error.message?.includes('Invalid login')) {
+      console.error('❌ Error al iniciar sesión:', error);
+
+      // Mensajes de error más específicos
+      if (error.message?.includes('Invalid login') || error.message?.includes('invalid_credentials')) {
         setErrorMessage('Usuario o contraseña incorrectos');
       } else if (error.message?.includes('Email not confirmed')) {
         setErrorMessage('Email no confirmado. Por favor verifica tu bandeja de entrada.');
+      } else if (error.message?.includes('Too many requests')) {
+        setErrorMessage('Demasiados intentos. Espera unos minutos antes de intentar nuevamente.');
       } else {
         setErrorMessage(error.message || 'Error al iniciar sesión');
       }
@@ -116,14 +108,21 @@ const LoginPage: React.FC = () => {
     }
   };
 
+  if (authLoading) {
+    return (
+      <IonPage>
+        <IonContent>
+          <IonLoading isOpen={true} message="Verificando sesión..." />
+        </IonContent>
+      </IonPage>
+    );
+  }
+
   return (
     <IonPage>
       <IonHeader>
       </IonHeader>
       <IonContent className="ion-padding">
-        {/* Aquí se usa authLoading del AuthContext */}
-        <IonLoading isOpen={authLoading} message="Verificando sesión..." />
-
         <div className="login-container">
           <img src={logoImage} alt="FoodYou" className="logo" />
           <h1>Iniciar Sesión</h1>
@@ -171,13 +170,9 @@ const LoginPage: React.FC = () => {
               className="ion-margin-top"
               disabled={isLoading}
             >
-              Iniciar Sesión
+              {isLoading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
             </IonButton>
           </form>
-
-          <IonRow className="ion-justify-content-center">
-
-          </IonRow>
 
           <IonRow className="ion-justify-content-center">
             <IonCol size="12" className="ion-text-center">
@@ -206,3 +201,4 @@ const LoginPage: React.FC = () => {
 };
 
 export default LoginPage;
+

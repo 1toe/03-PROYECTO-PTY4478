@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Route, Redirect, RouteProps } from 'react-router-dom';
 import { IonLoading } from '@ionic/react';
 import { useAuth } from '../AuthContext';
@@ -9,37 +9,17 @@ interface PrivateRouteProps extends RouteProps {
 
 const PrivateRoute: React.FC<PrivateRouteProps> = ({ component: Component, ...rest }) => {
   const { user, loading } = useAuth();
-  const [localLoading, setLocalLoading] = useState(true);
-  const [loadingMessage, setLoadingMessage] = useState("Verificando sesión...");
-
-  useEffect(() => {
-    const routeTimeout = setTimeout(() => {
-      if (loading) {
-        setLoadingMessage("Tomando más tiempo de lo esperado...");
-
-        const finalTimeout = setTimeout(() => {
-          setLocalLoading(false);
-        }, 2000);
-
-        return () => clearTimeout(finalTimeout);
-      }
-    }, 3000);
-
-    if (!loading) {
-      setLocalLoading(false);
-    }
-
-    return () => clearTimeout(routeTimeout);
-  }, [loading]);
 
   return (
     <Route
       {...rest}
       render={props => {
-        if (loading && localLoading) {
-          return <IonLoading isOpen={true} message={loadingMessage} />;
+        // Mostrar loading mientras se verifica la autenticación
+        if (loading) {
+          return <IonLoading isOpen={true} message="Verificando sesión..." />;
         }
 
+        // Si no hay usuario, redirigir al login
         if (!user) {
           return (
             <Redirect
@@ -51,6 +31,7 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ component: Component, ...re
           );
         }
 
+        // Si hay usuario, mostrar el componente
         return <Component {...props} />;
       }}
     />
@@ -58,3 +39,4 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ component: Component, ...re
 };
 
 export default PrivateRoute;
+

@@ -21,7 +21,6 @@ import {
 } from '@ionic/react';
 import { logOut, settings, person, moon, notifications } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
-import { AuthService } from '../../services/supabase/auth.service';
 import { useAuth } from '../../AuthContext';
 import './ProfilePage.css';
 
@@ -30,46 +29,19 @@ const ProfilePage: React.FC = () => {
   const [userEmail, setUserEmail] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showLogoutAlert, setShowLogoutAlert] = useState<boolean>(false);
-  const [profileLoaded, setProfileLoaded] = useState<boolean>(false); // Nuevo estado para evitar recargas
+  
   const history = useHistory();
   const { logout, user } = useAuth();
   const [presentToast] = useIonToast();
 
+  // Cargar datos del usuario desde el contexto
   useEffect(() => {
-    const loadUserProfile = async () => {
-      try {
-        // Solo cargar si hay usuario y no se ha cargado ya
-        if (!user || profileLoaded) {
-          return;
-        }
-
-        console.log('Cargando perfil para usuario:', user.email);
-
-        const currentUser = await AuthService.getCurrentUser();
-        if (currentUser) {
-          setUserName(currentUser.user_metadata?.name || 'Usuario');
-          setUserEmail(currentUser.email || '');
-          setProfileLoaded(true); 
-        } else {
-          console.log('No se pudo obtener usuario actual');
-        }
-      } catch (error) {
-        console.error('Error al cargar perfil:', error);
-
-        if (error instanceof Error && (error.message?.includes('session') || error.message?.includes('Session'))) {
-          setUserName('');
-          setUserEmail('');
-        }
-      }
-    };
-
-    loadUserProfile();
-  }, [user, profileLoaded]);
-
-  // Resetear profileLoaded cuando cambie el usuario
-  useEffect(() => {
-    if (!user) {
-      setProfileLoaded(false);
+    if (user) {
+      console.log('✅ Cargando perfil para usuario:', user.email);
+      setUserName(user.user_metadata?.name || 'Usuario');
+      setUserEmail(user.email || '');
+    } else {
+      console.log('❌ No hay usuario en el contexto');
       setUserName('');
       setUserEmail('');
     }
@@ -78,16 +50,20 @@ const ProfilePage: React.FC = () => {
   const handleLogout = async () => {
     try {
       setIsLoading(true);
+      console.log('🔄 Iniciando logout desde ProfilePage...');
+      
       await logout();
-      // Mostrar mensaje de éxito
+      
       presentToast({
         message: 'Has cerrado sesión correctamente',
         duration: 2000,
         color: 'success'
       });
-      // No hacemos redirección manual, el PrivateRoute se encargará
+      
+      console.log('✅ Logout completado desde ProfilePage');
+      
     } catch (error) {
-      console.error('Error al cerrar sesión:', error);
+      console.error('❌ Error al cerrar sesión:', error);
       presentToast({
         message: 'Error al cerrar sesión',
         duration: 2000,
@@ -174,3 +150,4 @@ const ProfilePage: React.FC = () => {
 };
 
 export default ProfilePage;
+
