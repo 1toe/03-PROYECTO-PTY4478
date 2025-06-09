@@ -13,7 +13,7 @@ const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true); 
+  const [loading, setLoading] = useState(true);
   const tempSessionActiveRef = useRef(false);
   const authTimeoutRef = useRef<number | null>(null);
   // Referencia para evitar múltiples intentos de logout simultáneos
@@ -43,7 +43,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           authTimeoutRef.current = null;
         }
 
-        setLoading(false); 
+        setLoading(false);
         tempSessionActiveRef.current = sessionStorage.getItem('temporarySession') === 'true';
       } catch (err) {
         console.error('Error no controlado al obtener sesión inicial:', err);
@@ -126,7 +126,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return data;
     } catch (error) {
       console.error('Error en contexto de autenticación (login):', error);
-      setLoading(false); 
+      setLoading(false);
       throw error;
     }
   };
@@ -137,18 +137,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       console.log('Logout ya en progreso, evitando llamada duplicada');
       return;
     }
-    
+
     try {
       isLoggingOutRef.current = true;
       console.log('Iniciando proceso de logout');
-      
+
       // Limpiar datos de sesión local primero
       sessionStorage.removeItem('temporarySession');
       tempSessionActiveRef.current = false;
-      
+
       // Llamar a signOut de Supabase
       const { error } = await supabase.auth.signOut();
-      
+
       if (error) {
         console.error('Error en supabase.auth.signOut():', error);
         // Forzar limpieza de estado aunque haya error

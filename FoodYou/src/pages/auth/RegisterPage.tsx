@@ -24,20 +24,26 @@ const RegisterPage: React.FC = () => {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [redirected, setRedirected] = useState(false); // Nuevo estado para evitar redirecciones múltiples
   const history = useHistory();
   const location = useLocation();
   const { loading: authLoading, user, register } = useAuth();
 
-  // Verificar si ya está autenticado al cargar la página
+  // Agregar useEffect para manejar redirección después del registro
   useEffect(() => {
-    // Este useEffect es la fuente de verdad para la redirección post-registro/login
-    if (!authLoading && user) {
-      const from = location.state && (location.state as any).from;
-      const pathname = from?.pathname || '/app/home';
-      console.log('RegisterPage: Usuario ya autenticado, redirigiendo a:', pathname);
-      history.replace(pathname);
+    if (!authLoading && user && !redirected) {
+      console.log('RegisterPage: Usuario registrado y autenticado, redirigiendo');
+      setRedirected(true);
+      history.replace('/app/home');
     }
-  }, [authLoading, user, history, location.state]);
+  }, [authLoading, user, history, redirected]);
+
+  // Resetear redirected cuando no hay usuario
+  useEffect(() => {
+    if (!user) {
+      setRedirected(false);
+    }
+  }, [user]);
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();

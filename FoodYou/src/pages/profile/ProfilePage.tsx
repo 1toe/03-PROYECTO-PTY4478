@@ -30,33 +30,51 @@ const ProfilePage: React.FC = () => {
   const [userEmail, setUserEmail] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showLogoutAlert, setShowLogoutAlert] = useState<boolean>(false);
+  const [profileLoaded, setProfileLoaded] = useState<boolean>(false); // Nuevo estado para evitar recargas
   const history = useHistory();
   const { logout, user } = useAuth();
   const [presentToast] = useIonToast();
+
   useEffect(() => {
     const loadUserProfile = async () => {
       try {
-        // Verificar primero si hay un usuario en el contexto
-        if (!user) {
-          console.log('No hay usuario en contexto, no cargando perfil');
+        // Solo cargar si hay usuario y no se ha cargado ya
+        if (!user || profileLoaded) {
           return;
         }
+
+        console.log('Cargando perfil para usuario:', user.email);
 
         const currentUser = await AuthService.getCurrentUser();
         if (currentUser) {
           setUserName(currentUser.user_metadata?.name || 'Usuario');
           setUserEmail(currentUser.email || '');
+          setProfileLoaded(true); // Marcar como cargado
         } else {
           console.log('No se pudo obtener usuario actual');
-          // No hacer redirección manual aquí, dejar que PrivateRoute lo maneje
         }
       } catch (error) {
         console.error('Error al cargar perfil:', error);
+        // Si hay error de sesión, limpiar estados
+        if (error instanceof Error && (error.message?.includes('session') || error.message?.includes('Session'))) {
+          setUserName('');
+          setUserEmail('');
+        }
       }
     };
 
     loadUserProfile();
-  }, [user]); // Agregar user como dependencia
+  }, [user]); // Remover profileLoaded para evitar bucles infinitos
+
+  // Resetear profileLoaded cuando cambie el usuario
+  useEffect(() => {
+    if (!user) {
+      setProfileLoaded(false);
+      setUserName('');
+      setUserEmail('');
+    }
+  }, [user]);
+
   const handleLogout = async () => {
     try {
       setIsLoading(true);

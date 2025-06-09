@@ -31,6 +31,11 @@ export class AuthService {
   }
 
   static async getCurrentUser() {
+    // Verificar primero si hay una sesión activa
+    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+    if (sessionError) throw sessionError;
+    if (!session) return null; // No hay sesión activa
+    
     const { data: { user }, error } = await supabase.auth.getUser();
     if (error) throw error;
     return user;

@@ -30,20 +30,29 @@ const LoginPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [showAlert, setShowAlert] = useState(false);
+  const [redirected, setRedirected] = useState(false); // Nuevo estado para evitar redirecciones múltiples
   const history = useHistory();
   const location = useLocation();
   const { loading: authLoading, user, login } = useAuth();
   const [present] = useIonToast();
 
   useEffect(() => {
-
-    if (!authLoading && user) {
+    // Solo redirigir si no estamos cargando, hay usuario y no hemos redirigido ya
+    if (!authLoading && user && !redirected) {
       const from = location.state && (location.state as any).from;
       const pathname = from?.pathname || '/app/home';
       console.log('LoginPage: Usuario ya autenticado, redirigiendo a:', pathname);
+      setRedirected(true); // Marcar como redirigido
       history.replace(pathname);
     }
-  }, [authLoading, user, history, location.state]);
+  }, [authLoading, user, history, location.state, redirected]);
+
+  // Resetear redirected cuando no hay usuario
+  useEffect(() => {
+    if (!user) {
+      setRedirected(false);
+    }
+  }, [user]);
 
   useEffect(() => {
     const savedRememberMe = localStorage.getItem('rememberMe');

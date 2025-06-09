@@ -26,126 +26,6 @@ export interface ListItem {
   product_image?: string;
 }
 
-/**
- * Servicio para gestión de listas de compras y elementos de lista de usuarios.
- * 
- * Este servicio proporciona funcionalidad completa para operaciones CRUD en listas de usuarios
- * y sus elementos asociados. Actualmente usa datos mock pero está diseñado para integrarse
- * con la base de datos de Supabase cuando las tablas estén disponibles.
- * 
- * @example
- * ```typescript
- * // Obtener todas las listas del usuario
- * const lists = await ListsService.getUserLists();
- * 
- * // Crear una nueva lista
- * const newList = await ListsService.createList("Mi Lista de Compras", "Compras semanales");
- * 
- * // Agregar producto a la lista
- * const item = await ListsService.addProductToList(newList.id, "7802700123456", 2);
- * ```
- * 
- * @remarks
- * - Todos los métodos requieren autenticación de usuario vía Supabase
- * - Actualmente usando datos mock para propósitos de demostración
- * - La implementación real usará las siguientes tablas de Supabase:
- * 
- * **TABLAS REQUERIDAS EN SUPABASE:**
- * 
- * 1. **user_lists** - Almacena las listas de compras de cada usuario
- * ```sql
- * CREATE TABLE user_lists (
- *   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
- *   name VARCHAR(255) NOT NULL,
- *   description TEXT,
- *   user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
- *   item_count INTEGER DEFAULT 0,
- *   is_active BOOLEAN DEFAULT true,
- *   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
- *   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
- * );
- * ```
- * 
- * 2. **list_items** - Almacena los productos agregados a cada lista
- * ```sql
- * CREATE TABLE list_items (
- *   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
- *   list_id UUID REFERENCES user_lists(id) ON DELETE CASCADE,
- *   product_ean VARCHAR(20) NOT NULL,
- *   quantity INTEGER DEFAULT 1,
- *   notes TEXT,
- *   is_purchased BOOLEAN DEFAULT false,
- *   added_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
- *   CONSTRAINT list_items_quantity_positive CHECK (quantity > 0)
- * );
- * ```
- * 
- * **POLÍTICAS RLS (Row Level Security) REQUERIDAS:**
- * ```sql
- * -- Habilitar RLS en ambas tablas
- * ALTER TABLE user_lists ENABLE ROW LEVEL SECURITY;
- * ALTER TABLE list_items ENABLE ROW LEVEL SECURITY;
- * 
- * -- Política para user_lists: usuarios solo pueden ver/modificar sus propias listas
- * CREATE POLICY "Users can manage their own lists" ON user_lists
- *   USING (auth.uid() = user_id);
- * 
- * -- Política para list_items: usuarios solo pueden ver items de sus propias listas
- * CREATE POLICY "Users can manage items in their own lists" ON list_items
- *   USING (
- *     EXISTS (
- *       SELECT 1 FROM user_lists 
- *       WHERE user_lists.id = list_items.list_id 
- *       AND user_lists.user_id = auth.uid()
- *     )
- *   );
- * ```
- * 
- * **ÍNDICES RECOMENDADOS:**
- * ```sql
- * -- Optimizar consultas por usuario
- * CREATE INDEX idx_user_lists_user_id ON user_lists(user_id);
- * CREATE INDEX idx_user_lists_active ON user_lists(is_active) WHERE is_active = true;
- * 
- * -- Optimizar consultas de items por lista
- * CREATE INDEX idx_list_items_list_id ON list_items(list_id);
- * CREATE INDEX idx_list_items_ean ON list_items(product_ean);
- * ```
- * 
- * **TRIGGER PARA ACTUALIZAR CONTADOR DE ITEMS:**
- * ```sql
- * -- Función para actualizar item_count automáticamente
- * CREATE OR REPLACE FUNCTION update_list_item_count()
- * RETURNS TRIGGER AS $$
- * BEGIN
- *   IF TG_OP = 'INSERT' THEN
- *     UPDATE user_lists SET 
- *       item_count = item_count + 1,
- *       updated_at = NOW()
- *     WHERE id = NEW.list_id;
- *     RETURN NEW;
- *   ELSIF TG_OP = 'DELETE' THEN
- *     UPDATE user_lists SET 
- *       item_count = GREATEST(item_count - 1, 0),
- *       updated_at = NOW()
- *     WHERE id = OLD.list_id;
- *     RETURN OLD;
- *   END IF;
- *   RETURN NULL;
- * END;
- * $$ LANGUAGE plpgsql;
- * 
- * -- Trigger para actualizar contador automáticamente
- * CREATE TRIGGER trigger_update_item_count
- *   AFTER INSERT OR DELETE ON list_items
- *   FOR EACH ROW EXECUTE FUNCTION update_list_item_count();
- * ```
- * 
- * - La eliminación de listas es eliminación suave (establece `is_active` a false)
- * - Se requiere relación con tabla `products` para obtener información completa del producto
- * 
- * @public
- */
 export const ListsService = {  /**
    * Obtiene todas las listas del usuario actual
    */
@@ -156,6 +36,8 @@ export const ListsService = {  /**
         throw new Error('Usuario no autenticado');
       }
 
+      console.log('🔄 Obteniendo listas para usuario:', user.id);
+
       const { data, error } = await supabase
         .from('user_lists')
         .select('*')
@@ -164,17 +46,23 @@ export const ListsService = {  /**
         .order('updated_at', { ascending: false });
 
       if (error) {
-        console.error('Error al obtener listas de Supabase:', error);
+        console.error('❌ Error al obtener listas de Supabase:', error);
+        
+        // Proporcionar mensajes de error más específicos
+        if (error.code === '42P01') {
+          throw new Error('La tabla user_lists no existe en Supabase. Ejecuta el esquema SQL primero.');
+        }
+        
         throw error;
       }
 
+      console.log('✅ Listas obtenidas:', data?.length || 0);
       return data || [];
     } catch (error) {
-      console.error('Error al obtener listas del usuario:', error);
+      console.error('💥 Error al obtener listas del usuario:', error);
       throw error;
     }
-  },
-  /**
+  },/**
    * Crea una nueva lista
    */
   async createList(name: string, description?: string): Promise<UserList> {
@@ -183,6 +71,8 @@ export const ListsService = {  /**
       if (!user) {
         throw new Error('Usuario no autenticado');
       }
+
+      console.log('🔄 Creando lista:', { name, description, user_id: user.id });
 
       const { data, error } = await supabase
         .from('user_lists')
@@ -197,13 +87,28 @@ export const ListsService = {  /**
         .single();
 
       if (error) {
-        console.error('Error al crear lista en Supabase:', error);
+        console.error('❌ Error al crear lista en Supabase:', error);
+        
+        // Proporcionar mensajes de error más específicos
+        if (error.code === '42P01') {
+          throw new Error('La tabla user_lists no existe en Supabase. Ejecuta el esquema SQL primero.');
+        } else if (error.code === '23505') {
+          throw new Error('Ya existe una lista con ese nombre.');
+        } else if (error.code === '23502') {
+          throw new Error('Faltan campos requeridos para crear la lista.');
+        }
+        
         throw error;
       }
 
+      if (!data) {
+        throw new Error('No se pudo crear la lista - respuesta vacía');
+      }
+
+      console.log('✅ Lista creada exitosamente:', data);
       return data;
     } catch (error) {
-      console.error('Error al crear lista:', error);
+      console.error('💥 Error en createList:', error);
       throw error;
     }
   },
@@ -377,7 +282,6 @@ export const ListsService = {  /**
       throw error;
     }
   },
-
   /**
    * Actualiza la cantidad de un producto en la lista
    */
@@ -388,33 +292,49 @@ export const ListsService = {  /**
         throw new Error('Usuario no autenticado');
       }
 
+      console.log('🔄 Actualizando item:', { itemId, updates, user_id: user.id });
+
+      // Primero verificar que el item pertenece al usuario a través de su lista
+      const { data: itemCheck, error: checkError } = await supabase
+        .from('list_items')
+        .select(`
+          id,
+          list_id,
+          user_lists!inner(user_id)
+        `)
+        .eq('id', itemId)
+        .eq('user_lists.user_id', user.id)
+        .single();
+
+      if (checkError || !itemCheck) {
+        console.error('❌ Item no encontrado o sin permisos:', checkError);
+        throw new Error('Elemento no encontrado o no tienes permisos');
+      }
+
+      // Ahora hacer la actualización
       const { data, error } = await supabase
         .from('list_items')
         .update(updates)
         .eq('id', itemId)
-        .eq('user_lists.user_id', user.id) // Verificar permisos a través de la lista
-        .select(`
-          *,
-          user_lists!inner(user_id)
-        `)
+        .select()
         .single();
 
       if (error) {
-        console.error('Error al actualizar elemento de la lista:', error);
+        console.error('❌ Error al actualizar elemento de la lista:', error);
         throw error;
       }
 
       if (!data) {
-        throw new Error('Elemento no encontrado o no tienes permisos');
+        throw new Error('No se pudo actualizar el elemento');
       }
 
+      console.log('✅ Item actualizado:', data);
       return data;
     } catch (error) {
-      console.error('Error al actualizar elemento de la lista:', error);
+      console.error('💥 Error al actualizar elemento de la lista:', error);
       throw error;
     }
   },
-
   /**
    * Elimina un producto de la lista
    */
@@ -425,18 +345,39 @@ export const ListsService = {  /**
         throw new Error('Usuario no autenticado');
       }
 
+      console.log('🔄 Eliminando item:', { itemId, user_id: user.id });
+
+      // Primero verificar que el item pertenece al usuario a través de su lista
+      const { data: itemCheck, error: checkError } = await supabase
+        .from('list_items')
+        .select(`
+          id,
+          list_id,
+          user_lists!inner(user_id)
+        `)
+        .eq('id', itemId)
+        .eq('user_lists.user_id', user.id)
+        .single();
+
+      if (checkError || !itemCheck) {
+        console.error('❌ Item no encontrado o sin permisos:', checkError);
+        throw new Error('Elemento no encontrado o no tienes permisos');
+      }
+
+      // Ahora hacer la eliminación
       const { error } = await supabase
         .from('list_items')
         .delete()
-        .eq('id', itemId)
-        .eq('user_lists.user_id', user.id); // Verificar permisos a través de la lista
+        .eq('id', itemId);
 
       if (error) {
-        console.error('Error al eliminar elemento de la lista:', error);
+        console.error('❌ Error al eliminar elemento de la lista:', error);
         throw error;
       }
+
+      console.log('✅ Item eliminado correctamente');
     } catch (error) {
-      console.error('Error al eliminar elemento de la lista:', error);
+      console.error('💥 Error al eliminar elemento de la lista:', error);
       throw error;
     }
   }

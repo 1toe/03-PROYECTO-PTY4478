@@ -235,7 +235,6 @@ const ListsPage: React.FC = () => {
     }
     event.detail.complete();
   };
-
   const handleCreateList = async () => {
     if (!newListName.trim()) {
       setToastMessage('El nombre de la lista es requerido');
@@ -244,16 +243,38 @@ const ListsPage: React.FC = () => {
     }
 
     try {
-      await ListsService.createList(newListName.trim(), newListDescription.trim() || undefined);
+      console.log('🔄 Intentando crear lista:', {
+        nombre: newListName.trim(),
+        descripcion: newListDescription.trim() || undefined
+      });
+      
+      const newList = await ListsService.createList(newListName.trim(), newListDescription.trim() || undefined);
+      
+      console.log('✅ Lista creada:', newList);
+      
       setNewListName('');
       setNewListDescription('');
       setShowCreateAlert(false);
-      setToastMessage('Lista creada exitosamente');
+      setToastMessage(`Lista "${newList.name}" creada exitosamente`);
       setShowToast(true);
       await loadUserLists();
-    } catch (error) {
-      console.error('Error al crear lista:', error);
-      setToastMessage('Error al crear la lista');
+    } catch (error: any) {
+      console.error('❌ Error al crear lista:', error);
+      
+      // Mensaje de error más específico
+      const errorMessage = error?.message || 'Error desconocido al crear la lista';
+      
+      // Mensajes más descriptivos según el tipo de error
+      if (errorMessage.includes('no existe')) {
+        setToastMessage('Error: La tabla de listas no existe en la base de datos');
+      } else if (errorMessage.includes('Usuario no autenticado')) {
+        setToastMessage('Error: Necesitas iniciar sesión para crear una lista');
+      } else if (errorMessage.includes('permisos')) {
+        setToastMessage('Error: No tienes permisos para crear listas');
+      } else {
+        setToastMessage(`Error: ${errorMessage}`);
+      }
+      
       setShowToast(true);
     }
   };

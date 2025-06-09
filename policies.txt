@@ -1,0 +1,48 @@
+-- Asegúrate de revisar y ajustar las políticas según sea necesario
+CREATE POLICY "Allow public inserts to profiles" 
+  ON public.profiles 
+  FOR INSERT 
+  TO authenticated 
+  USING (true);
+
+CREATE POLICY "Users can view their own profiles" 
+  ON public.profiles 
+  FOR SELECT 
+  TO public 
+  USING (auth.uid() = id);
+
+CREATE POLICY "Users can update their own profiles" 
+  ON public.profiles 
+  FOR UPDATE 
+  TO public 
+  USING (auth.uid() = id);
+
+CREATE POLICY "Enable read access for all users" 
+  ON public.profiles 
+  FOR SELECT 
+  TO authenticated 
+  USING (true);
+
+CREATE POLICY "Permitir acceso de lectura a todos los usuarios" 
+  ON public.profiles 
+  FOR SELECT 
+  TO anon, authenticated 
+  USING (true);
+
+CREATE POLICY "Permitir inserciones a todos los usuarios" 
+  ON public.profiles 
+  FOR INSERT 
+  TO anon, authenticated 
+  USING (true);
+
+CREATE POLICY "Permitir actualizaciones a todos los usuarios" 
+  ON public.profiles 
+  FOR UPDATE 
+  TO anon, authenticated 
+  USING (true);
+
+CREATE POLICY "Permitir eliminaciones a todos los usuarios" 
+  ON public.profiles 
+  FOR DELETE 
+  TO anon, authenticated 
+  USING (true);
