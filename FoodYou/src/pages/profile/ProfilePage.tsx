@@ -49,13 +49,13 @@ const ProfilePage: React.FC = () => {
         if (currentUser) {
           setUserName(currentUser.user_metadata?.name || 'Usuario');
           setUserEmail(currentUser.email || '');
-          setProfileLoaded(true); // Marcar como cargado
+          setProfileLoaded(true); 
         } else {
           console.log('No se pudo obtener usuario actual');
         }
       } catch (error) {
         console.error('Error al cargar perfil:', error);
-        // Si hay error de sesión, limpiar estados
+
         if (error instanceof Error && (error.message?.includes('session') || error.message?.includes('Session'))) {
           setUserName('');
           setUserEmail('');
@@ -64,7 +64,7 @@ const ProfilePage: React.FC = () => {
     };
 
     loadUserProfile();
-  }, [user]); // Remover profileLoaded para evitar bucles infinitos
+  }, [user, profileLoaded]);
 
   // Resetear profileLoaded cuando cambie el usuario
   useEffect(() => {
