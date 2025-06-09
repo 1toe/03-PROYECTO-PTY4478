@@ -11,30 +11,13 @@ import { useParams, useHistory } from 'react-router-dom';
 import {
   addOutline, trashOutline, shareOutline, saveOutline, closeOutline
 } from 'ionicons/icons';
+import { ListsService, UserList, ListItem } from '../../services/supabase/lists.service';
 import './ListDetailsPage.css';
-
-interface ListItem {
-  id: string;
-  productId: string;
-  name: string;
-  quantity: number;
-  completed: boolean;
-}
-
-interface ShoppingList {
-  id: string;
-  name: string;
-  description?: string;
-  isShared?: boolean;
-  sharedWith?: string[];
-  createdAt: string;
-  updatedAt?: string;
-}
 
 const ListDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const history = useHistory();
-  const [list, setList] = useState<ShoppingList | null>(null);
+  const [list, setList] = useState<UserList | null>(null);
   const [items, setItems] = useState<ListItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAddModal, setShowAddModal] = useState(false);
@@ -45,41 +28,37 @@ const ListDetailsPage: React.FC = () => {
 
   useEffect(() => {
     loadListDetails();
-  }, [id]);
+  }, [id]); const loadListDetails = async () => {
+    if (!id) {
+      setLoading(false);
+      showToastMessage('ID de lista no válido');
+      return;
+    }
 
-  const loadListDetails = async () => {
     try {
-      // Aquí se integraría con el servicio de listas
-      // Ejemplo: 
-      // const listDetails = await listService.getList(id);
-      // const listItems = await listService.getListItems(id);
-      // Revisar despues de la integración con el backend 
-      // Mock data por ahora
-      const mockList = {
-        id,
-        name: 'Lista del supermercado',
-        description: 'Compras semanales',
-        isShared: false,
-        createdAt: '2023-05-10',
-      };
+      setLoading(true);
+      const listId = parseInt(id);
 
-      const mockItems = [
-        { id: '1', productId: 'p1', name: 'Leche', quantity: 2, completed: false },
-        { id: '2', productId: 'p2', name: 'Pan', quantity: 1, completed: true },
-        { id: '3', productId: 'p3', name: 'Huevos', quantity: 12, completed: false },
-        { id: '4', productId: 'p4', name: 'Manzanas', quantity: 6, completed: false },
-        { id: '5', productId: 'p5', name: 'Pollo', quantity: 1, completed: false }
-      ];
+      // Cargar todas las listas del usuario y buscar la específica
+      const userLists = await ListsService.getUserLists();
+      const listDetails = userLists.find(list => list.id === listId);
 
-      setTimeout(() => {
-        setList(mockList);
-        setItems(mockItems);
-        setLoading(false);
-      });
+      if (!listDetails) {
+        showToastMessage('Lista no encontrada');
+        history.goBack();
+        return;
+      }
+
+      // Cargar items de la lista
+      const listItems = await ListsService.getListItems(listId);
+
+      setList(listDetails);
+      setItems(listItems);
     } catch (error) {
       console.error('Error al cargar la información de la lista:', error);
-      setLoading(false);
       showToastMessage('Error al cargar la información');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -87,40 +66,56 @@ const ListDetailsPage: React.FC = () => {
     await loadListDetails();
     event.detail.complete();
   };
-
-  const toggleItemCompletion = async (itemId: string) => {
+  const toggleItemCompletion = async (itemId: number) => {
     try {
+      const item = items.find(i => i.id === itemId);
+      if (!item) return;
+
+      // Actualizar en la base de datos
+      await ListsService.updateListItem(itemId, { is_purchased: !item.is_purchased });
+
+      // Actualizar el estado local
       const updatedItems = items.map(item =>
-        item.id === itemId ? { ...item, completed: !item.completed } : item
+        item.id === itemId ? { ...item, is_purchased: !item.is_purchased } : item
       );
       setItems(updatedItems);
-
-      // Aquí se integraría con el servicio de listas
-      // Ejemplo: await listService.updateListItem(id, itemId, { completed: !items.find(i => i.id === itemId)?.completed });
     } catch (error) {
       console.error('Error al actualizar el estado del item:', error);
       showToastMessage('Error al actualizar el item');
     }
   };
-
   const addNewItem = async () => {
     if (!newItemName.trim()) {
       showToastMessage('Por favor ingresa el nombre del producto');
       return;
     }
 
+    if (!id) {
+      showToastMessage('ID de lista no válido');
+      return;
+    }
 
     try {
-      const newItem = {
-        id: `item-${Date.now()}`,
-        productId: `p-${Date.now()}`,
-        name: newItemName.trim(),
-        quantity: newItemQuantity,
-        completed: false
+      const listId = parseInt(id);
+
+      // Crear un EAN ficticio para productos manuales (comenzando con 'MANUAL-')
+      const fakeEan = `MANUAL-${Date.now()}`;
+
+      // Agregar el producto a la lista usando el servicio
+      const newItem = await ListsService.addProductToList(
+        listId,
+        fakeEan,
+        newItemQuantity,
+        `Producto manual: ${newItemName.trim()}`
+      );
+
+      // Actualizar el estado local con información del producto para mostrar
+      const enrichedItem = {
+        ...newItem,
+        product_name: newItemName.trim()
       };
 
-      // Aquí se debe integrar con el servicio de listas, pendietne!!
-      setItems([...items, newItem]);
+      setItems([enrichedItem, ...items]);
       setNewItemName('');
       setNewItemQuantity(1);
       setShowAddModal(false);
@@ -130,11 +125,9 @@ const ListDetailsPage: React.FC = () => {
       showToastMessage('Error al añadir el producto');
     }
   };
-
-  const deleteItem = async (itemId: string) => {
+  const deleteItem = async (itemId: number) => {
     try {
-      // Aquí se integraría con el servicio de lista !! Pendiente!
-
+      await ListsService.removeFromList(itemId);
       setItems(items.filter(item => item.id !== itemId));
       showToastMessage('Producto eliminado');
     } catch (error) {
@@ -152,8 +145,7 @@ const ListDetailsPage: React.FC = () => {
     setToastMessage(message);
     setShowToast(true);
   };
-
-  const completedItems = items.filter(item => item.completed).length;
+  const completedItems = items.filter(item => item.is_purchased).length;
   const progressPercentage = items.length > 0 ? (completedItems / items.length) * 100 : 0;
 
   return (
@@ -205,25 +197,25 @@ const ListDetailsPage: React.FC = () => {
               </div>
             ) : (
               <IonList>
-                {items.map(item => (
-                  <IonItemSliding key={item.id}>
-                    <IonItem>
-                      <IonCheckbox
-                        slot="start"
-                        checked={item.completed}
-                        onIonChange={() => toggleItemCompletion(item.id)}
-                      />
-                      <IonLabel className={item.completed ? 'completed-item' : ''}>
-                        <h2>{item.name}</h2>
-                        <p>Cantidad: {item.quantity}</p>
-                      </IonLabel>
-                    </IonItem>
-                    <IonItemOptions side="end">
-                      <IonItemOption color="danger" onClick={() => deleteItem(item.id)}>
-                        <IonIcon slot="icon-only" icon={trashOutline} />
-                      </IonItemOption>
-                    </IonItemOptions>
-                  </IonItemSliding>
+                {items.map(item => (<IonItemSliding key={item.id}>
+                  <IonItem>
+                    <IonCheckbox
+                      slot="start"
+                      checked={item.is_purchased}
+                      onIonChange={() => toggleItemCompletion(item.id)}
+                    />
+                    <IonLabel className={item.is_purchased ? 'completed-item' : ''}>
+                      <h2>{item.product_name || `Producto ${item.product_ean}`}</h2>
+                      <p>Cantidad: {item.quantity}</p>
+                      {item.notes && <p>Notas: {item.notes}</p>}
+                    </IonLabel>
+                  </IonItem>
+                  <IonItemOptions side="end">
+                    <IonItemOption color="danger" onClick={() => deleteItem(item.id)}>
+                      <IonIcon slot="icon-only" icon={trashOutline} />
+                    </IonItemOption>
+                  </IonItemOptions>
+                </IonItemSliding>
                 ))}
               </IonList>
             )}

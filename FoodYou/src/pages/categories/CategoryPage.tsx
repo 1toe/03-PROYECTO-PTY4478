@@ -25,13 +25,15 @@ import {
   IonChip,
   IonBackButton,
   IonButtons,
-  IonText
+  IonText,
+  IonToast
 } from '@ionic/react';
 import { useParams } from 'react-router-dom';
-import { cart, pricetag, arrowBack } from 'ionicons/icons';
+import { listOutline, pricetag, arrowBack } from 'ionicons/icons';
 import { CategoryService } from '../../services/supabase/category.service';
 import { Producto, ProductService } from '../../services/supabase/product.service';
 import { filterUniqueProducts } from '../../utils/product.utils';
+import SelectListModal from '../../components/common/SelectListModal';
 
 const formatPrice = (price: number): string => {
   return new Intl.NumberFormat('es-CL', {
@@ -54,7 +56,13 @@ const CategoryPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [totalProducts, setTotalProducts] = useState(0);
   const [hasMoreData, setHasMoreData] = useState(true);
-  const pageSize = 20;
+  const pageSize = 10;
+
+
+  const [showSelectListModal, setShowSelectListModal] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Producto | null>(null);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
 
   useEffect(() => {
     if (categoryId) {
@@ -84,7 +92,7 @@ const CategoryPage: React.FC = () => {
       if (page === 0) setLoadingProducts(true);
 
       const result = await CategoryService.getProductsByCategory(categoryId, {
-        page: page + 1, // CategoryService espera página basada en 1, no en 0
+        page: page + 1,
         limit: pageSize
       });
 
@@ -156,7 +164,6 @@ const CategoryPage: React.FC = () => {
 
     event.target.complete();
   };
-
   const handleRefresh = async (event: any) => {
     if (searchText.length > 2) {
       await handleSearch({ detail: { value: searchText } } as CustomEvent);
@@ -164,6 +171,16 @@ const CategoryPage: React.FC = () => {
       await resetProductsAndLoad();
     }
     event.detail.complete();
+  };
+
+  const handleAddToList = (product: Producto) => {
+    setSelectedProduct(product);
+    setShowSelectListModal(true);
+  };
+
+  const handleProductAddedToList = (listId: number, product: Producto) => {
+    setToastMessage(`${product.nombre_producto || product.name_vtex} agregado a lista`);
+    setShowToast(true);
   };
 
   const renderProducts = () => {
@@ -224,10 +241,9 @@ const CategoryPage: React.FC = () => {
                     </div>
                     {product.descripcion && (
                       <p className="product-description">{product.descripcion}</p>
-                    )}
-                    <IonButton expand="block" size="small" fill="solid">
-                      <IonIcon slot="start" icon={cart} />
-                      Agregar
+                    )}                    <IonButton expand="block" size="small" fill="solid" onClick={() => handleAddToList(product)}>
+                      <IonIcon slot="start" icon={listOutline} />
+                      Agregar a lista
                     </IonButton>
                   </IonCardContent>
                 </IonCard>
@@ -272,8 +288,24 @@ const CategoryPage: React.FC = () => {
         </div>
 
         <div className="products-container">
-          {renderProducts()}
-        </div>
+          {renderProducts()}        </div>
+
+        <SelectListModal
+          isOpen={showSelectListModal}
+          onDidDismiss={() => {
+            setShowSelectListModal(false);
+            setSelectedProduct(null);
+          }}
+          onProductAdded={handleProductAddedToList}
+          product={selectedProduct}
+        />
+
+        <IonToast
+          isOpen={showToast}
+          onDidDismiss={() => setShowToast(false)}
+          message={toastMessage}
+          duration={2000}
+        />
       </IonContent>
     </IonPage>
   );

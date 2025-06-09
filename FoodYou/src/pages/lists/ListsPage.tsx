@@ -26,18 +26,41 @@ import {
   IonInfiniteScrollContent,
   IonBadge,
   IonChip,
-  IonText
+  IonText,
+  IonFab,
+  IonFabButton,
+  IonToast,
+  IonActionSheet,
+  IonAlert
 } from '@ionic/react';
-import { add, cart, storefront, pricetag, warning, flame } from 'ionicons/icons';
+import { add, listOutline, storefront, pricetag, warning, flame, ellipsisVertical, trash, create, eye } from 'ionicons/icons';
+import { useLocation, useHistory } from 'react-router-dom';
 import { CategoryService, Categoria } from '../../services/supabase/category.service';
 import { Producto, ProductService } from '../../services/supabase/product.service';
+import { ListsService, UserList } from '../../services/supabase/lists.service';
 import { filterUniqueProducts } from '../../utils/product.utils';
+import SelectListModal from '../../components/common/SelectListModal';
 import '../../components/chat/ProductListInChat.css';
 import './ListsPage.css';
 
-
 const ListsPage: React.FC = () => {
-  const [segment, setSegment] = useState<'lists' | 'categories'>('categories');
+  const location = useLocation();
+  const history = useHistory();
+
+  // Determinar el segment inicial basándose en los parámetros URL o state
+  const getInitialSegment = (): 'lists' | 'categories' => {
+    const urlParams = new URLSearchParams(location.search);
+    const segmentParam = urlParams.get('segment');
+    const locationState = location.state as { segment?: 'lists' | 'categories' } | null;
+
+    if (segmentParam === 'lists' || locationState?.segment === 'lists') {
+      return 'lists';
+    }
+    return 'lists';
+  };
+
+  const [segment, setSegment] = useState<'lists' | 'categories'>(getInitialSegment());
+
   const [categories, setCategories] = useState<Categoria[]>([]);
   const [products, setProducts] = useState<Producto[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -47,19 +70,49 @@ const ListsPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [totalProducts, setTotalProducts] = useState(0);
   const [hasMoreData, setHasMoreData] = useState(true);
-  const pageSize = 20;
+  const pageSize = 10;
 
-  // Cargar categorías al inicio
-  useEffect(() => {
-    loadCategories();
-  }, []);
+  const [userLists, setUserLists] = useState<UserList[]>([]);
+  const [loadingLists, setLoadingLists] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+  const [showActionSheet, setShowActionSheet] = useState(false);
+  const [selectedList, setSelectedList] = useState<UserList | null>(null);
+  const [showCreateAlert, setShowCreateAlert] = useState(false);
+  const [newListName, setNewListName] = useState('');
+  const [newListDescription, setNewListDescription] = useState('');
+  const [searchNoResults, setSearchNoResults] = useState(false);
 
-  // Cargar productos cuando se selecciona una categoría
+  const [showSelectListModal, setShowSelectListModal] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Producto | null>(null);
+
+
   useEffect(() => {
-    if (selectedCategory) {
+    if (segment === 'categories') {
+      loadCategories();
+    } else if (segment === 'lists') {
+      loadUserLists();
+    }
+  }, [segment]);
+
+
+  useEffect(() => {
+    if (selectedCategory && segment === 'categories') {
       resetProductsAndLoad(selectedCategory);
     }
   }, [selectedCategory]);
+
+  const loadUserLists = async () => {
+    try {
+      setLoadingLists(true);
+      const lists = await ListsService.getUserLists();
+      setUserLists(lists);
+      setLoadingLists(false);
+    } catch (error) {
+      console.error('Error al cargar listas del usuario:', error);
+      setLoadingLists(false);
+    }
+  };
 
   const loadCategories = async () => {
     try {
@@ -67,7 +120,6 @@ const ListsPage: React.FC = () => {
       const categorias = await CategoryService.getAllCategories();
       setCategories(categorias);
 
-      // Si hay categorías, seleccionar la primera por defecto
       if (categorias.length > 0 && !selectedCategory) {
         setSelectedCategory(categorias[0].category_vtex_id);
       }
@@ -78,19 +130,20 @@ const ListsPage: React.FC = () => {
       setLoading(false);
     }
   };
-
   const resetProductsAndLoad = async (categoryId: string) => {
     setProducts([]);
     setCurrentPage(0);
     setHasMoreData(true);
     await loadProductsByCategory(categoryId, 0);
-  };  const loadProductsByCategory = async (categoryId: string, page: number = 0) => {
+  };
+
+  const loadProductsByCategory = async (categoryId: string, page: number = 0) => {
     try {
       if (page === 0) setLoadingProducts(true);
 
-      const result = await CategoryService.getProductsByCategory(categoryId, { 
-        page: page + 1, // CategoryService espera página basada en 1, no en 0
-        limit: pageSize 
+      const result = await CategoryService.getProductsByCategory(categoryId, {
+        page: page + 1,
+        limit: pageSize
       });
 
       if (page === 0) {
@@ -104,19 +157,25 @@ const ListsPage: React.FC = () => {
 
       if (page === 0) setLoadingProducts(false);
     } catch (error) {
-      console.error('Error al cargar productos:', error);
-      if (page === 0) setLoadingProducts(false);
+      console.error('Error al cargar productos:', error); if (page === 0) setLoadingProducts(false);
     }
   };
+
   const handleSearch = async (e: CustomEvent) => {
     const query = e.detail.value?.toLowerCase() || '';
     setSearchText(query);
+    setSearchNoResults(false);
 
     if (query.length > 2) {
       try {
         setLoadingProducts(true);
         setProducts([]);
         const searchResults = await ProductService.searchProducts(query, pageSize);
+
+        if (searchResults.length === 0) {
+          setSearchNoResults(true);
+        }
+
         setProducts(searchResults);
         setTotalProducts(searchResults.length);
         setSelectedCategory(null);
@@ -126,9 +185,16 @@ const ListsPage: React.FC = () => {
       } catch (error) {
         console.error('Error en la búsqueda:', error);
         setLoadingProducts(false);
+        setSearchNoResults(true);
       }
-    } else if (query.length === 0 && selectedCategory) {
-      resetProductsAndLoad(selectedCategory);
+    } else if (query.length === 0) {
+      setSearchNoResults(false);
+      if (selectedCategory && segment === 'categories') {
+        resetProductsAndLoad(selectedCategory);
+      } else {
+        setProducts([]);
+        setTotalProducts(0);
+      }
     }
   };
   const loadMore = async (event: any) => {
@@ -159,14 +225,156 @@ const ListsPage: React.FC = () => {
   };
 
   const handleRefresh = async (event: any) => {
-    await loadCategories();
-    if (selectedCategory) {
-      await resetProductsAndLoad(selectedCategory);
+    if (segment === 'categories') {
+      await loadCategories();
+      if (selectedCategory) {
+        await resetProductsAndLoad(selectedCategory);
+      }
+    } else {
+      await loadUserLists();
     }
     event.detail.complete();
   };
+
+  const handleCreateList = async () => {
+    if (!newListName.trim()) {
+      setToastMessage('El nombre de la lista es requerido');
+      setShowToast(true);
+      return;
+    }
+
+    try {
+      await ListsService.createList(newListName.trim(), newListDescription.trim() || undefined);
+      setNewListName('');
+      setNewListDescription('');
+      setShowCreateAlert(false);
+      setToastMessage('Lista creada exitosamente');
+      setShowToast(true);
+      await loadUserLists();
+    } catch (error) {
+      console.error('Error al crear lista:', error);
+      setToastMessage('Error al crear la lista');
+      setShowToast(true);
+    }
+  };
+
+  const handleListAction = (list: UserList, action: 'view' | 'edit' | 'delete') => {
+    setSelectedList(list);
+    setShowActionSheet(false);
+
+    switch (action) {
+      case 'view':
+        history.push(`/app/lists/${list.id}`);
+        break;
+      case 'edit':
+        history.push(`/app/lists/edit/${list.id}`);
+        break;
+      case 'delete':
+        handleDeleteList(list.id);
+        break;
+    }
+  };
+  const handleDeleteList = async (listId: number) => {
+    try {
+      await ListsService.deleteList(listId);
+      setToastMessage('Lista eliminada exitosamente');
+      setShowToast(true);
+      await loadUserLists();
+    } catch (error) {
+      console.error('Error al eliminar lista:', error);
+      setToastMessage('Error al eliminar la lista');
+      setShowToast(true);
+    }
+  };
+  const renderUserLists = () => {
+    if (loadingLists && userLists.length === 0) {
+      return (
+        <div className="loading-container">
+          <IonSpinner />
+          <p>Cargando tus listas...</p>
+        </div>
+      );
+    }
+
+    if (userLists.length === 0) {
+      return (
+        <div className="no-lists-found">
+          <IonIcon icon={add} className="empty-icon" />
+          <h2>No tienes listas creadas</h2>
+          <p>Crea tu primera lista para empezar a organizar tus compras.</p>
+          <IonButton
+            expand="block"
+            onClick={() => setShowCreateAlert(true)}
+            color="primary"
+          >
+            <IonIcon slot="start" icon={add} />
+            Crear mi primera lista
+          </IonButton>
+        </div>
+      );
+    }
+
+    return (
+      <div className="lists-container">
+        <div className="lists-header">
+          <h3>Mis Listas ({userLists.length})</h3>
+        </div>
+
+        <IonGrid>
+          <IonRow>
+            {userLists.map((list) => (
+              <IonCol key={list.id} size="12" sizeMd="6" sizeLg="4">
+                <IonCard className="list-card" button onClick={() => history.push(`/app/lists/${list.id}`)}>
+                  <IonCardHeader>
+                    <div className="list-card-header">
+                      <IonCardTitle className="list-title">{list.name}</IonCardTitle>
+                      <IonButton
+                        fill="clear"
+                        size="small"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedList(list);
+                          setShowActionSheet(true);
+                        }}
+                      >
+                        <IonIcon icon={ellipsisVertical} />
+                      </IonButton>
+                    </div>
+                  </IonCardHeader>
+
+                  <IonCardContent>
+                    {list.description && (
+                      <p className="list-description">{list.description}</p>
+                    )}
+
+                    <div className="list-stats">
+                      <IonChip color="primary">
+                        <IonLabel>{list.item_count} productos</IonLabel>
+                      </IonChip>
+                    </div>
+
+                    <div className="list-dates">
+                      <small>
+                        Actualizada: {new Date(list.updated_at).toLocaleDateString('es-ES')}
+                      </small>
+                    </div>
+                  </IonCardContent>
+                </IonCard>
+              </IonCol>
+            ))}
+          </IonRow>
+        </IonGrid>
+
+        {/* Botón flotante para crear nueva lista */}
+        <IonFab vertical="bottom" horizontal="end" slot="fixed">
+          <IonFabButton onClick={() => setShowCreateAlert(true)} color="primary">
+            <IonIcon icon={add} />
+          </IonFabButton>        </IonFab>
+      </div>
+    );
+  };
+
   const renderCategories = () => {
-    console.log(`[ListsPage] Rendering categories, count: ${categories.length}`);
 
     if (loading && categories.length === 0) {
       return (
@@ -186,8 +394,6 @@ const ListsPage: React.FC = () => {
         </div>
       );
     }
-
-    console.log(`[ListsPage] Categories sample:`, categories.slice(0, 3).map(c => c.display_name || c.name));
 
     return (
       <div className="categories-scroll-container">
@@ -217,30 +423,14 @@ const ListsPage: React.FC = () => {
         </div>
       </div>
     );
+  }; const handleAddToList = (product: Producto) => {
+    setSelectedProduct(product);
+    setShowSelectListModal(true);
   };
 
-  const handleAddToCart = (product: Producto) => {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  const handleProductAddedToList = (listId: number, product: Producto) => {
+    setToastMessage(`${product.nombre_producto || product.name_vtex} agregado a lista`);
+    setShowToast(true);
   };
 
   const renderProducts = () => {
@@ -338,15 +528,14 @@ const ListsPage: React.FC = () => {
                         💸 {product.saving_text}
                       </div>
                     )}
-
                     <IonButton
                       expand="block"
                       size="small"
-                      className="chat-add-to-cart-btn"
-                      onClick={() => handleAddToCart(product)}
+                      className="chat-add-to-list-btn"
+                      onClick={() => handleAddToList(product)}
                     >
-                      <IonIcon slot="start" icon={cart} />
-                      Agregar al carrito
+                      <IonIcon slot="start" icon={listOutline} />
+                      Agregar a lista
                     </IonButton>
                   </IonCardContent>
                 </IonCard>
@@ -387,15 +576,21 @@ const ListsPage: React.FC = () => {
               <IonLabel>CATEGORÍAS</IonLabel>
             </IonSegmentButton>
           </IonSegment>
-        </div>
-
-        <div className="search-bar">
+        </div>        <div className="search-bar">
           <IonSearchbar
-            placeholder="Buscar productos"
+            placeholder={segment === 'lists' ? "Buscar en mis listas" : "Buscar productos"}
             value={searchText}
             onIonChange={handleSearch}
-            debounce={500}
+            debounce={300}
           />
+          {searchNoResults && searchText.length > 2 && (
+            <div className="search-no-results">
+              <IonText color="medium">
+                <p>No se encontraron productos para "{searchText}"</p>
+                <small>Intenta con otros términos de búsqueda</small>
+              </IonText>
+            </div>
+          )}
         </div>
 
         {segment === 'categories' && (
@@ -412,20 +607,122 @@ const ListsPage: React.FC = () => {
                 </div>
               </>
             )}
+
+            {searchText.length > 2 && !selectedCategory && (
+              <div className="products-container">
+                <h3 className="search-results-title">
+                  Resultados de búsqueda para "{searchText}"
+                </h3>
+                {renderProducts()}
+              </div>
+            )}
           </>
         )}
 
-        {segment === 'lists' && (
-          <div className="no-lists-found">
-            <IonIcon icon={add} className="empty-icon" />
-            <h2>No se encontraron listas</h2>
-            <p>Crea una nueva lista para empezar a añadir productos.</p>
-            <IonButton expand="block">
-              <IonIcon slot="start" icon={add} />
-              Crear lista
-            </IonButton>
-          </div>
-        )}
+        {segment === 'lists' && renderUserLists()}
+
+        {/* Toast para notificaciones */}
+        <IonToast
+          isOpen={showToast}
+          onDidDismiss={() => setShowToast(false)}
+          message={toastMessage}
+          duration={3000}
+          position="bottom"
+        />
+
+        {/* Action Sheet para opciones de lista */}
+        <IonActionSheet
+          isOpen={showActionSheet}
+          onDidDismiss={() => setShowActionSheet(false)}
+          cssClass="my-custom-class"
+          buttons={[
+            {
+              text: 'Ver lista',
+              icon: eye,
+              handler: () => {
+                if (selectedList) handleListAction(selectedList, 'view');
+              }
+            },
+            {
+              text: 'Editar',
+              icon: create,
+              handler: () => {
+                if (selectedList) handleListAction(selectedList, 'edit');
+              }
+            },
+            {
+              text: 'Eliminar',
+              role: 'destructive',
+              icon: trash,
+              handler: () => {
+                if (selectedList) handleListAction(selectedList, 'delete');
+              }
+            },
+            {
+              text: 'Cancelar',
+              role: 'cancel'
+            }
+          ]}
+        />
+
+        {/* Alert para crear nueva lista */}
+        <IonAlert
+          isOpen={showCreateAlert}
+          onDidDismiss={() => {
+            setShowCreateAlert(false);
+            setNewListName('');
+            setNewListDescription('');
+          }}
+          cssClass="my-custom-class"
+          header="Crear Nueva Lista"
+          inputs={[
+            {
+              name: 'name',
+              type: 'text',
+              placeholder: 'Nombre de la lista',
+              value: newListName,
+              attributes: {
+                maxlength: 50
+              }
+            },
+            {
+              name: 'description',
+              type: 'textarea',
+              placeholder: 'Descripción (opcional)',
+              value: newListDescription,
+              attributes: {
+                maxlength: 200
+              }
+            }
+          ]}
+          buttons={[
+            {
+              text: 'Cancelar',
+              role: 'cancel',
+              handler: () => {
+                setNewListName('');
+                setNewListDescription('');
+              }
+            },
+            {
+              text: 'Crear',
+              handler: (data) => {
+                setNewListName(data.name);
+                setNewListDescription(data.description);
+                handleCreateList();
+              }
+            }
+          ]} />
+
+        <SelectListModal
+          isOpen={showSelectListModal}
+          onDidDismiss={() => {
+            setShowSelectListModal(false);
+            setSelectedProduct(null);
+          }}
+          onProductAdded={handleProductAddedToList}
+          product={selectedProduct}
+        />
       </IonContent>
     </IonPage>
   );

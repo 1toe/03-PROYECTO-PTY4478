@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { 
+import {
   IonPage,
-  IonContent, 
-  IonCard, 
-  IonCardHeader, 
+  IonContent,
+  IonCard,
+  IonCardHeader,
   IonCardTitle,
-  IonCardContent, 
-  IonButton, 
-  IonGrid, 
-  IonRow, 
+  IonCardContent,
+  IonButton,
+  IonGrid,
+  IonRow,
   IonCol,
-  IonIcon, 
-  IonSpinner, 
-  IonRefresher, 
+  IonIcon,
+  IonSpinner,
+  IonRefresher,
   IonRefresherContent
 } from '@ionic/react';
 import { listOutline, cartOutline, sparkles } from 'ionicons/icons';
@@ -36,24 +36,24 @@ const HomePage: React.FC = () => {
       try {
         // Aquí se integraría con el servicio de listas
         // Ejemplo: const lists = await listService.getUserLists();
-        
+
         // Mock data por ahora
         const mockLists = [
           { id: '1', name: 'Lista del supermercado', description: 'Compras semanales', itemCount: 12 },
           { id: '2', name: 'Fiesta de cumpleaños', description: 'Ingredientes para pastel', itemCount: 8 },
           { id: '3', name: 'Comida saludable', description: 'Vegetales y proteínas', itemCount: 5 }
         ];
-        
+
         setTimeout(() => {
           setRecentLists(mockLists);
           setLoading(false);
-        }); 
+        });
       } catch (error) {
         console.error('Error al cargar las listas:', error);
         setLoading(false);
       }
     };
-    
+
     loadData();
   }, []);
 
@@ -61,7 +61,7 @@ const HomePage: React.FC = () => {
   const handleRefresh = async (event: any) => {
     setTimeout(() => {
       event.detail.complete();
-    }, );
+    },);
   };
 
   return (
@@ -70,26 +70,25 @@ const HomePage: React.FC = () => {
         <IonRefresher slot="fixed" onIonRefresh={handleRefresh}>
           <IonRefresherContent></IonRefresherContent>
         </IonRefresher>
-        
+
         <div className="welcome-section">
           <h1>¡Bienvenido a FoodYou!</h1>
           <p>Tu asistente de compras inteligente</p>
         </div>
-          <IonGrid>
-          <IonRow>
+        <IonGrid>
+          <IonRow>            <IonCol size="6">
+            <IonButton
+              expand="block"
+              color="secondary"
+              onClick={() => history.push('/app/lists?segment=lists')}
+            >
+              <IonIcon slot="start" icon={listOutline} />
+              Mis Listas
+            </IonButton>
+          </IonCol>
             <IonCol size="6">
-              <IonButton 
-                expand="block" 
-                color="secondary"
-                onClick={() => history.push('/app/lists')}
-              >
-                <IonIcon slot="start" icon={listOutline} />
-                Mis Listas
-              </IonButton>
-            </IonCol>
-            <IonCol size="6">
-              <IonButton 
-                expand="block" 
+              <IonButton
+                expand="block"
                 color="tertiary"
                 onClick={() => history.push('/app/recommendations')}
               >
@@ -100,8 +99,8 @@ const HomePage: React.FC = () => {
           </IonRow>
           <IonRow>
             <IonCol size="12">
-              <IonButton 
-                expand="block" 
+              <IonButton
+                expand="block"
                 color="primary"
                 onClick={() => history.push('/app/chat')}
               >
@@ -111,10 +110,10 @@ const HomePage: React.FC = () => {
             </IonCol>
           </IonRow>
         </IonGrid>
-        
+
         <div className="recent-lists-section">
           <h2>Listas Recientes</h2>
-          
+
           {loading ? (
             <div className="loading-container">
               <IonSpinner />
@@ -125,7 +124,7 @@ const HomePage: React.FC = () => {
               {recentLists.length === 0 ? (
                 <div className="empty-lists">
                   <p>No tienes listas todavía</p>
-                  <IonButton 
+                  <IonButton
                     onClick={() => history.push('/app/lists/create')}
                     expand="block"
                   >

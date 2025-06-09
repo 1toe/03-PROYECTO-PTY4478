@@ -110,7 +110,12 @@ Puedo ayudarte con:
 ¿Qué te gustaría buscar hoy?`;
 
         } else if (lowerMessage.includes('ayuda') || lowerMessage.includes('qué puedes hacer') || lowerMessage.includes('como funciona')) {
-            response = `🤖 **¿Cómo puedo ayudarte?**
+            response = 
+            
+            
+            
+            
+`🤖 **¿Cómo puedo ayudarte?**
 
 **Para buscar productos:**
 • "buscar aceitunas"
@@ -262,7 +267,7 @@ Simplemente describe lo que buscas y yo te ayudo a encontrarlo en nuestra base d
             'frutos secos', 'galletas', 'ketchup', 'mayonesa', 'mostaza', 'papas fritas',
             'platos', 'ensaladas', 'salsa', 'sandwich', 'tortillas', 'comida árabe', 'comida thai'
         ];
-        
+
         for (const category of categoryKeywords) {
             if (lowerMessage.includes(category)) {
                 // No establecemos directamente la categoría aquí, pero podemos

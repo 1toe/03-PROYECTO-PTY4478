@@ -1,13 +1,13 @@
 import React from 'react';
 import { IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonButton, IonIcon, IonImg } from '@ionic/react';
-import { cart, pricetag } from 'ionicons/icons';
+import { listOutline, pricetag } from 'ionicons/icons';
 import { Producto } from '../../services/supabase/product.service';
 
 import './ProductCard.css';
 
 interface ProductCardProps {
   product: Producto;
-  onAddToCart?: (product: Producto) => void;
+  onAddToList?: (product: Producto) => void;
 }
 
 const formatPrice = (price: number): string => {
@@ -18,10 +18,10 @@ const formatPrice = (price: number): string => {
   }).format(price);
 };
 
-const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
-  const handleAddToCart = () => {
-    if (onAddToCart) {
-      onAddToCart(product);
+const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToList }) => {
+  const handleAddToList = () => {
+    if (onAddToList) {
+      onAddToList(product);
     }
   };
 
@@ -38,19 +38,18 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
         <IonCardTitle className="product-title">{product.nombre_producto}</IonCardTitle>
       </IonCardHeader>
       <IonCardContent>        <div className="product-details">
-          <div className="product-price">
-            <IonIcon icon={pricetag} />
-            {product.precio ? formatPrice(product.precio) : '$0'}
-          </div>
-          {product.peso_gramos && (
-            <div className="product-weight">
-              {product.peso_gramos}g
-            </div>
-          )}
+        <div className="product-price">
+          <IonIcon icon={pricetag} />
+          {product.precio ? formatPrice(product.precio) : '$0'}
         </div>
-        <IonButton expand="block" size="small" onClick={handleAddToCart}>
-          <IonIcon slot="start" icon={cart} />
-          Agregar
+        {product.peso_gramos && (
+          <div className="product-weight">
+            {product.peso_gramos}g
+          </div>
+        )}
+      </div>        <IonButton expand="block" size="small" onClick={handleAddToList}>
+          <IonIcon slot="start" icon={listOutline} />
+          Agregar a lista
         </IonButton>
       </IonCardContent>
     </IonCard>
