@@ -13,10 +13,9 @@ import {
   IonChip,
   IonLabel
 } from '@ionic/react';
-import { listOutline, pricetag, warning, flame, informationCircle } from 'ionicons/icons';
-import { Producto, ProductService } from '../../services/supabase/product.service';
+import { listOutline, pricetag, warning, flame } from 'ionicons/icons';
+import { Producto } from '../../services/supabase/product.service';
 import SelectListModal from '../common/SelectListModal';
-import ProductInfoModal from '../common/ProductInfoModal';
 import './ProductListInChat.css';
 
 interface ProductListInChatProps {
@@ -32,8 +31,6 @@ const ProductListInChat: React.FC<ProductListInChatProps> = ({
 }) => {
   const [selectedProduct, setSelectedProduct] = useState<Producto | null>(null);
   const [showSelectListModal, setShowSelectListModal] = useState(false);
-  const [showProductInfoModal, setShowProductInfoModal] = useState(false);
-  const [productDetailsForModal, setProductDetailsForModal] = useState<any>(null);
 
   const displayProducts = products.slice(0, maxDisplay);
   const hasMore = products.length > maxDisplay;
@@ -42,21 +39,6 @@ const ProductListInChat: React.FC<ProductListInChatProps> = ({
     setSelectedProduct(product);
     setShowSelectListModal(true);
   };
-
-  const handleShowProductInfo = async (product: Producto) => {
-    try {
-      // Obtener información detallada del producto
-      const productDetails = await ProductService.getProductByEan(product.ean);
-      setProductDetailsForModal(productDetails || product);
-      setShowProductInfoModal(true);
-    } catch (error) {
-      console.error('Error al obtener detalles del producto:', error);
-      // Fallback: mostrar con la información disponible
-      setProductDetailsForModal(product);
-      setShowProductInfoModal(true);
-    }
-  };
-
   const handleProductAddedToList = (listId: number, product: Producto) => {
     if (onAddToList) {
       onAddToList(product);
@@ -69,10 +51,11 @@ const ProductListInChat: React.FC<ProductListInChatProps> = ({
 
   return (
     <div className="product-list-in-chat">
-      <IonGrid>        <IonRow>
+      <IonGrid>
+        <IonRow>
           {displayProducts.map((product, index) => (
             <IonCol key={product.ean || index} size="12" sizeMd="6" sizeLg="4">
-              <IonCard className="chat-product-card" button onClick={() => handleShowProductInfo(product)}>
+              <IonCard className="chat-product-card">
                 <div className="chat-product-image-container">
                   {product.url_imagen || product.image_url ? (
                     <IonImg
@@ -137,36 +120,15 @@ const ProductListInChat: React.FC<ProductListInChatProps> = ({
                     <div className="chat-product-saving">
                       💸 {product.saving_text}
                     </div>
-                  )}
-
-                  <div className="chat-product-actions">
-                    <IonButton
-                      expand="block"
-                      size="small"
-                      fill="outline"
-                      className="chat-info-btn"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleShowProductInfo(product);
-                      }}
-                    >
-                      <IonIcon slot="start" icon={informationCircle} />
-                      Ver información
-                    </IonButton>
-                    
-                    <IonButton
-                      expand="block"
-                      size="small"
-                      className="chat-add-to-list-btn"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleAddToList(product);
-                      }}
-                    >
-                      <IonIcon slot="start" icon={listOutline} />
-                      Agregar a lista
-                    </IonButton>
-                  </div>
+                  )}                  <IonButton
+                    expand="block"
+                    size="small"
+                    className="chat-add-to-list-btn"
+                    onClick={() => handleAddToList(product)}
+                  >
+                    <IonIcon slot="start" icon={listOutline} />
+                    Agregar a lista
+                  </IonButton>
                 </IonCardContent>
               </IonCard>
             </IonCol>
@@ -185,7 +147,9 @@ const ProductListInChat: React.FC<ProductListInChatProps> = ({
           >
             Ver {products.length - maxDisplay} productos más
           </IonButton>
-        </div>)}      <SelectListModal
+        </div>)}
+
+      <SelectListModal
         isOpen={showSelectListModal}
         onDidDismiss={() => {
           setShowSelectListModal(false);
@@ -193,15 +157,6 @@ const ProductListInChat: React.FC<ProductListInChatProps> = ({
         }}
         onProductAdded={handleProductAddedToList}
         product={selectedProduct}
-      />
-
-      <ProductInfoModal
-        isOpen={showProductInfoModal}
-        onDidDismiss={() => {
-          setShowProductInfoModal(false);
-          setProductDetailsForModal(null);
-        }}
-        product={productDetailsForModal}
       />
     </div>
   );

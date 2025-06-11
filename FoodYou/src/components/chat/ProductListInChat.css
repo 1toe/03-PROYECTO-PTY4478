@@ -126,22 +126,8 @@
   gap: 4px;
 }
 
-.chat-product-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin-top: 8px;
-}
-
-.chat-info-btn {
-  --border-color: var(--ion-color-primary);
-  --color: var(--ion-color-primary);
-  height: 32px;
-  font-size: 0.85rem;
-}
-
 .chat-add-to-list-btn {
-  margin-top: 0;
+  margin-top: 8px;
   --border-radius: 8px;
   height: 36px;
   font-size: 0.9rem;

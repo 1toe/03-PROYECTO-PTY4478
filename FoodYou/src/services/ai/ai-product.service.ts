@@ -1,6 +1,5 @@
 import { ProductService, Producto } from '../supabase/product.service';
 import { CategoryService } from '../supabase/category.service';
-import { ProductFilterService } from '../supabase/product-filter.service';
 
 export interface AIProductQuery {
   query: string;
@@ -16,24 +15,19 @@ export interface AIProductQuery {
 }
 
 export interface AIProductResponse {
-  products: (Producto & {
-    recommendation_score?: number;
-    recommendation_reasons?: string[];
-    recommendation_warnings?: string[];
-  })[];
+  products: Producto[];
   summary: {
     total: number;
     categories: string[];
     priceRange: { min: number; max: number };
     onOfferCount: number;
     withWarningsCount: number;
-    personalizedCount?: number;
-    excludedCount?: number;
   };
   suggestions?: string[];
 }
 
-export const AIProductService = {  /**
+export const AIProductService = {
+  /**
    * Busca productos y genera información estructurada para la IA
    */
   async searchProductsForAI(query: AIProductQuery): Promise<AIProductResponse> {
@@ -97,67 +91,6 @@ export const AIProductService = {  /**
     } catch (error) {
       console.error('Error searching products for AI:', error);
       throw error;
-    }
-  },
-
-  /**
-   * Busca productos con recomendaciones personalizadas basadas en el perfil del usuario
-   */
-  async searchProductsWithUserPreferences(
-    query: AIProductQuery & { userId?: string }
-  ): Promise<AIProductResponse> {
-    try {
-      // Primero obtener productos normalmente
-      const standardResponse = await this.searchProductsForAI(query);
-      
-      // Si no hay userId, retornar resultado estándar
-      if (!query.userId) {
-        return standardResponse;
-      }
-
-      // Aplicar filtros de usuario
-      const recommendations = await ProductFilterService.filterProductsForUser(
-        standardResponse.products,
-        query.userId,
-        {
-          excludeAllergens: true,
-          includeRecommendations: true
-        }
-      );
-
-      // Convertir recomendaciones de vuelta a productos con información adicional
-      const productsWithRecommendations = recommendations.map(rec => ({
-        ...rec.product,
-        recommendation_score: rec.score,
-        recommendation_reasons: rec.reasons,
-        recommendation_warnings: rec.warnings
-      }));
-
-      // Generar resumen actualizado
-      const updatedSummary = {
-        ...standardResponse.summary,
-        personalizedCount: recommendations.filter(r => r.reasons.length > 0).length,
-        excludedCount: standardResponse.products.length - recommendations.length
-      };      // Agregar sugerencias personalizadas
-      const personalizedSuggestions = [
-        ...(standardResponse.suggestions || []),
-        ...(recommendations.length > 0 ? [
-          `Encontré ${recommendations.length} productos recomendados para tu perfil`,
-          recommendations.some(r => r.warnings.length > 0) ? 
-            'Algunos productos tienen advertencias basadas en tu perfil de salud' : 
-            'Todos los productos recomendados son adecuados para tu perfil'
-        ] : [])
-      ];
-
-      return {
-        products: productsWithRecommendations,
-        summary: updatedSummary,
-        suggestions: personalizedSuggestions
-      };
-    } catch (error) {
-      console.error('Error searching products with user preferences:', error);
-      // Fallback al método estándar
-      return this.searchProductsForAI(query);
     }
   },
 
