@@ -29,11 +29,12 @@ import {
   IonToast
 } from '@ionic/react';
 import { useParams } from 'react-router-dom';
-import { listOutline, pricetag, arrowBack } from 'ionicons/icons';
+import { listOutline, pricetag, arrowBack, informationCircle } from 'ionicons/icons';
 import { CategoryService } from '../../services/supabase/category.service';
 import { Producto, ProductService } from '../../services/supabase/product.service';
 import { filterUniqueProducts } from '../../utils/product.utils';
 import SelectListModal from '../../components/common/SelectListModal';
+import ProductInfoModal from '../../components/common/ProductInfoModal';
 
 const formatPrice = (price: number): string => {
   return new Intl.NumberFormat('es-CL', {
@@ -58,9 +59,10 @@ const CategoryPage: React.FC = () => {
   const [hasMoreData, setHasMoreData] = useState(true);
   const pageSize = 10;
 
-
   const [showSelectListModal, setShowSelectListModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Producto | null>(null);
+  const [showProductInfoModal, setShowProductInfoModal] = useState(false);
+  const [productDetailsForModal, setProductDetailsForModal] = useState<any>(null);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
 
@@ -172,10 +174,23 @@ const CategoryPage: React.FC = () => {
     }
     event.detail.complete();
   };
-
   const handleAddToList = (product: Producto) => {
     setSelectedProduct(product);
     setShowSelectListModal(true);
+  };
+
+  const handleShowProductInfo = async (product: Producto) => {
+    try {
+      // Obtener información detallada del producto
+      const productDetails = await ProductService.getProductByEan(product.ean);
+      setProductDetailsForModal(productDetails || product);
+      setShowProductInfoModal(true);
+    } catch (error) {
+      console.error('Error al obtener detalles del producto:', error);
+      // Fallback: mostrar con la información disponible
+      setProductDetailsForModal(product);
+      setShowProductInfoModal(true);
+    }
   };
 
   const handleProductAddedToList = (listId: number, product: Producto) => {
@@ -238,13 +253,27 @@ const CategoryPage: React.FC = () => {
                           {product.peso_gramos}g
                         </IonChip>
                       )}
-                    </div>
-                    {product.descripcion && (
+                    </div>                    {product.descripcion && (
                       <p className="product-description">{product.descripcion}</p>
-                    )}                    <IonButton expand="block" size="small" fill="solid" onClick={() => handleAddToList(product)}>
-                      <IonIcon slot="start" icon={listOutline} />
-                      Agregar a lista
-                    </IonButton>
+                    )}
+                    
+                    <div className="product-actions">
+                      <IonButton 
+                        expand="block" 
+                        size="small" 
+                        fill="outline" 
+                        onClick={() => handleShowProductInfo(product)}
+                        className="product-info-btn"
+                      >
+                        <IonIcon slot="start" icon={informationCircle} />
+                        Ver información
+                      </IonButton>
+                      
+                      <IonButton expand="block" size="small" fill="solid" onClick={() => handleAddToList(product)}>
+                        <IonIcon slot="start" icon={listOutline} />
+                        Agregar a lista
+                      </IonButton>
+                    </div>
                   </IonCardContent>
                 </IonCard>
               </IonCol>
@@ -288,9 +317,7 @@ const CategoryPage: React.FC = () => {
         </div>
 
         <div className="products-container">
-          {renderProducts()}        </div>
-
-        <SelectListModal
+          {renderProducts()}        </div>        <SelectListModal
           isOpen={showSelectListModal}
           onDidDismiss={() => {
             setShowSelectListModal(false);
@@ -298,6 +325,15 @@ const CategoryPage: React.FC = () => {
           }}
           onProductAdded={handleProductAddedToList}
           product={selectedProduct}
+        />
+
+        <ProductInfoModal
+          isOpen={showProductInfoModal}
+          onDidDismiss={() => {
+            setShowProductInfoModal(false);
+            setProductDetailsForModal(null);
+          }}
+          product={productDetailsForModal}
         />
 
         <IonToast

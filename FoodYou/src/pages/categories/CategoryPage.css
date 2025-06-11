@@ -153,6 +153,20 @@
   -webkit-box-orient: vertical;
 }
 
+.product-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.product-info-btn {
+  --border-color: var(--ion-color-primary);
+  --color: var(--ion-color-primary);
+  height: 32px;
+  font-size: 0.85rem;
+}
+
 .category-title {
   padding: 16px;
   margin: 0;

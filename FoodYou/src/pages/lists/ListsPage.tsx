@@ -33,13 +33,14 @@ import {
   IonActionSheet,
   IonAlert
 } from '@ionic/react';
-import { add, listOutline, storefront, pricetag, warning, flame, ellipsisVertical, trash, create, eye } from 'ionicons/icons';
+import { add, listOutline, storefront, pricetag, warning, flame, ellipsisVertical, trash, create, eye, informationCircle } from 'ionicons/icons';
 import { useLocation, useHistory } from 'react-router-dom';
 import { CategoryService, Categoria } from '../../services/supabase/category.service';
 import { Producto, ProductService } from '../../services/supabase/product.service';
 import { ListsService, UserList } from '../../services/supabase/lists.service';
 import { filterUniqueProducts } from '../../utils/product.utils';
 import SelectListModal from '../../components/common/SelectListModal';
+import ProductInfoModal from '../../components/common/ProductInfoModal';
 import '../../components/chat/ProductListInChat.css';
 import './ListsPage.css';
 
@@ -82,9 +83,10 @@ const ListsPage: React.FC = () => {
   const [newListName, setNewListName] = useState('');
   const [newListDescription, setNewListDescription] = useState('');
   const [searchNoResults, setSearchNoResults] = useState(false);
-
   const [showSelectListModal, setShowSelectListModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Producto | null>(null);
+  const [showProductInfoModal, setShowProductInfoModal] = useState(false);
+  const [productDetailsForModal, setProductDetailsForModal] = useState<any>(null);
 
 
   useEffect(() => {
@@ -444,9 +446,23 @@ const ListsPage: React.FC = () => {
         </div>
       </div>
     );
-  }; const handleAddToList = (product: Producto) => {
+  };  const handleAddToList = (product: Producto) => {
     setSelectedProduct(product);
     setShowSelectListModal(true);
+  };
+
+  const handleShowProductInfo = async (product: Producto) => {
+    try {
+      // Obtener información detallada del producto
+      const productDetails = await ProductService.getProductByEan(product.ean);
+      setProductDetailsForModal(productDetails || product);
+      setShowProductInfoModal(true);
+    } catch (error) {
+      console.error('Error al obtener detalles del producto:', error);
+      // Fallback: mostrar con la información disponible
+      setProductDetailsForModal(product);
+      setShowProductInfoModal(true);
+    }
   };
 
   const handleProductAddedToList = (listId: number, product: Producto) => {
@@ -542,22 +558,34 @@ const ListsPage: React.FC = () => {
                         ⚖️ {product.peso_gramos || product.size_value_okto}
                         {product.size_unit_okto || 'g'}
                       </div>
-                    )}
-
-                    {product.saving_text && (
+                    )}                    {product.saving_text && (
                       <div className="chat-product-saving">
                         💸 {product.saving_text}
                       </div>
                     )}
-                    <IonButton
-                      expand="block"
-                      size="small"
-                      className="chat-add-to-list-btn"
-                      onClick={() => handleAddToList(product)}
-                    >
-                      <IonIcon slot="start" icon={listOutline} />
-                      Agregar a lista
-                    </IonButton>
+                    
+                    <div className="chat-product-actions">
+                      <IonButton
+                        expand="block"
+                        size="small"
+                        fill="outline"
+                        className="chat-info-btn"
+                        onClick={() => handleShowProductInfo(product)}
+                      >
+                        <IonIcon slot="start" icon={informationCircle} />
+                        Ver información
+                      </IonButton>
+                      
+                      <IonButton
+                        expand="block"
+                        size="small"
+                        className="chat-add-to-list-btn"
+                        onClick={() => handleAddToList(product)}
+                      >
+                        <IonIcon slot="start" icon={listOutline} />
+                        Agregar a lista
+                      </IonButton>
+                    </div>
                   </IonCardContent>
                 </IonCard>
               </IonCol>
@@ -733,9 +761,7 @@ const ListsPage: React.FC = () => {
                 handleCreateList();
               }
             }
-          ]} />
-
-        <SelectListModal
+          ]} />        <SelectListModal
           isOpen={showSelectListModal}
           onDidDismiss={() => {
             setShowSelectListModal(false);
@@ -743,6 +769,15 @@ const ListsPage: React.FC = () => {
           }}
           onProductAdded={handleProductAddedToList}
           product={selectedProduct}
+        />
+
+        <ProductInfoModal
+          isOpen={showProductInfoModal}
+          onDidDismiss={() => {
+            setShowProductInfoModal(false);
+            setProductDetailsForModal(null);
+          }}
+          product={productDetailsForModal}
         />
       </IonContent>
     </IonPage>

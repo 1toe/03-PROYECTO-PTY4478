@@ -154,7 +154,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ title = "Chat IA" }) => {
         onChange={setInputValue}
         onSendMessage={handleSendMessage}
         isLoading={isLoading || apiKeyMissing}
-        placeholder={apiKeyMissing ? "API Key no configurada" : "Escribe tu mensaje... Puedes preguntar sobre productos o usar 'buscar [producto]'"}
+        placeholder={apiKeyMissing ? "API Key no configurada" : "Escribe tu mensaje..."}
       />
 
       <IonToast

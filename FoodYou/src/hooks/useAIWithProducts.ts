@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { AIProductService, AIProductQuery } from '../services/ai/ai-product.service';
 import { Producto } from '../services/supabase/product.service';
+import { useAuth } from '../AuthContext';
 
 interface AIResponse {
     message: string;
@@ -11,6 +12,7 @@ interface AIResponse {
 export const useAIWithProducts = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const { user } = useAuth();
 
     const processMessage = async (message: string): Promise<AIResponse> => {
         setIsLoading(true);
@@ -54,8 +56,10 @@ export const useAIWithProducts = () => {
         const query = extractSearchQuery(message);
 
         try {
-            // Llamar al servicio de IA para buscar productos
-            const result = await AIProductService.searchProductsForAI(query);
+            // Usar búsqueda personalizada si hay usuario autenticado
+            const result = user ? 
+                await AIProductService.searchProductsWithUserPreferences({ ...query, userId: user.id }) :
+                await AIProductService.searchProductsForAI(query);
 
             if (result.products.length === 0) {
                 return {

@@ -23,12 +23,15 @@ export interface Producto {
   brand_name?: string;
   category_name?: string;
   category_slug?: string;
-  price_current?: string;
-  price_list?: string;
+  price_current?: string;  price_list?: string;
   is_in_offer?: boolean;
   saving_text?: string;
   image_url?: string;
   warnings?: ProductWarning[];
+  
+  // Datos adicionales para filtros
+  ingredients?: string[];
+  allergens?: string[];
 
   // Para compatibilidad con componentes existentes
   id?: string;

@@ -1,0 +1,148 @@
+/* ProfileConfigPage.css */
+
+.profile-config-container {
+  padding: 16px;
+  padding-bottom: 32px;
+}
+
+.bmi-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.bmi-badge {
+  font-size: 1.2rem;
+  padding: 8px 16px;
+}
+
+.bmi-note {
+  text-align: center;
+  font-size: 0.85rem;
+  margin-top: 8px;
+  display: block;
+}
+
+.allergies-note {
+  display: block;
+  margin-bottom: 16px;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.allergies-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+  min-height: 40px;
+  align-items: flex-start;
+}
+
+.allergy-chip {
+  --background: var(--ion-color-danger-tint);
+  --color: var(--ion-color-danger-contrast);
+}
+
+.add-allergy-btn {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.common-allergies {
+  margin-top: 16px;
+}
+
+.common-allergies ion-note {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.common-allergies-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.suggestion-chip {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.suggestion-chip:hover {
+  transform: scale(1.05);
+}
+
+.action-buttons {
+  margin-top: 24px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .profile-config-container {
+    padding: 12px;
+  }
+  
+  .bmi-badge {
+    font-size: 1rem;
+    padding: 6px 12px;
+  }
+}
+
+/* Dark mode support */
+.ios.dark .allergies-list,
+.md.dark .allergies-list {
+  border-color: var(--ion-color-medium);
+}
+
+.ios.dark .suggestion-chip,
+.md.dark .suggestion-chip {
+  --background: var(--ion-color-step-100);
+  --color: var(--ion-color-contrast);
+}
+
+/* Animation for chips */
+@keyframes chipAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.allergy-chip {
+  animation: chipAppear 0.3s ease-out;
+}
+
+/* Improved form styling */
+.profile-config-container ion-item {
+  --padding-start: 16px;
+  --padding-end: 16px;
+}
+
+.profile-config-container ion-card {
+  margin-bottom: 16px;
+  border-radius: 12px;
+}
+
+.profile-config-container ion-card-header {
+  padding-bottom: 8px;
+}
+
+.profile-config-container ion-card-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.1rem;
+}
+
+.profile-config-container ion-input {
+  --padding-start: 0;
+  --padding-end: 0;
+}
