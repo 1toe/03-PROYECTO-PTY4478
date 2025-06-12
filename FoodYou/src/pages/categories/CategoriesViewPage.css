@@ -1,0 +1,356 @@
+.categories-header {
+  padding: 16px;
+  background: var(--ion-color-light);
+  border-bottom: 1px solid var(--ion-color-light-shade);
+}
+
+.search-section {
+  margin-bottom: 16px;
+}
+
+.controls-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.controls-section ion-segment {
+  flex: 1;
+  max-width: 300px;
+}
+
+.view-toggle {
+  display: flex;
+  gap: 4px;
+}
+
+.view-toggle ion-button {
+  --padding-start: 8px;
+  --padding-end: 8px;
+  min-width: 40px;
+}
+
+.categories-stats {
+  text-align: center;
+}
+
+.categories-stats p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.categories-content {
+  padding: 16px 0;
+}
+
+.categories-container {
+  padding: 0 8px;
+}
+
+.categories-container.grid {
+  /* Grid styles are handled by IonGrid */
+}
+
+.categories-list {
+  padding: 0 16px;
+}
+
+.category-list-item {
+  background: var(--ion-color-light);
+  border-radius: 12px;
+  margin-bottom: 12px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid var(--ion-color-light-shade);
+}
+
+.category-list-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background: var(--ion-color-light-tint);
+}
+
+.category-list-item:active {
+  transform: translateY(0);
+}
+
+.category-list-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.category-list-info {
+  flex: 1;
+}
+
+.category-list-info h3 {
+  margin: 0 0 4px 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--ion-color-dark);
+}
+
+.category-list-info p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--ion-color-medium);
+  line-height: 1.3;
+}
+
+.category-list-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.product-count {
+  font-size: 0.8rem;
+  color: var(--ion-color-medium);
+  background: var(--ion-color-light-shade);
+  padding: 4px 8px;
+  border-radius: 8px;
+  white-space: nowrap;
+}
+
+.category-list-meta ion-icon {
+  color: var(--ion-color-medium);
+  font-size: 1.2rem;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.loading-container ion-spinner {
+  margin-bottom: 16px;
+}
+
+.loading-container p {
+  margin: 0;
+  color: var(--ion-color-medium);
+}
+
+.no-categories {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.no-categories h3 {
+  margin: 0 0 8px 0;
+  color: var(--ion-color-dark);
+}
+
+.no-categories p {
+  margin: 0 0 16px 0;
+  color: var(--ion-color-medium);
+  line-height: 1.4;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .categories-header {
+    padding: 12px;
+  }
+  
+  .controls-section {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .controls-section ion-segment {
+    max-width: 100%;
+  }
+  
+  .view-toggle {
+    align-self: flex-end;
+  }
+  
+  .categories-content {
+    padding: 12px 0;
+  }
+  
+  .categories-list {
+    padding: 0 12px;
+  }
+  
+  .category-list-item {
+    padding: 12px;
+    margin-bottom: 8px;
+  }
+  
+  .category-list-content {
+    gap: 12px;
+  }
+  
+  .category-list-info h3 {
+    font-size: 1rem;
+  }
+  
+  .category-list-info p {
+    font-size: 0.85rem;
+  }
+  
+  .product-count {
+    font-size: 0.75rem;
+    padding: 2px 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .categories-header {
+    padding: 8px;
+  }
+  
+  .controls-section {
+    gap: 8px;
+  }
+  
+  .categories-content {
+    padding: 8px 0;
+  }
+  
+  .categories-list {
+    padding: 0 8px;
+  }
+  
+  .category-list-item {
+    padding: 10px;
+    margin-bottom: 6px;
+  }
+  
+  .category-list-content {
+    gap: 8px;
+  }
+  
+  .category-list-info h3 {
+    font-size: 0.95rem;
+  }
+  
+  .category-list-info p {
+    font-size: 0.8rem;
+  }
+  
+  .category-list-meta {
+    gap: 6px;
+  }
+  
+  .product-count {
+    font-size: 0.7rem;
+    padding: 2px 4px;
+  }
+  
+  .category-list-meta ion-icon {
+    font-size: 1rem;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .categories-header {
+    background: var(--ion-color-dark);
+    border-bottom: 1px solid var(--ion-color-dark-shade);
+  }
+  
+  .category-list-item {
+    background: var(--ion-color-dark);
+    border: 1px solid var(--ion-color-dark-shade);
+  }
+  
+  .category-list-item:hover {
+    background: var(--ion-color-dark-tint);
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+  }
+  
+  .category-list-info h3 {
+    color: var(--ion-color-light);
+  }
+  
+  .product-count {
+    background: var(--ion-color-dark-shade);
+  }
+}
+
+/* Animation for category items */
+.category-list-item {
+  animation: fadeInUp 0.3s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Staggered animation for multiple items */
+.category-list-item:nth-child(1) { animation-delay: 0.1s; }
+.category-list-item:nth-child(2) { animation-delay: 0.2s; }
+.category-list-item:nth-child(3) { animation-delay: 0.3s; }
+.category-list-item:nth-child(4) { animation-delay: 0.4s; }
+.category-list-item:nth-child(5) { animation-delay: 0.5s; }
+
+/* Focus states for accessibility */
+.category-list-item:focus {
+  outline: 2px solid var(--ion-color-primary);
+  outline-offset: 2px;
+}
+
+/* Loading state for categories */
+.categories-container.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* Empty state improvements */
+.no-categories ion-button {
+  margin-top: 8px;
+}
+
+/* Search highlight */
+.search-highlight {
+  background: var(--ion-color-warning);
+  color: var(--ion-color-warning-contrast);
+  padding: 1px 3px;
+  border-radius: 3px;
+}
+
+/* Segment button improvements */
+.controls-section ion-segment ion-segment-button {
+  min-height: 36px;
+}
+
+.controls-section ion-segment ion-segment-button ion-label {
+  font-size: 0.9rem;
+}
+
+/* Stats section improvements */
+.categories-stats {
+  padding: 8px 0;
+  border-top: 1px solid var(--ion-color-light-shade);
+}
+
+@media (prefers-color-scheme: dark) {
+  .categories-stats {
+    border-top: 1px solid var(--ion-color-dark-shade);
+  }
+}
+

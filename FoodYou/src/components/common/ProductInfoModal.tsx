@@ -298,6 +298,42 @@ const ProductInfoModal: React.FC<ProductInfoModalProps> = ({
           </IonCard>
         )}
 
+        {/* Certificaciones */}
+        {product.certifications && product.certifications.length > 0 && (
+          <IonCard>
+            <IonCardHeader>
+              <IonCardTitle>
+                <IonIcon icon={medkit} />
+                Certificaciones
+              </IonCardTitle>
+            </IonCardHeader>
+            <IonCardContent>
+              <div className="certifications-container">
+                {product.certifications.map((certification, index) => (
+                  <IonChip key={index} color="success">
+                    {certification.icon_url && (
+                      <img src={certification.icon_url} alt={certification.name} style={{ width: '16px', height: '16px', marginRight: '4px' }} />
+                    )}
+                    <IonLabel>{certification.name || certification.certification_code}</IonLabel>
+                  </IonChip>
+                ))}
+              </div>
+              {product.certifications.some(cert => cert.description) && (
+                <IonList>
+                  {product.certifications.filter(cert => cert.description).map((certification, index) => (
+                    <IonItem key={index}>
+                      <IonLabel>
+                        <h3>{certification.name || certification.certification_code}</h3>
+                        <p>{certification.description}</p>
+                      </IonLabel>
+                    </IonItem>
+                  ))}
+                </IonList>
+              )}
+            </IonCardContent>
+          </IonCard>
+        )}
+
         {/* Alérgenos */}
         {product.allergens && product.allergens.length > 0 && (
           <IonCard>

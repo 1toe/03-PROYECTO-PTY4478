@@ -35,10 +35,10 @@ export class PersonalizedFilterService {
     try {
       // Obtener preferencias del usuario
       const userPreferences = await UserService.getFilterPreferences(userId);
-      
+
       // Obtener productos base
       const baseProducts = await ProductService.searchProductsForAI(baseQuery, additionalFilters);
-      
+
       // Aplicar filtros personalizados
       const filteredResult = this.applyPersonalizedFilters(
         baseProducts,
@@ -76,16 +76,16 @@ export class PersonalizedFilterService {
       const originalCount = filteredProducts.length;
       filteredProducts = filteredProducts.filter(product => {
         if (!product.ingredients && !product.allergens) return true;
-        
+
         const productAllergens = product.allergens || [];
         const productIngredients = product.ingredients || [];
-        
-        return !userPreferences.alergias!.some(allergen => 
+
+        return !userPreferences.alergias!.some(allergen =>
           productAllergens.some(pa => pa.toLowerCase().includes(allergen.toLowerCase())) ||
           productIngredients.some(ing => ing.toLowerCase().includes(allergen.toLowerCase()))
         );
       });
-      
+
       if (originalCount > filteredProducts.length) {
         appliedFilters.push(`Excluidos ${originalCount - filteredProducts.length} productos con alérgenos`);
       }
@@ -94,41 +94,41 @@ export class PersonalizedFilterService {
     // Filtros saludables basados en IMC
     if (filters?.healthyForBMI && userPreferences.imc_category) {
       const originalCount = filteredProducts.length;
-      
+
       switch (userPreferences.imc_category) {
         case 'sobrepeso':
         case 'obesidad':
           // Filtrar productos altos en sodio, azúcar y grasas
           filteredProducts = filteredProducts.filter(product => {
             if (!product.warnings) return true;
-            
-            const hasHighSodium = product.warnings.some(w => 
+
+            const hasHighSodium = product.warnings.some(w =>
               w.description?.toLowerCase().includes('alto en sodio') ||
               w.warning_code?.toLowerCase().includes('sodium')
             );
-            const hasHighSugar = product.warnings.some(w => 
+            const hasHighSugar = product.warnings.some(w =>
               w.description?.toLowerCase().includes('alto en azúcar') ||
               w.warning_code?.toLowerCase().includes('sugar')
             );
-            const hasHighFat = product.warnings.some(w => 
+            const hasHighFat = product.warnings.some(w =>
               w.description?.toLowerCase().includes('alto en gras') ||
               w.warning_code?.toLowerCase().includes('fat')
             );
-            
+
             return !(hasHighSodium || hasHighSugar || hasHighFat);
           });
-          
+
           if (originalCount > filteredProducts.length) {
             appliedFilters.push('Filtrados productos altos en sodio, azúcar y grasas');
             recommendations.push('Se recomiendan productos sin sellos de advertencia para un peso saludable');
           }
           break;
-          
+
         case 'bajo_peso':
           // Priorizar productos con más calorías y nutrientes
           recommendations.push('Se recomiendan productos ricos en proteínas y calorías saludables');
           break;
-          
+
         default:
           recommendations.push('Se recomienda mantener una dieta balanceada');
       }
@@ -139,12 +139,12 @@ export class PersonalizedFilterService {
       const originalCount = filteredProducts.length;
       filteredProducts = filteredProducts.filter(product => {
         if (!product.warnings) return true;
-        return !product.warnings.some(w => 
+        return !product.warnings.some(w =>
           w.description?.toLowerCase().includes('alto en sodio') ||
           w.warning_code?.toLowerCase().includes('sodium')
         );
       });
-      
+
       if (originalCount > filteredProducts.length) {
         appliedFilters.push('Filtrados productos altos en sodio');
       }
@@ -155,12 +155,12 @@ export class PersonalizedFilterService {
       const originalCount = filteredProducts.length;
       filteredProducts = filteredProducts.filter(product => {
         if (!product.warnings) return true;
-        return !product.warnings.some(w => 
+        return !product.warnings.some(w =>
           w.description?.toLowerCase().includes('alto en azúcar') ||
           w.warning_code?.toLowerCase().includes('sugar')
         );
       });
-      
+
       if (originalCount > filteredProducts.length) {
         appliedFilters.push('Filtrados productos altos en azúcar');
       }
@@ -171,12 +171,12 @@ export class PersonalizedFilterService {
       const originalCount = filteredProducts.length;
       filteredProducts = filteredProducts.filter(product => {
         if (!product.warnings) return true;
-        return !product.warnings.some(w => 
+        return !product.warnings.some(w =>
           w.description?.toLowerCase().includes('alto en gras') ||
           w.warning_code?.toLowerCase().includes('fat')
         );
       });
-      
+
       if (originalCount > filteredProducts.length) {
         appliedFilters.push('Filtrados productos altos en grasas');
       }
@@ -221,11 +221,11 @@ export class PersonalizedFilterService {
 
       // Aumentar puntuación si no tiene alérgenos del usuario
       if (userPreferences.alergias && userPreferences.alergias.length > 0) {
-        const hasUserAllergens = userPreferences.alergias.some(allergen => 
+        const hasUserAllergens = userPreferences.alergias.some(allergen =>
           product.allergens?.some(pa => pa.toLowerCase().includes(allergen.toLowerCase())) ||
           product.ingredients?.some(ing => ing.toLowerCase().includes(allergen.toLowerCase()))
         );
-        
+
         if (!hasUserAllergens) {
           productScore += 10;
         } else {
@@ -235,7 +235,7 @@ export class PersonalizedFilterService {
 
       // Asegurar que la puntuación esté entre 0 y 100
       productScore = Math.max(0, Math.min(100, productScore));
-      
+
       totalScore += productScore;
       scoredProducts++;
     });
@@ -248,7 +248,7 @@ export class PersonalizedFilterService {
    */
   static async getHealthySuggestions(userId: string, category?: string): Promise<FilteredProductsResult> {
     const userPreferences = await UserService.getFilterPreferences(userId);
-    
+
     let baseQuery = 'productos saludables';
     if (category) {
       baseQuery = `${category} saludables`;
@@ -271,7 +271,7 @@ export class PersonalizedFilterService {
    */
   static getNutritionalRecommendations(userPreferences: FilterPreferences): string[] {
     const recommendations: string[] = [];
-    
+
     if (!userPreferences.imc_category) {
       recommendations.push('Completa tu peso y estatura en el perfil para obtener recomendaciones personalizadas');
       return recommendations;
@@ -283,19 +283,19 @@ export class PersonalizedFilterService {
         recommendations.push('Incluye frutos secos, aguacates y productos lácteos');
         recommendations.push('Evita productos "light" o bajos en calorías');
         break;
-        
+
       case 'normal':
         recommendations.push('Mantén una dieta balanceada y variada');
         recommendations.push('Incluye frutas, verduras, proteínas y granos enteros');
         recommendations.push('Modera el consumo de productos con sellos de advertencia');
         break;
-        
+
       case 'sobrepeso':
         recommendations.push('Elige productos bajos en sodio, azúcar y grasas saturadas');
         recommendations.push('Prioriza frutas, verduras y productos integrales');
         recommendations.push('Evita productos con múltiples sellos de advertencia');
         break;
-        
+
       case 'obesidad':
         recommendations.push('Enfócate en productos sin sellos de advertencia');
         recommendations.push('Elige productos ricos en fibra y proteínas magras');

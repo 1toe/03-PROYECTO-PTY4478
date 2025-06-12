@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { AIProductService, AIProductQuery } from '../services/ai/ai-product.service';
 import { Producto } from '../services/supabase/product.service';
+import { NLPUtils } from '../utils/nlp.utils';
 
 interface AIResponse {
     message: string;
@@ -74,9 +75,16 @@ export const useAIWithProducts = () => {
 
             // Generar respuesta descriptiva con la información de productos
             const aiResponse = generateProductSearchResponse(message, result);
+            
+            // Agregar sugerencias de corrección si las hay
+            const corrections = NLPUtils.suggestCorrections(query.query);
+            let finalResponse = aiResponse;
+            if (corrections.length > 0) {
+                finalResponse = `💡 **Correcciones sugeridas:**\n${corrections.join('\n')}\n\n${aiResponse}`;
+            }
 
             return {
-                message: aiResponse,
+                message: finalResponse,
                 products: result.products.slice(0, 10), // Limitar a 10 productos para mejor visualización
                 isProductSearch: true
             };
@@ -91,8 +99,7 @@ export const useAIWithProducts = () => {
     };
 
     const handleGeneralAIChat = async (message: string): Promise<AIResponse> => {
-        // Respuestas inteligentes sin necesidad de API externa
-        const lowerMessage = message.toLowerCase();
+        const lowerMessage = message.toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, "").replace(/[^a-z0-9\s]/g, "");
 
         let response = '';
 
@@ -213,7 +220,8 @@ Simplemente describe lo que buscas y yo te ayudo a encontrarlo en nuestra base d
         // Agregar consejos útiles
         response += `💡 **Consejos:**\n`;
         response += `• Puedes tocar cualquier producto para ver más detalles\n`;
-        response += `• Los productos con ⚠️ tienen sellos de advertencia nutricional\n`;
+        const warningDescriptions = ["Alto en Calorías", "Alto en Grasas Saturadas", "Alto en Sodio", "Alto en Azúcares"];
+        response += `• Los productos con ⚠️ tienen sellos de advertencia nutricional. Por ejemplo: ${warningDescriptions.join(', ')}\n`;
         if (summary.onOfferCount > 0) {
             response += `• Los precios en rojo indican ofertas especiales\n`;
         }
@@ -224,17 +232,22 @@ Simplemente describe lo que buscas y yo te ayudo a encontrarlo en nuestra base d
     };
 
     const extractSearchQuery = (message: string): AIProductQuery => {
-        const lowerMessage = message.toLowerCase();
+        const lowerMessage = message.toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, "").replace(/[^a-z0-9\s]/g, "");
 
-        // Extraer términos de búsqueda básicos
-        let searchTerms = message;
-
-        // Remover palabras comunes de búsqueda
-        const removeWords = ['buscar', 'busca', 'busco', 'encuentro', 'encuentra', 'producto', 'productos', 'quiero', 'necesito', 'me puedes', 'puedes', 'mostrar', 'ver'];
-        removeWords.forEach(word => {
-            const regex = new RegExp(`\\b${word}\\b`, 'gi');
-            searchTerms = searchTerms.replace(regex, '').trim();
-        });
+        // Usar NLP para corregir y extraer términos de búsqueda
+        let searchTerms = NLPUtils.extractCorrectedSearchTerms(message);
+        
+        // Si no se encontraron términos después de la corrección, usar el método original
+        if (!searchTerms || searchTerms.trim().length === 0) {
+            searchTerms = message;
+            
+            // Remover palabras comunes de búsqueda
+            const removeWords = ['buscar', 'busca', 'busco', 'encuentro', 'encuentra', 'producto', 'productos', 'quiero', 'necesito', 'me puedes', 'puedes', 'mostrar', 'ver'];
+            removeWords.forEach(word => {
+                const regex = new RegExp(`\\b${word}\\b`, 'gi');
+                searchTerms = searchTerms.replace(regex, '').trim();
+            });
+        }
 
         // Detectar filtros en el mensaje
         const filters: AIProductQuery['filters'] = {};

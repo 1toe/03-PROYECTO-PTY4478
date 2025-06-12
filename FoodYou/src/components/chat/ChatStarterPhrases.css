@@ -1,0 +1,235 @@
+.chat-starter-phrases {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  margin: 20px 0;
+  gap: 16px;
+}
+
+.phrase-container {
+  width: 100%;
+  max-width: 600px;
+  min-height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.starter-phrase-button {
+  width: 100%;
+  height: auto;
+  min-height: 100px;
+  border-radius: 16px;
+  padding: 20px;
+  margin: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+  background: var(--background);
+  color: var(--color);
+  border: none;
+  cursor: pointer;
+}
+
+.starter-phrase-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.starter-phrase-button:active {
+  transform: translateY(0);
+}
+
+.phrase-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.phrase-text {
+  font-size: 1.2rem;
+  font-weight: 500;
+  line-height: 1.4;
+  text-align: center;
+  color: white;
+  min-height: 1.4em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.cursor {
+  animation: blink 1s infinite;
+  font-weight: bold;
+  margin-left: 2px;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.phrase-hint {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  color: white;
+  font-style: italic;
+}
+
+.phrase-indicators {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--ion-color-medium);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.indicator.active {
+  background: var(--ion-color-primary);
+  transform: scale(1.2);
+}
+
+.indicator:hover {
+  background: var(--ion-color-primary-shade);
+  transform: scale(1.1);
+}
+
+.phrase-navigation {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.phrase-navigation ion-button {
+  --color: var(--ion-color-medium);
+  font-size: 0.9rem;
+}
+
+.phrase-navigation ion-button:hover {
+  --color: var(--ion-color-primary);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .chat-starter-phrases {
+    padding: 16px;
+    margin: 16px 0;
+  }
+  
+  .phrase-container {
+    max-width: 100%;
+    min-height: 100px;
+  }
+  
+  .starter-phrase-button {
+    min-height: 80px;
+    padding: 16px;
+    border-radius: 12px;
+  }
+  
+  .phrase-text {
+    font-size: 1.1rem;
+  }
+  
+  .phrase-hint {
+    font-size: 0.8rem;
+  }
+  
+  .phrase-navigation {
+    gap: 12px;
+  }
+  
+  .phrase-navigation ion-button {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .phrase-text {
+    font-size: 1rem;
+  }
+  
+  .starter-phrase-button {
+    min-height: 70px;
+    padding: 12px;
+  }
+  
+  .phrase-navigation {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .starter-phrase-button {
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+  }
+  
+  .starter-phrase-button:hover {
+    box-shadow: 0 6px 16px rgba(255, 255, 255, 0.15);
+  }
+}
+
+/* Animation for smooth transitions */
+.phrase-container {
+  animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Accessibility improvements */
+.starter-phrase-button:focus {
+  outline: 2px solid var(--ion-color-primary);
+  outline-offset: 2px;
+}
+
+.indicator:focus {
+  outline: 2px solid var(--ion-color-primary);
+  outline-offset: 2px;
+}
+
+/* Loading state */
+.phrase-text.loading {
+  opacity: 0.7;
+}
+
+/* Category-specific styling */
+.starter-phrase-button[data-category="health"] {
+  --background: linear-gradient(135deg, #2dd36f, #1db954);
+}
+
+.starter-phrase-button[data-category="offers"] {
+  --background: linear-gradient(135deg, #eb445a, #d33a4a);
+}
+
+.starter-phrase-button[data-category="comparison"] {
+  --background: linear-gradient(135deg, #3880ff, #2968e6);
+}
+
+.starter-phrase-button[data-category="search"] {
+  --background: linear-gradient(135deg, #ffc409, #e6b000);
+}
+

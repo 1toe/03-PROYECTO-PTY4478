@@ -52,6 +52,7 @@ export interface ProductWithDetails extends Producto {
   ingredients?: string[];
   allergens?: string[];
   nutritional_values?: NutritionalValue[];
+  certifications?: ProductCertification[];
 }
 
 export interface NutritionalValue {
@@ -59,6 +60,13 @@ export interface NutritionalValue {
   value_per_100g?: string;
   value_per_portion?: string;
   unit?: string;
+}
+
+export interface ProductCertification {
+  certification_code: string;
+  name?: string;
+  description?: string;
+  icon_url?: string;
 }
 
 export const ProductService = {
@@ -196,6 +204,10 @@ export const ProductService = {
           value_per_100g,
           value_per_portion,
           unit
+        ),
+        product_certifications_unimarc(
+          certification_code,
+          certification_definitions_unimarc(name, description, icon_url)
         )
       `)
       .eq('ean', ean)
@@ -219,7 +231,13 @@ export const ProductService = {
       allergens: data.product_allergens_unimarc
         ?.map((allergen: any) => allergen.ingredients_unimarc?.name)
         .filter(Boolean) || [],
-      nutritional_values: data.product_nutritional_values_unimarc || []
+      nutritional_values: data.product_nutritional_values_unimarc || [],
+      certifications: data.product_certifications_unimarc?.map((cert: any) => ({
+        certification_code: cert.certification_code,
+        name: cert.certification_definitions_unimarc?.name,
+        description: cert.certification_definitions_unimarc?.description,
+        icon_url: cert.certification_definitions_unimarc?.icon_url
+      })) || []
     };
   },
 

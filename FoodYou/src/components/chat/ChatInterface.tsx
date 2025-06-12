@@ -13,6 +13,8 @@ import { Message, SenderRole, GroundingMetadata, GroundingChunk } from '../../ty
 import ChatMessageBubble from './ChatMessageBubble';
 import MessageInput from './MessageInput';
 import ProductListInChat from './ProductListInChat';
+import SuggestionCards from './SuggestionCards';
+import ChatStarterPhrases from './ChatStarterPhrases';
 import { ResetChatIcon, AlertTriangleIcon } from './Icons';
 import { useAIWithProducts } from '../../hooks/useAIWithProducts';
 import './ChatInterface.css';
@@ -132,6 +134,12 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ title = "Chat IA" }) => {
 
       <IonContent ref={contentRef} className="chat-content">
         <div className="messages-container">
+          {messages.length === 1 && messages[0].sender === SenderRole.BOT && (
+            <>
+              <ChatStarterPhrases onPhraseClick={handleSendMessage} />
+              <SuggestionCards onSuggestionClick={handleSendMessage} />
+            </>
+          )}
           {messages.map(msg => (
             <div key={msg.id}>
               <ChatMessageBubble message={msg} />
