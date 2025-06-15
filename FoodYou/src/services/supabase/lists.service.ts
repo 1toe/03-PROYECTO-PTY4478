@@ -25,6 +25,13 @@ export interface ListItem {
   product_price?: string;
   product_image?: string;
 }
+const { data: { session }, error } = await supabase.auth.getSession();
+
+if (session) {
+  console.log("🎟️ Sesión válida:", session.user.id);
+} else {
+  console.log("🔒 No hay sesión activa");
+}
 
 export const ListsService = {  /**
    * Obtiene todas las listas del usuario actual
@@ -71,9 +78,11 @@ export const ListsService = {  /**
       if (!user) {
         throw new Error('Usuario no autenticado');
       }
-
-      console.log('🔄 Creando lista:', { name, description, user_id: user.id });
-
+      const { data: { session } } = await supabase.auth.getSession();
+        console.log('🧠 UID del auth:', session?.user.id);
+        console.log('🧾 user.id de getUser:', user.id);   
+         console.log('🔄 Creando lista:', { name, description, user_id: user.id });
+         console.log("💡 Sesión activa:", session);
       const { data, error } = await supabase
         .from('user_lists')
         .insert({

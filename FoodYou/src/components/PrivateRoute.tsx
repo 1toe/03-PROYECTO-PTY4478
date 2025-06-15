@@ -14,24 +14,24 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ component: Component, ...re
     <Route
       {...rest}
       render={props => {
-        // Mostrar loading mientras se verifica la autenticación
         if (loading) {
+          // Mientras carga, muestra el spinner y nada más
           return <IonLoading isOpen={true} message="Verificando sesión..." />;
         }
 
-        // Si no hay usuario, redirigir al login
         if (!user) {
+          // Si no hay usuario, redirige a login
           return (
             <Redirect
               to={{
                 pathname: '/login',
-                state: { from: props.location }
+                state: { from: props.location },
               }}
             />
           );
         }
 
-        // Si hay usuario, mostrar el componente
+        // Si hay usuario, muestra el componente protegido
         return <Component {...props} />;
       }}
     />
@@ -39,4 +39,3 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ component: Component, ...re
 };
 
 export default PrivateRoute;
-

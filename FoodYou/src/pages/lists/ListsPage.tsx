@@ -235,49 +235,38 @@ const ListsPage: React.FC = () => {
     }
     event.detail.complete();
   };
-  const handleCreateList = async () => {
-    if (!newListName.trim()) {
-      setToastMessage('El nombre de la lista es requerido');
-      setShowToast(true);
-      return;
+ const handleCreateList = async (name: string, description?: string) => {
+  if (!name.trim()) {
+    setToastMessage('El nombre de la lista es requerido');
+    setShowToast(true);
+    return;
+  }
+  try {
+    console.log('🔄 Intentando crear lista:', { nombre: name.trim(), descripcion: description?.trim() });
+    const newList = await ListsService.createList(name.trim(), description?.trim() || undefined);
+    console.log('✅ Lista creada:', newList);
+    setNewListName('');
+    setNewListDescription('');
+    setShowCreateAlert(false);
+    setToastMessage(`Lista "${newList.name}" creada exitosamente`);
+    setShowToast(true);
+    await loadUserLists();
+  } catch (error: any) {
+    console.error('❌ Error al crear lista:', error);
+    const errorMessage = error?.message || 'Error desconocido al crear la lista';
+    if (errorMessage.includes('no existe')) {
+      setToastMessage('Error: La tabla de listas no existe en la base de datos');
+    } else if (errorMessage.includes('Usuario no autenticado')) {
+      setToastMessage('Error: Necesitas iniciar sesión para crear una lista');
+    } else if (errorMessage.includes('permisos')) {
+      setToastMessage('Error: No tienes permisos para crear listas');
+    } else {
+      setToastMessage(`Error: ${errorMessage}`);
     }
+    setShowToast(true);
+  }
+};
 
-    try {
-      console.log('🔄 Intentando crear lista:', {
-        nombre: newListName.trim(),
-        descripcion: newListDescription.trim() || undefined
-      });
-      
-      const newList = await ListsService.createList(newListName.trim(), newListDescription.trim() || undefined);
-      
-      console.log('✅ Lista creada:', newList);
-      
-      setNewListName('');
-      setNewListDescription('');
-      setShowCreateAlert(false);
-      setToastMessage(`Lista "${newList.name}" creada exitosamente`);
-      setShowToast(true);
-      await loadUserLists();
-    } catch (error: any) {
-      console.error('❌ Error al crear lista:', error);
-      
-      // Mensaje de error más específico
-      const errorMessage = error?.message || 'Error desconocido al crear la lista';
-      
-      // Mensajes más descriptivos según el tipo de error
-      if (errorMessage.includes('no existe')) {
-        setToastMessage('Error: La tabla de listas no existe en la base de datos');
-      } else if (errorMessage.includes('Usuario no autenticado')) {
-        setToastMessage('Error: Necesitas iniciar sesión para crear una lista');
-      } else if (errorMessage.includes('permisos')) {
-        setToastMessage('Error: No tienes permisos para crear listas');
-      } else {
-        setToastMessage(`Error: ${errorMessage}`);
-      }
-      
-      setShowToast(true);
-    }
-  };
 
   const handleListAction = (list: UserList, action: 'view' | 'edit' | 'delete') => {
     setSelectedList(list);
@@ -717,23 +706,22 @@ const ListsPage: React.FC = () => {
             }
           ]}
           buttons={[
-            {
-              text: 'Cancelar',
-              role: 'cancel',
-              handler: () => {
-                setNewListName('');
-                setNewListDescription('');
-              }
-            },
-            {
-              text: 'Crear',
-              handler: (data) => {
-                setNewListName(data.name);
-                setNewListDescription(data.description);
-                handleCreateList();
-              }
-            }
-          ]} />
+  {
+    text: 'Cancelar',
+    role: 'cancel',
+    handler: () => {
+      setNewListName('');
+      setNewListDescription('');
+    }
+  },
+  {
+    text: 'Crear',
+    handler: (data) => {
+      handleCreateList(data.name, data.description);
+    }
+  }
+]}
+/>
 
         <SelectListModal
           isOpen={showSelectListModal}

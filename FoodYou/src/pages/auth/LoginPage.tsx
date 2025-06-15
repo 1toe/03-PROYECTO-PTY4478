@@ -36,17 +36,17 @@ const LoginPage: React.FC = () => {
   const [present] = useIonToast();
 
 
-  useEffect(() => {
-    if (!authLoading && user) {
-      const from = location.state && (location.state as any).from;
-      const pathname = from?.pathname || '/app/home';
+  const from = location.state && (location.state as any).from;
+  const pathname = from?.pathname || '/app/home';
 
-      if (location.pathname !== pathname) {
-        console.log('✅ Usuario autenticado, redirigiendo a:', pathname);
-        history.replace(pathname);
-      }
+useEffect(() => {
+  if (!authLoading && user) {
+    if (location.pathname !== pathname) {
+      console.log('✅ Usuario autenticado, redirigiendo a:', pathname);
+      history.replace(pathname);
     }
-  }, [authLoading, user, history, location.state, location.pathname]);
+  }
+}, [authLoading, user, history, location.state, location.pathname]);
 
   useEffect(() => {
     const savedRememberMe = localStorage.getItem('rememberMe');
@@ -108,15 +108,17 @@ const LoginPage: React.FC = () => {
     }
   };
 
-  if (authLoading) {
-    return (
-      <IonPage>
-        <IonContent>
-          <IonLoading isOpen={true} message="Verificando sesión..." />
-        </IonContent>
-      </IonPage>
-    );
-  }
+
+if (authLoading && user) {
+  return (
+    <IonPage>
+      <IonContent>
+        <IonLoading isOpen={true} message="Verificando sesión..." />
+      </IonContent>
+    </IonPage>
+  );
+}
+
 
   return (
     <IonPage>
