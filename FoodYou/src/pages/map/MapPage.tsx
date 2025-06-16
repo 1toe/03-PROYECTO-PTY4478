@@ -7,7 +7,10 @@ import {
   IonIcon,
   IonToast,
   IonCard,
-  IonCardContent
+  IonCardContent,
+  IonSegment,
+  IonSegmentButton,
+  IonLabel
 } from '@ionic/react';
 import { locate, locateOutline } from 'ionicons/icons';
 import './MapPage.css';
@@ -18,7 +21,6 @@ interface Location {
   longitude: number;
 }
 
-// Función auxiliar para obtener lat y lng de forma segura
 const getLatLng = (place: google.maps.places.PlaceResult) => {
   if (place.geometry && place.geometry.location) {
     return {
@@ -34,8 +36,10 @@ const MapPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [supermercados, setSupermercados] = useState<google.maps.places.PlaceResult[]>([]);
+  const [filtro, setFiltro] = useState<string>('todos');
   const mapRef = useRef<HTMLDivElement | null>(null);
   const mapInstanceRef = useRef<google.maps.Map | null>(null);
+  const markersRef = useRef<google.maps.Marker[]>([]);
 
   const getLocation = () => {
     if (!navigator.geolocation) {
@@ -67,6 +71,7 @@ const MapPage: React.FC = () => {
     );
   };
 
+  // Inicializa mapa y marcadores cuando cambia la ubicación o supermercados
   useEffect(() => {
     loadGoogleMaps()
       .then(() => {
@@ -78,6 +83,46 @@ const MapPage: React.FC = () => {
       .catch((err) => setError(err));
   }, [location]);
 
+  // Cuando cambian los supermercados, actualiza los marcadores en el mapa
+  useEffect(() => {
+    if (!mapInstanceRef.current) return;
+
+    // Limpia marcadores anteriores
+    markersRef.current.forEach(marker => marker.setMap(null));
+    markersRef.current = [];
+
+    // Crea nuevos marcadores y los guarda
+    const nuevosMarcadores = supermercados.map(place => {
+      const { lat, lng } = getLatLng(place);
+      const marker = new google.maps.Marker({
+        position: { lat, lng },
+        map: mapInstanceRef.current!,
+        title: place.name,
+      });
+      return marker;
+    });
+
+    markersRef.current = nuevosMarcadores;
+  }, [supermercados]);
+
+  // Efecto para mostrar u ocultar marcadores según el filtro
+  useEffect(() => {
+    markersRef.current.forEach((marker, index) => {
+      const place = supermercados[index];
+      if (!place || !place.name) {
+        marker.setMap(null);
+        return;
+      }
+      const nombre = place.name.toLowerCase();
+
+      if (filtro === 'todos' || nombre.includes(filtro)) {
+        marker.setMap(mapInstanceRef.current);
+      } else {
+        marker.setMap(null);
+      }
+    });
+  }, [filtro, supermercados]);
+
   const centrarMapaEnSupermercado = (place: google.maps.places.PlaceResult) => {
     if (!mapInstanceRef.current) return;
     const { lat, lng } = getLatLng(place);
@@ -86,18 +131,21 @@ const MapPage: React.FC = () => {
     mapInstanceRef.current.setZoom(16);
   };
 
-  // ✅ NUEVA FUNCIÓN: Mostrar ruta hacia supermercado
   const mostrarRutaHaciaSupermercado = (place: google.maps.places.PlaceResult) => {
     if (!mapInstanceRef.current || !location) return;
-
     const destino = getLatLng(place);
     const origen = {
       lat: location.latitude,
       lng: location.longitude
     };
-
     mostrarRuta(mapInstanceRef.current, origen, destino);
   };
+
+  const supermercadosFiltrados = supermercados.filter((s) => {
+    const nombre = (s.name || '').toLowerCase();
+    if (filtro === 'todos') return true;
+    return nombre.includes(filtro);
+  });
 
   return (
     <IonPage>
@@ -106,12 +154,31 @@ const MapPage: React.FC = () => {
           {location ? (
             <div className="map-placeholder">
               <div ref={mapRef} id="map" style={{ height: "400px", width: "100%" }} />
+
+              <IonSegment
+                value={filtro}
+                onIonChange={(e) => setFiltro(String(e.detail.value))}
+              >
+                <IonSegmentButton value="todos">
+                  <IonLabel>Todos</IonLabel>
+                </IonSegmentButton>
+                <IonSegmentButton value="lider">
+                  <IonLabel>Líder</IonLabel>
+                </IonSegmentButton>
+                <IonSegmentButton value="unimarc">
+                  <IonLabel>Unimarc</IonLabel>
+                </IonSegmentButton>
+                <IonSegmentButton value="santa isabel">
+                  <IonLabel>Santa Isabel</IonLabel>
+                </IonSegmentButton>
+              </IonSegment>
+
               <IonCard className="nearby-stores">
                 <IonCardContent>
                   <h3>Tiendas cercanas</h3>
-                  {supermercados.length > 0 ? (
+                  {supermercadosFiltrados.length > 0 ? (
                     <ul>
-                      {supermercados
+                      {supermercadosFiltrados
                         .slice()
                         .sort((a, b) => {
                           const aCoords = getLatLng(a);
@@ -133,9 +200,7 @@ const MapPage: React.FC = () => {
                           return distanciaA - distanciaB;
                         })
                         .map((lugar, index) => {
-                          if (!lugar.geometry || !lugar.geometry.location) {
-                            return null;
-                          }
+                          if (!lugar.geometry || !lugar.geometry.location) return null;
 
                           const latLugar = lugar.geometry.location.lat();
                           const lngLugar = lugar.geometry.location.lng();
@@ -154,8 +219,6 @@ const MapPage: React.FC = () => {
                               >
                                 {lugar.name} - {(distancia / 1000).toFixed(2)} km
                               </div>
-
-                              {/* ✅ BOTÓN PARA VER RUTA */}
                               <IonButton
                                 size="small"
                                 color="primary"
@@ -168,7 +231,7 @@ const MapPage: React.FC = () => {
                         })}
                     </ul>
                   ) : (
-                    <p>No se encontraron supermercados cercanos.</p>
+                    <p>No se encontraron supermercados.</p>
                   )}
                 </IonCardContent>
               </IonCard>
@@ -206,3 +269,4 @@ const MapPage: React.FC = () => {
 };
 
 export default MapPage;
+  

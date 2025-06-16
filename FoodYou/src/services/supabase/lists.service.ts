@@ -87,6 +87,8 @@ export const ListsService = {  /**
       console.log('session.user.id:', session?.user.id);
          console.log('🔄 Creando lista:', { name, description, user_id: user.id });
          console.log("💡 Sesión activa:", session);
+         console.log(await supabase.auth.getSession());
+
       const { data, error } = await supabase
         .from('user_lists')
         .insert({
