@@ -106,7 +106,8 @@ const ListDetailsPage: React.FC = () => {
         listId,
         fakeEan,
         newItemQuantity,
-        `Producto manual: ${newItemName.trim()}`
+        `Producto manual: ${newItemName.trim()}`,
+        newItemName.trim()
       );
 
       // Actualizar el estado local con información del producto para mostrar

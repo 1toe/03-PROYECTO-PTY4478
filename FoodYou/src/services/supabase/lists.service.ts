@@ -40,7 +40,7 @@ export const ListsService = {  /**
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        throw new Error('Usuario no autenticado');
+        // Redirige a login o muestra error
       }
 
       console.log('🔄 Obteniendo listas para usuario:', user.id);
@@ -74,13 +74,17 @@ export const ListsService = {  /**
    */
   async createList(name: string, description?: string): Promise<UserList> {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        throw new Error('Usuario no autenticado');
-      }
+      const { data: { user }, error: userError } = await supabase.auth.getUser();
       const { data: { session } } = await supabase.auth.getSession();
-        console.log('🧠 UID del auth:', session?.user.id);
-        console.log('🧾 user.id de getUser:', user.id);   
+      console.log('user:', user);
+      console.log('session:', session);
+      console.log('access_token:', session?.access_token);
+      if (!user) {
+        // Redirige a login o muestra error
+      }
+      // LOG para comparar user.id y session.user.id
+      console.log('user.id:', user.id);
+      console.log('session.user.id:', session?.user.id);
          console.log('🔄 Creando lista:', { name, description, user_id: user.id });
          console.log("💡 Sesión activa:", session);
       const { data, error } = await supabase
@@ -128,7 +132,7 @@ export const ListsService = {  /**
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        throw new Error('Usuario no autenticado');
+        // Redirige a login o muestra error
       }
 
       const { data, error } = await supabase
@@ -165,7 +169,7 @@ export const ListsService = {  /**
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        throw new Error('Usuario no autenticado');
+        // Redirige a login o muestra error
       }
 
       const { error } = await supabase
@@ -191,7 +195,7 @@ export const ListsService = {  /**
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        throw new Error('Usuario no autenticado');
+        // Redirige a login o muestra error
       }
 
       const { data, error } = await supabase
@@ -219,11 +223,11 @@ export const ListsService = {  /**
   /**
    * Agrega un producto a una lista
    */
-  async addProductToList(listId: number, productEan: string, quantity: number = 1, notes?: string): Promise<ListItem> {
+  async addProductToList(listId: number, productEan: string, quantity: number = 1, notes?: string, productName?: string): Promise<ListItem> {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        throw new Error('Usuario no autenticado');
+        // Redirige a login o muestra error
       }
 
       // Verificar que la lista pertenece al usuario
@@ -245,7 +249,7 @@ export const ListsService = {  /**
         .select('*')
         .eq('list_id', listId)
         .eq('product_ean', productEan)
-        .single();
+        .maybeSingle();
 
       if (existingItem) {
         // Si ya existe, actualizar la cantidad
@@ -253,7 +257,8 @@ export const ListsService = {  /**
           .from('list_items')
           .update({ 
             quantity: existingItem.quantity + quantity,
-            notes: notes || existingItem.notes 
+            notes: notes || existingItem.notes,
+            product_name: productName || existingItem.product_name
           })
           .eq('id', existingItem.id)
           .select()
@@ -274,7 +279,8 @@ export const ListsService = {  /**
             product_ean: productEan,
             quantity,
             notes,
-            is_purchased: false
+            is_purchased: false,
+            product_name: productName
           })
           .select()
           .single();
@@ -298,7 +304,7 @@ export const ListsService = {  /**
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        throw new Error('Usuario no autenticado');
+        // Redirige a login o muestra error
       }
 
       console.log('🔄 Actualizando item:', { itemId, updates, user_id: user.id });
@@ -351,7 +357,7 @@ export const ListsService = {  /**
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        throw new Error('Usuario no autenticado');
+        // Redirige a login o muestra error
       }
 
       console.log('🔄 Eliminando item:', { itemId, user_id: user.id });
