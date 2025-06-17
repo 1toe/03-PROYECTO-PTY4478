@@ -17,39 +17,23 @@ import {
 } from '@ionic/react';
 import { listOutline, cartOutline, sparkles } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
+import { ListsService, UserList } from '../../services/supabase/lists.service';
 import './HomePage.css';
 
-interface List {
-  id: string;
-  name: string;
-  description?: string;
-  itemCount: number;
-}
-
 const HomePage: React.FC = () => {
-  const [recentLists, setRecentLists] = useState<List[]>([]);
+  const [recentLists, setRecentLists] = useState<UserList[]>([]);
   const [loading, setLoading] = useState(true);
   const history = useHistory();
 
   useEffect(() => {
     const loadData = async () => {
+      setLoading(true);
       try {
-        // Aquí se integraría con el servicio de listas
-        // Ejemplo: const lists = await listService.getUserLists();
-
-        // Mock data por ahora
-        const mockLists = [
-          { id: '1', name: 'Lista del supermercado', description: 'Compras semanales', itemCount: 12 },
-          { id: '2', name: 'Fiesta de cumpleaños', description: 'Ingredientes para pastel', itemCount: 8 },
-          { id: '3', name: 'Comida saludable', description: 'Vegetales y proteínas', itemCount: 5 }
-        ];
-
-        setTimeout(() => {
-          setRecentLists(mockLists);
-          setLoading(false);
-        });
+        const lists = await ListsService.getRecentLists(3);
+        setRecentLists(lists);
       } catch (error) {
         console.error('Error al cargar las listas:', error);
+      } finally {
         setLoading(false);
       }
     };
@@ -62,6 +46,18 @@ const HomePage: React.FC = () => {
     setTimeout(() => {
       event.detail.complete();
     },);
+  };
+
+  const handleRefreshRecentLists = async () => {
+    setLoading(true);
+    try {
+      const lists = await ListsService.getRecentLists(3);
+      setRecentLists(lists);
+    } catch (error) {
+      console.error('Error al cargar las listas:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -114,38 +110,41 @@ const HomePage: React.FC = () => {
         <div className="recent-lists-section">
           <h2>Listas Recientes</h2>
 
-          {loading ? (
-            <div className="loading-container">
-              <IonSpinner />
-              <p>Cargando tus listas...</p>
-            </div>
-          ) : (
-            <>
-              {recentLists.length === 0 ? (
-                <div className="empty-lists">
-                  <p>No tienes listas todavía</p>
-                  <IonButton
-                    onClick={() => history.push('/app/lists/create')}
-                    expand="block"
-                  >
-                    Crear mi primera lista
-                  </IonButton>
-                </div>
+          <IonCard>
+            <IonCardHeader>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <IonCardTitle style={{ margin: 0 }}>Listas recientes</IonCardTitle>
+                <IonButton size="small" fill="outline" onClick={handleRefreshRecentLists} style={{ marginLeft: 8 }}>
+                  Actualizar
+                </IonButton>
+              </div>
+            </IonCardHeader>
+            <IonCardContent>
+              {loading ? (
+                <IonSpinner />
+              ) : recentLists.length === 0 ? (
+                <p>No hay listas recientes.</p>
               ) : (
-                recentLists.map(list => (
-                  <IonCard key={list.id} onClick={() => history.push(`/app/lists/${list.id}`)}>
-                    <IonCardHeader>
-                      <IonCardTitle>{list.name}</IonCardTitle>
-                    </IonCardHeader>
-                    <IonCardContent>
-                      <p>{list.description}</p>
-                      <p className="item-count">{list.itemCount} elementos</p>
-                    </IonCardContent>
-                  </IonCard>
-                ))
+                <IonGrid>
+                  <IonRow>
+                    {recentLists.map(list => (
+                      <IonCol size="12" key={list.id}>
+                        <IonCard button onClick={() => history.push(`/app/lists/${list.id}`)}>
+                          <IonCardHeader>
+                            <IonCardTitle>{list.name}</IonCardTitle>
+                          </IonCardHeader>
+                          <IonCardContent>
+                            <p>{list.description}</p>
+                            <small>{list.item_count} productos</small>
+                          </IonCardContent>
+                        </IonCard>
+                      </IonCol>
+                    ))}
+                  </IonRow>
+                </IonGrid>
               )}
-            </>
-          )}
+            </IonCardContent>
+          </IonCard>
         </div>
       </IonContent>
     </IonPage>

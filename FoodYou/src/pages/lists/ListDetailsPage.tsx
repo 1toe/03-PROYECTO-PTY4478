@@ -107,7 +107,8 @@ const ListDetailsPage: React.FC = () => {
         fakeEan,
         newItemQuantity,
         `Producto manual: ${newItemName.trim()}`,
-        newItemName.trim()
+        newItemName.trim(),
+        '' // No hay imagen para productos manuales
       );
 
       // Actualizar el estado local con información del producto para mostrar
@@ -205,6 +206,18 @@ const ListDetailsPage: React.FC = () => {
                       checked={item.is_purchased}
                       onIonChange={() => toggleItemCompletion(item.id)}
                     />
+                    {/* Mini display de imagen */}
+                    {(item.product_image || item.url_imagen || item.image_url) ? (
+                      <img
+                        src={item.product_image || item.url_imagen || item.image_url}
+                        alt={item.product_name || `Producto ${item.product_ean}`}
+                        style={{ width: 40, height: 40, objectFit: 'cover', borderRadius: 8, marginRight: 12 }}
+                      />
+                    ) : (
+                      <div style={{ width: 40, height: 40, background: '#eee', borderRadius: 8, marginRight: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>
+                        📦
+                      </div>
+                    )}
                     <IonLabel className={item.is_purchased ? 'completed-item' : ''}>
                       <h2>{item.product_name || `Producto ${item.product_ean}`}</h2>
                       <p>Cantidad: {item.quantity}</p>

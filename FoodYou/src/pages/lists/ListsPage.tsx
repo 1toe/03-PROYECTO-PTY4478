@@ -85,6 +85,9 @@ const ListsPage: React.FC = () => {
 
   const [showSelectListModal, setShowSelectListModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Producto | null>(null);
+  const [showEditAlert, setShowEditAlert] = useState(false);
+  const [editName, setEditName] = useState('');
+  const [editDescription, setEditDescription] = useState('');
 
 
   useEffect(() => {
@@ -277,7 +280,9 @@ const ListsPage: React.FC = () => {
         history.push(`/app/lists/${list.id}`);
         break;
       case 'edit':
-        history.push(`/app/lists/edit/${list.id}`);
+        setEditName(list.name);
+        setEditDescription(list.description || '');
+        setShowEditAlert(true);
         break;
       case 'delete':
         handleDeleteList(list.id);
@@ -721,6 +726,51 @@ const ListsPage: React.FC = () => {
     }
   }
 ]}
+/>
+
+<IonAlert
+  isOpen={showEditAlert}
+  onDidDismiss={() => setShowEditAlert(false)}
+  header="Editar lista"
+  inputs={[
+    {
+      name: 'name',
+      type: 'text',
+      placeholder: 'Nombre de la lista',
+      value: editName,
+    },
+    {
+      name: 'description',
+      type: 'text',
+      placeholder: 'Descripción',
+      value: editDescription,
+    },
+  ]}
+  buttons={[
+    {
+      text: 'Cancelar',
+      role: 'cancel',
+    },
+    {
+      text: 'Guardar',
+      handler: async (data) => {
+        if (!selectedList) return;
+        try {
+          await ListsService.updateList(selectedList.id, {
+            name: data.name,
+            description: data.description,
+          });
+          setToastMessage('Lista actualizada');
+          setShowToast(true);
+          setShowEditAlert(false);
+          await loadUserLists();
+        } catch (error) {
+          setToastMessage('Error al actualizar la lista');
+          setShowToast(true);
+        }
+      },
+    },
+  ]}
 />
 
         <SelectListModal

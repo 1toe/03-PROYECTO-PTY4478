@@ -98,18 +98,34 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
-  const register = async (email: string, password: string, name: string) => {
+  // Nuevo registro extendido
+  const register = async (email: string, password: string, name: string, weight?: number, height?: number, allergies?: string) => {
     setLoading(true);
     try {
-      const { error } = await supabase.auth.signUp({
+      // Registrar usuario en Supabase Auth
+      const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
           data: { name },
         },
       });
-
       if (error) throw error;
+      // Si el registro fue exitoso, guardar datos adicionales en profiles
+      const userId = data.user?.id;
+      if (userId && weight && height) {
+        const { error: profileError } = await supabase
+          .from('profiles')
+          .upsert({
+            id: userId,
+            name,
+            peso: weight,
+            estatura: height,
+            alergias: allergies || null,
+            updated_at: new Date().toISOString(),
+          });
+        if (profileError) throw profileError;
+      }
     } finally {
       setLoading(false);
     }

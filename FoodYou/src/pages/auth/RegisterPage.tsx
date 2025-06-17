@@ -22,6 +22,9 @@ const RegisterPage: React.FC = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [weight, setWeight] = useState('');
+  const [height, setHeight] = useState('');
+  const [allergies, setAllergies] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [redirected, setRedirected] = useState(false); // Nuevo estado para evitar redirecciones múltiples
@@ -48,8 +51,8 @@ const RegisterPage: React.FC = () => {
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!name || !email || !password) {
-      setErrorMessage('Por favor completa todos los campos');
+    if (!name || !email || !password || !weight || !height) {
+      setErrorMessage('Por favor completa todos los campos obligatorios');
       return;
     }
 
@@ -62,8 +65,8 @@ const RegisterPage: React.FC = () => {
     setErrorMessage('');
 
     try {
-      console.log('RegisterPage: Intentando registrar:', { email, name });
-      const result = await register(email, password, name);
+      console.log('RegisterPage: Intentando registrar:', { email, name, weight, height, allergies });
+      const result = await register(email, password, name, parseFloat(weight), parseFloat(height), allergies);
       console.log('RegisterPage: Resultado del registro:', result);
 
     } catch (error: any) {
@@ -127,6 +130,37 @@ const RegisterPage: React.FC = () => {
                 value={password}
                 onIonChange={e => setPassword(e.detail.value!)}
                 required
+              />
+            </IonItem>
+
+            <IonItem>
+              <IonLabel position="stacked">Peso (kg)</IonLabel>
+              <IonInput
+                type="number"
+                value={weight}
+                onIonChange={e => setWeight(e.detail.value!)}
+                required
+                min={0}
+                step={0.1}
+              />
+            </IonItem>
+            <IonItem>
+              <IonLabel position="stacked">Estatura (cm)</IonLabel>
+              <IonInput
+                type="number"
+                value={height}
+                onIonChange={e => setHeight(e.detail.value!)}
+                required
+                min={0}
+                step={0.1}
+              />
+            </IonItem>
+            <IonItem>
+              <IonLabel position="stacked">Alergias (opcional)</IonLabel>
+              <IonInput
+                value={allergies}
+                onIonChange={e => setAllergies(e.detail.value!)}
+                placeholder="Ej: gluten, maní, lactosa"
               />
             </IonItem>
 

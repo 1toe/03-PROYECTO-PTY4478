@@ -225,7 +225,7 @@ export const ListsService = {  /**
   /**
    * Agrega un producto a una lista
    */
-  async addProductToList(listId: number, productEan: string, quantity: number = 1, notes?: string, productName?: string): Promise<ListItem> {
+  async addProductToList(listId: number, productEan: string, quantity: number = 1, notes?: string, productName?: string, productImage?: string): Promise<ListItem> {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
@@ -260,7 +260,8 @@ export const ListsService = {  /**
           .update({ 
             quantity: existingItem.quantity + quantity,
             notes: notes || existingItem.notes,
-            product_name: productName || existingItem.product_name
+            product_name: productName || existingItem.product_name,
+            product_image: productImage || existingItem.product_image
           })
           .eq('id', existingItem.id)
           .select()
@@ -282,7 +283,8 @@ export const ListsService = {  /**
             quantity,
             notes,
             is_purchased: false,
-            product_name: productName
+            product_name: productName,
+            product_image: productImage
           })
           .select()
           .single();
@@ -396,6 +398,30 @@ export const ListsService = {  /**
     } catch (error) {
       console.error('💥 Error al eliminar elemento de la lista:', error);
       throw error;
+    }
+  },
+
+  /**
+   * Obtiene las últimas N listas abiertas por el usuario (por defecto 3)
+   */
+  async getRecentLists(limit: number = 3): Promise<UserList[]> {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        throw new Error('Usuario no autenticado');
+      }
+      const { data, error } = await supabase
+        .from('user_lists')
+        .select('*')
+        .eq('user_id', user.id)
+        .eq('is_active', true)
+        .order('updated_at', { ascending: false })
+        .limit(limit);
+      if (error) throw error;
+      return data || [];
+    } catch (error) {
+      console.error('Error al obtener listas recientes:', error);
+      return [];
     }
   }
 };
