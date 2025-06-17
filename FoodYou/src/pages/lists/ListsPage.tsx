@@ -333,6 +333,9 @@ const ListsPage: React.FC = () => {
       <div className="lists-container">
         <div className="lists-header">
           <h3>Mis Listas ({userLists.length})</h3>
+          <IonButton size="small" fill="outline" onClick={loadUserLists} style={{ float: 'right', marginTop: 4 }}>
+            Actualizar
+          </IonButton>
         </div>
 
         <IonGrid>

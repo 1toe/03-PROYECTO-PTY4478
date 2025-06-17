@@ -68,8 +68,7 @@ const SelectListModal: React.FC<SelectListModalProps> = ({
 
             for (const listId of selectedLists) {
                 const productName = product.nombre_producto || product.name_vtex || product.name_okto || '';
-                const productImage = product.url_imagen || product.image_url || product.product_image || '';
-                await ListsService.addProductToList(listId, productEan, 1, undefined, productName, productImage);
+                await ListsService.addProductToList(listId, productEan, 1, undefined, productName);
                 if (onProductAdded) {
                     onProductAdded(listId, product);
                 }
