@@ -1,28 +1,68 @@
 .recommendations-container {
-  padding: 16px;
+  padding: 24px 20px;
+  background: var(--ion-background-color);
 }
 
 .recommendations-container h2 {
-  margin-bottom: 5px;
+  margin-bottom: 12px;
+  color: var(--ion-color-primary);
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-align: center;
 }
 
 /* Este es el texto que se muestra en la parte superior de la página de recomendaciones.
 Se puede personalizar en caso de ser necesario*/
 
 .recommendations-container>p {
-  margin-bottom: 20px;
+  margin-bottom: 30px;
+  color: var(--ion-color-medium);
+  font-size: 1.1rem;
+  line-height: 1.6;
+  text-align: center;
+  font-weight: 400;
 }
 
 .recommendation-card {
-  margin-bottom: 16px;
+  margin-bottom: 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(255, 87, 51, 0.1);
+  background: #ffffff;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.recommendation-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 87, 51, 0.15);
+}
+
+.recommendation-card ion-card-header {
+  background: linear-gradient(135deg, rgba(255, 87, 51, 0.05), rgba(255, 87, 51, 0.02));
+  border-bottom: 1px solid rgba(255, 87, 51, 0.1);
+}
+
+.recommendation-card ion-card-title {
+  color: var(--ion-color-primary);
+  font-weight: 700;
+  font-size: 1.2rem;
 }
 
 .items-list {
-  margin-bottom: 16px;
+  margin-bottom: 20px;
+  padding: 16px;
 }
 
 .items-list ul {
-  padding-left: 20px;
+  padding-left: 24px;
+  color: var(--ion-text-color);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.items-list li {
+  margin-bottom: 8px;
+  font-weight: 500;
 }
 
 .loading-container {
@@ -30,11 +70,44 @@ Se puede personalizar en caso de ser necesario*/
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 50vh;
+  height: 60vh;
+  background: #ffffff;
+  border-radius: 20px;
+  margin: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.loading-container ion-spinner {
+  --color: var(--ion-color-primary);
+  margin-bottom: 20px;
+}
+
+.loading-container p {
+  color: var(--ion-color-medium);
+  font-size: 1.1rem;
+  text-align: center;
+  font-weight: 500;
 }
 
 .no-recommendations {
   text-align: center;
-  padding: 40px 20px;
-  color: var(--ion-text-color);
+  padding: 60px 24px;
+  color: var(--ion-color-medium);
+  background: #ffffff;
+  border-radius: 20px;
+  margin: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.no-recommendations h3 {
+  color: var(--ion-color-primary);
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.no-recommendations p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin: 0;
 }

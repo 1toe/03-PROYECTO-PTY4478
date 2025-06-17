@@ -2,6 +2,7 @@ import React from 'react';
 import { IonCard, IonCardContent, IonChip, IonIcon } from '@ionic/react';
 import { Message, SenderRole } from '../../types/chat.types';
 import { UserIcon, BotIcon, AlertTriangleIcon } from './Icons';
+import applesImage from '../../assets/apples_pp.png';
 import './ChatMessageBubble.css';
 
 interface ChatMessageBubbleProps {
@@ -51,10 +52,13 @@ const ChatMessageBubble: React.FC<ChatMessageBubbleProps> = ({ message }) => {
 
   return (
     <div className={`chat-message ${isUser ? 'user-message' : isBot ? 'bot-message' : 'system-message'}`}>
-      <div className="message-content">
-        {!isSystem && (
+      <div className="message-content">        {!isSystem && (
           <div className="message-avatar">
-            <IconComponent />
+            {isUser ? (
+              <img src={applesImage} alt="Usuario" />
+            ) : (
+              <IconComponent />
+            )}
           </div>
         )}
         

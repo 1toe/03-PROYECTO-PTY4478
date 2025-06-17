@@ -1,17 +1,39 @@
 .welcome-section {
-  background: var(--ion-color-primary-shade);
-  color: var(--ion-text-color);
-  padding: 20px;
+  background: linear-gradient(135deg, var(--ion-color-primary), var(--ion-color-primary-shade));
+  color: #ffffff;
+  padding: 30px 20px;
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
+  border-radius: 0 0 20px 20px;
+  box-shadow: 0 4px 20px rgba(255, 87, 51, 0.2);
 }
 
 .welcome-section h1 {
   margin-top: 0;
+  margin-bottom: 12px;
+  font-size: 2.2rem;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.welcome-section p {
+  font-size: 1.1rem;
+  font-weight: 400;
+  opacity: 0.95;
+  line-height: 1.6;
+  margin-bottom: 0;
 }
 
 .recent-lists-section {
-  padding: 0 16px;
+  padding: 0 20px;
+}
+
+.recent-lists-section h2 {
+  color: var(--ion-color-primary);
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  margin-top: 0;
 }
 
 .loading-container {
@@ -19,14 +41,68 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 40px 0;
+  padding: 60px 20px;
+}
+
+.loading-container ion-spinner {
+  --color: var(--ion-color-primary);
+  margin-bottom: 16px;
+}
+
+.loading-container p {
+  color: var(--ion-color-medium);
+  font-size: 1rem;
+  text-align: center;
 }
 
 .empty-lists {
   text-align: center;
-  padding: 30px 0;
+  padding: 50px 20px;
+  background: #ffffff;
+  border-radius: 16px;
+  margin: 16px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.empty-lists h3 {
+  color: var(--ion-color-primary);
+  font-size: 1.3rem;
+  margin-bottom: 12px;
+}
+
+.empty-lists p {
+  color: var(--ion-color-medium);
+  font-size: 1rem;
+  line-height: 1.5;
 }
 
 .item-count {
   color: var(--ion-color-medium);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* Mejoras adicionales para la página de inicio */
+.list-item {
+  background: #ffffff;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.list-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(255, 87, 51, 0.1);
+}
+
+.list-title {
+  color: var(--ion-text-color);
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.list-subtitle {
+  color: var(--ion-color-medium);
+  font-size: 0.9rem;
 }

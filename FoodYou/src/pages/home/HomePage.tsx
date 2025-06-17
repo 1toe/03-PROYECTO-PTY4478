@@ -108,7 +108,6 @@ const HomePage: React.FC = () => {
         </IonGrid>
 
         <div className="recent-lists-section">
-          <h2>Listas Recientes</h2>
 
           <IonCard>
             <IonCardHeader>

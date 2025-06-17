@@ -136,7 +136,6 @@ const ChatStarterPhrases: React.FC<ChatStarterPhrasesProps> = ({ onPhraseClick }
           </div>
         </IonButton>
       </div>
-      
       <div className="phrase-indicators">
         {starterPhrases.map((_, index) => (
           <div
@@ -145,25 +144,6 @@ const ChatStarterPhrases: React.FC<ChatStarterPhrasesProps> = ({ onPhraseClick }
             onClick={() => setCurrentPhraseIndex(index)}
           />
         ))}
-      </div>
-      
-      <div className="phrase-navigation">
-        <IonButton
-          fill="clear"
-          size="small"
-          onClick={() => setCurrentPhraseIndex((prev) => 
-            prev === 0 ? starterPhrases.length - 1 : prev - 1
-          )}
-        >
-          ← Anterior
-        </IonButton>
-        <IonButton
-          fill="clear"
-          size="small"
-          onClick={() => setCurrentPhraseIndex((prev) => (prev + 1) % starterPhrases.length)}
-        >
-          Siguiente →
-        </IonButton>
       </div>
     </div>
   );

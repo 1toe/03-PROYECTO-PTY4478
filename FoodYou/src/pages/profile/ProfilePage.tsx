@@ -22,6 +22,7 @@ import {
 import { logOut, settings, person, moon, notifications } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from '../../AuthContext';
+import applesImage from '../../assets/apples_pp.png';
 import './ProfilePage.css';
 
 const ProfilePage: React.FC = () => {
@@ -29,7 +30,7 @@ const ProfilePage: React.FC = () => {
   const [userEmail, setUserEmail] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showLogoutAlert, setShowLogoutAlert] = useState<boolean>(false);
-  
+
   const history = useHistory();
   const { logout, user } = useAuth();
   const [presentToast] = useIonToast();
@@ -51,17 +52,17 @@ const ProfilePage: React.FC = () => {
     try {
       setIsLoading(true);
       console.log('🔄 Iniciando logout desde ProfilePage...');
-      
+
       await logout();
-      
+
       presentToast({
         message: 'Has cerrado sesión correctamente',
         duration: 2000,
         color: 'success'
       });
-      
+
       console.log('✅ Logout completado desde ProfilePage');
-      
+
     } catch (error) {
       console.error('❌ Error al cerrar sesión:', error);
       presentToast({
@@ -89,10 +90,9 @@ const ProfilePage: React.FC = () => {
           </IonToolbar>
         </IonHeader>
 
-        <div className="profile-container">
-          <IonCard className="profile-card">
+        <div className="profile-container">          <IonCard className="profile-card">
             <div className="profile-avatar">
-              <IonIcon icon={person} />
+              <img src={applesImage} alt="Perfil" />
             </div>
             <IonCardHeader>
               <IonCardTitle>{userName}</IonCardTitle>

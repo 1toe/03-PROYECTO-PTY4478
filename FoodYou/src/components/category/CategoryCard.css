@@ -1,19 +1,20 @@
 .category-card {
   height: 100%;
-  min-height: 160px;
+  min-height: 180px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
-  border-radius: 16px;
+  border-radius: 20px;
   position: relative;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #ffffff;
+  box-shadow: 0 4px 20px rgba(255, 87, 51, 0.1);
+  border: 2px solid transparent;
 }
 
 .category-card:hover {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 15px 35px rgba(255, 87, 51, 0.2);
+  border-color: var(--ion-color-primary);
 }
 
 .category-card:active {
@@ -21,14 +22,14 @@
 }
 
 .selected-category {
-  border: 2px solid var(--category-color, var(--ion-color-primary));
-  box-shadow: 0 8px 16px rgba(var(--ion-color-primary-rgb), 0.3);
-  background: linear-gradient(135deg, rgba(var(--ion-color-primary-rgb), 0.1), rgba(var(--ion-color-primary-rgb), 0.05));
+  border: 3px solid var(--ion-color-primary);
+  box-shadow: 0 8px 25px rgba(255, 87, 51, 0.3);
+  background: linear-gradient(135deg, rgba(255, 87, 51, 0.05), rgba(255, 87, 51, 0.02));
 }
 
 .category-header {
   text-align: center;
-  padding: 20px 16px 16px 16px;
+  padding: 24px 20px 20px 20px;
   position: relative;
   z-index: 2;
 }
@@ -37,23 +38,23 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 60px;
-  height: 60px;
-  margin: 0 auto 12px auto;
-  background: rgba(255, 255, 255, 0.1);
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 16px auto;
+  background: linear-gradient(135deg, var(--ion-color-primary), var(--ion-color-primary-shade));
   border-radius: 50%;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 15px rgba(255, 87, 51, 0.3);
   transition: all 0.3s ease;
 }
 
 .category-card:hover .category-icon-container {
-  transform: scale(1.1);
-  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: 0 6px 20px rgba(255, 87, 51, 0.4);
 }
 
 .category-icon {
-  font-size: 28px;
+  font-size: 32px;
+  color: #ffffff;
   transition: all 0.3s ease;
 }
 
@@ -62,14 +63,15 @@
 }
 
 .category-title {
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin: 0 0 8px 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0 0 10px 0;
   line-height: 1.3;
-  color: var(--ion-color-dark);
+  color: var(--ion-color-primary);
   text-align: center;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -77,29 +79,39 @@
 }
 
 .product-count-badge {
-  font-size: 0.75rem;
-  padding: 4px 8px;
-  border-radius: 12px;
-  margin-top: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 20px;
+  margin-top: 8px;
+  background: rgba(255, 87, 51, 0.1);
+  color: var(--ion-color-primary);
+  display: inline-block;
 }
 
 .category-content {
-  padding: 0 16px 16px 16px;
+  padding: 0 20px 20px 20px;
   position: relative;
   z-index: 2;
 }
 
 .category-description {
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   color: var(--ion-color-medium);
   text-align: center;
-  line-height: 1.4;
+  line-height: 1.5;
   margin: 0;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-weight: 400;
+}
+
+overflow: hidden;
+text-overflow: ellipsis;
 }
 
 .category-overlay {
@@ -134,21 +146,21 @@
   .category-card {
     min-height: 140px;
   }
-  
+
   .category-header {
     padding: 16px 12px 12px 12px;
   }
-  
+
   .category-icon-container {
     width: 50px;
     height: 50px;
     margin-bottom: 10px;
   }
-  
+
   .category-icon {
     font-size: 24px;
   }
-  
+
   .category-title {
     font-size: 1rem;
   }
@@ -158,34 +170,34 @@
   .category-card {
     min-height: 120px;
   }
-  
+
   .category-header {
     padding: 12px 8px 8px 8px;
   }
-  
+
   .category-icon-container {
     width: 40px;
     height: 40px;
     margin-bottom: 8px;
   }
-  
+
   .category-icon {
     font-size: 20px;
   }
-  
+
   .category-title {
     font-size: 0.9rem;
     min-height: 2.2em;
   }
-  
+
   .category-content {
     padding: 0 8px 8px 8px;
   }
-  
+
   .category-description {
     font-size: 0.8rem;
   }
-  
+
   .product-count-badge {
     font-size: 0.7rem;
     padding: 2px 6px;
@@ -196,30 +208,30 @@
   .category-card {
     min-height: 100px;
   }
-  
+
   .category-header {
     padding: 8px 6px 6px 6px;
   }
-  
+
   .category-icon-container {
     width: 35px;
     height: 35px;
     margin-bottom: 6px;
   }
-  
+
   .category-icon {
     font-size: 18px;
   }
-  
+
   .category-title {
     font-size: 0.85rem;
     min-height: 2em;
   }
-  
+
   .category-overlay {
     height: 30px;
   }
-  
+
   .category-action-text {
     font-size: 0.8rem;
   }
@@ -231,20 +243,20 @@
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
     border: 1px solid rgba(255, 255, 255, 0.05);
   }
-  
+
   .category-card:hover {
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
   }
-  
+
   .category-icon-container {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
   }
-  
+
   .category-card:hover .category-icon-container {
     background: rgba(255, 255, 255, 0.1);
   }
-  
+
   .category-title {
     color: var(--ion-color-light);
   }
@@ -261,9 +273,12 @@
 }
 
 @keyframes pulse {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 1;
   }
+
   50% {
     opacity: 0.5;
   }
