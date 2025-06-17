@@ -14,12 +14,19 @@ import {
 } from '@ionic/react';
 import { locate, locateOutline } from 'ionicons/icons';
 import './MapPage.css';
-import { loadGoogleMaps, initMap, calcularDistanciaMetros, mostrarRuta } from '../../services/map/map.service';
+import {
+  loadGoogleMaps,
+  initMap,
+  calcularDistanciaMetros,
+  mostrarRuta
+} from '../../services/map/map.service';
 
 interface Location {
   latitude: number;
   longitude: number;
 }
+
+type TravelMode = 'WALKING' | 'DRIVING' | 'TRANSIT' | 'BICYCLING';
 
 const getLatLng = (place: google.maps.places.PlaceResult) => {
   if (place.geometry && place.geometry.location) {
@@ -37,9 +44,12 @@ const MapPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [supermercados, setSupermercados] = useState<google.maps.places.PlaceResult[]>([]);
   const [filtro, setFiltro] = useState<string>('todos');
+  const [modoTransporte, setModoTransporte] = useState<TravelMode>('WALKING');
+
   const mapRef = useRef<HTMLDivElement | null>(null);
   const mapInstanceRef = useRef<google.maps.Map | null>(null);
   const markersRef = useRef<google.maps.Marker[]>([]);
+  const directionsRenderersRef = useRef<google.maps.DirectionsRenderer[]>([]);
 
   const getLocation = () => {
     if (!navigator.geolocation) {
@@ -71,7 +81,6 @@ const MapPage: React.FC = () => {
     );
   };
 
-  // Inicializa mapa y marcadores cuando cambia la ubicación o supermercados
   useEffect(() => {
     loadGoogleMaps()
       .then(() => {
@@ -83,15 +92,12 @@ const MapPage: React.FC = () => {
       .catch((err) => setError(err));
   }, [location]);
 
-  // Cuando cambian los supermercados, actualiza los marcadores en el mapa
   useEffect(() => {
     if (!mapInstanceRef.current) return;
 
-    // Limpia marcadores anteriores
     markersRef.current.forEach(marker => marker.setMap(null));
     markersRef.current = [];
 
-    // Crea nuevos marcadores y los guarda
     const nuevosMarcadores = supermercados.map(place => {
       const { lat, lng } = getLatLng(place);
       const marker = new google.maps.Marker({
@@ -105,8 +111,9 @@ const MapPage: React.FC = () => {
     markersRef.current = nuevosMarcadores;
   }, [supermercados]);
 
-  // Efecto para mostrar u ocultar marcadores según el filtro
   useEffect(() => {
+    if (!mapInstanceRef.current) return;
+
     markersRef.current.forEach((marker, index) => {
       const place = supermercados[index];
       if (!place || !place.name) {
@@ -131,6 +138,11 @@ const MapPage: React.FC = () => {
     mapInstanceRef.current.setZoom(16);
   };
 
+  const limpiarRutas = () => {
+    directionsRenderersRef.current.forEach(renderer => renderer.setMap(null));
+    directionsRenderersRef.current = [];
+  };
+
   const mostrarRutaHaciaSupermercado = (place: google.maps.places.PlaceResult) => {
     if (!mapInstanceRef.current || !location) return;
     const destino = getLatLng(place);
@@ -138,7 +150,19 @@ const MapPage: React.FC = () => {
       lat: location.latitude,
       lng: location.longitude
     };
-    mostrarRuta(mapInstanceRef.current, origen, destino);
+
+    limpiarRutas();
+
+    const nuevaRuta = mostrarRuta(
+      mapInstanceRef.current,
+      origen,
+      destino,
+      google.maps.TravelMode[modoTransporte]
+    );
+
+    if (nuevaRuta) {
+      directionsRenderersRef.current.push(nuevaRuta);
+    }
   };
 
   const supermercadosFiltrados = supermercados.filter((s) => {
@@ -156,20 +180,23 @@ const MapPage: React.FC = () => {
               <div ref={mapRef} id="map" style={{ height: "400px", width: "100%" }} />
 
               <IonSegment
-                value={filtro}
-                onIonChange={(e) => setFiltro(String(e.detail.value))}
+                value={modoTransporte}
+                onIonChange={(e) => {
+                  setModoTransporte(e.detail.value as TravelMode);
+                  limpiarRutas(); // Limpia rutas si cambias de modo
+                }}
               >
-                <IonSegmentButton value="todos">
-                  <IonLabel>Todos</IonLabel>
+                <IonSegmentButton value="WALKING">
+                  <IonLabel>Caminando</IonLabel>
                 </IonSegmentButton>
-                <IonSegmentButton value="lider">
-                  <IonLabel>Líder</IonLabel>
+                <IonSegmentButton value="DRIVING">
+                  <IonLabel>En auto</IonLabel>
                 </IonSegmentButton>
-                <IonSegmentButton value="unimarc">
-                  <IonLabel>Unimarc</IonLabel>
+                <IonSegmentButton value="TRANSIT">
+                  <IonLabel>Transporte público</IonLabel>
                 </IonSegmentButton>
-                <IonSegmentButton value="santa isabel">
-                  <IonLabel>Santa Isabel</IonLabel>
+                <IonSegmentButton value="BICYCLING">
+                  <IonLabel>Bicicleta</IonLabel>
                 </IonSegmentButton>
               </IonSegment>
 
@@ -269,4 +296,3 @@ const MapPage: React.FC = () => {
 };
 
 export default MapPage;
-  

@@ -102,9 +102,9 @@ export const buscarSupermercados = (
       const supermercadosFiltrados = results.filter((lugar) => {
         const nombre = (lugar.name || '').toLowerCase();
         return (
-          nombre.includes('santa isabel') ||
-          nombre.includes('líder') ||
-          nombre.includes('lider') ||
+          //nombre.includes('santa isabel') ||
+         // nombre.includes('líder') || 
+          //nombre.includes('lider') ||   Agregar para entrega 2 en lo posible algun super extra
           nombre.includes('unimarc')
         );
       });
@@ -125,38 +125,32 @@ let currentDirectionsRenderer: google.maps.DirectionsRenderer | null = null;
 export const mostrarRuta = (
   map: google.maps.Map,
   origen: { lat: number; lng: number },
-  destino: { lat: number; lng: number }
-) => {
+  destino: { lat: number; lng: number },
+  modo: google.maps.TravelMode
+): google.maps.DirectionsRenderer => {
   const directionsService = new google.maps.DirectionsService();
-
-  // Si ya hay una ruta mostrada, la eliminamos del mapa
-  if (currentDirectionsRenderer) {
-    currentDirectionsRenderer.setMap(null);
-  }
-
-  // Creamos un nuevo renderer y lo guardamos
-  currentDirectionsRenderer = new google.maps.DirectionsRenderer({
-  suppressMarkers: true
-});
-currentDirectionsRenderer.setMap(map);
-
+  const directionsRenderer = new google.maps.DirectionsRenderer();
+  directionsRenderer.setMap(map);
 
   directionsService.route(
     {
       origin: origen,
       destination: destino,
-      travelMode: google.maps.TravelMode.WALKING,
-      provideRouteAlternatives: false
+      travelMode: modo
     },
     (result, status) => {
-      if (status === google.maps.DirectionsStatus.OK && result) {
-        currentDirectionsRenderer!.setDirections(result);
+      if (status === 'OK' && result) {
+        directionsRenderer.setDirections(result);
       } else {
-        console.error('No se pudo mostrar la ruta:', status);
+        console.error('Error al mostrar la ruta:', result);
       }
     }
   );
+
+  return directionsRenderer; // <-- Esto es importante
 };
+
+
 
 
 /**
