@@ -26,8 +26,7 @@ export interface AIProductResponse {
   suggestions?: string[];
 }
 
-export const AIProductService = {
-  /**
+export const AIProductService = {  /**
    * Busca productos y genera información estructurada para la IA
    */
   async searchProductsForAI(query: AIProductQuery): Promise<AIProductResponse> {
@@ -37,10 +36,18 @@ export const AIProductService = {
         query.query = 'productos';
       }
       
-      const products = await ProductService.searchProductsForAI(
-        query.query,
-        query.filters
-      );
+      let products: Producto[];
+
+      // Si se buscan productos saludables sin términos específicos, usar método especializado
+      if ((query.query === 'productos' || query.query.trim() === '') && 
+          query.filters?.hasWarnings === false) {
+        products = await ProductService.getHealthyProducts(100);
+      } else {
+        products = await ProductService.searchProductsForAI(
+          query.query,
+          query.filters
+        );
+      }
 
       // Aplicar filtros adicionales
       let filteredProducts = products;
@@ -58,8 +65,8 @@ export const AIProductService = {
         );
       }
 
-      // Si no hay productos encontrados, intentar buscar por categoría
-      if (filteredProducts.length === 0 && !query.filters?.category) {
+      // Si no hay productos encontrados y no es una búsqueda de productos saludables, intentar buscar por categoría
+      if (filteredProducts.length === 0 && !query.filters?.category && !query.filters?.hasWarnings) {
         try {
           // Intentar buscar como categoría
           const categoryResponse = await this.getProductsByCategoryForAI(query.query);

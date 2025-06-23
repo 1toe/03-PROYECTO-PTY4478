@@ -17,12 +17,14 @@ export const useAIWithProducts = () => {
         setIsLoading(true);
         setError(null);
 
-        try {
-            // Detectar si el mensaje está relacionado con búsqueda de productos
+        try {            // Detectar si el mensaje está relacionado con búsqueda de productos
             // Palabras clave adaptadas a los productos en la base de datos Supabase
             const productSearchKeywords = [
                 'buscar', 'producto', 'encontrar', 'precio', 'oferta', 'marca', 'categoría',
                 'comprar', 'dónde', 'cuánto cuesta', 'recomendación', 'alimento', 'comida',
+                // Palabras relacionadas con productos saludables
+                'saludable', 'saludables', 'sin sellos', 'sin advertencia', 'productos sanos',
+                'libre de sellos', 'sin etiquetas', 'productos naturales', 'con sellos', 'con advertencia',
                 // Categorías específicas de la base de datos
                 'aceitunas', 'encurtidos', 'azúcar', 'cereales', 'condimentos', 'fideos', 'pastas',
                 'frutos secos', 'galletas', 'ketchup', 'mayonesa', 'mostaza', 'papas fritas',
@@ -56,9 +58,34 @@ export const useAIWithProducts = () => {
 
         try {
             // Llamar al servicio de IA para buscar productos
-            const result = await AIProductService.searchProductsForAI(query);
+            const result = await AIProductService.searchProductsForAI(query);            if (result.products.length === 0) {
+                // Detectar si era una búsqueda de productos saludables
+                const isHealthySearch = message.toLowerCase().includes('sin sellos') || 
+                                      message.toLowerCase().includes('sin advertencia') || 
+                                      message.toLowerCase().includes('saludable');
 
-            if (result.products.length === 0) {
+                if (isHealthySearch) {
+                    return {
+                        message: `🌱 **Búsqueda de productos saludables**
+
+Lo siento, no encontré productos sin sellos de advertencia que coincidan con "${query.query}".
+
+💡 **Sugerencias:**
+• Intenta con categorías más amplias: "cereales", "galletas", "condimentos"
+• Busca marcas específicas conocidas por productos saludables
+• Prueba con "productos sin sellos" para ver todas las opciones saludables disponibles
+
+🔍 **Alternativas:**
+• Buscar solo "productos saludables" 
+• Explorar por categorías: "cereales saludables", "galletas sin sellos"
+• Ver ofertas de productos sin advertencias
+
+¿Te gustaría que busque en una categoría específica de productos saludables? 🥗`,
+                        products: [],
+                        isProductSearch: true
+                    };
+                }
+
                 return {
                     message: `🔍 No encontré productos que coincidan con "${query.query}". 
 
@@ -186,16 +213,23 @@ Simplemente describe lo que buscas y yo te ayudo a encontrarlo en nuestra base d
             message: response,
             isProductSearch: false
         };
-    };
-
-    const generateProductSearchResponse = (userMessage: string, searchResult: any): string => {
+    };    const generateProductSearchResponse = (userMessage: string, searchResult: any): string => {
         const { products, summary } = searchResult;
+
+        // Detectar si la búsqueda es sobre productos saludables
+        const isHealthySearch = userMessage.toLowerCase().includes('sin sellos') || 
+                              userMessage.toLowerCase().includes('sin advertencia') || 
+                              userMessage.toLowerCase().includes('saludable');
 
         let response = `🔍 **Resultados para "${userMessage}"**\n\n`;
 
         if (summary.total > 0) {
             response += `📊 **Resumen:**\n`;
             response += `• ${summary.total} productos encontrados\n`;
+
+            if (isHealthySearch) {
+                response += `• 🌱 Productos sin sellos de advertencia nutricional\n`;
+            }
 
             if (summary.onOfferCount > 0) {
                 response += `• 🔥 ${summary.onOfferCount} productos en oferta\n`;
@@ -212,6 +246,11 @@ Simplemente describe lo que buscas y yo te ayudo a encontrarlo en nuestra base d
             response += `\n`;
         }
 
+        // Destacar productos saludables si es una búsqueda de salud
+        if (isHealthySearch && summary.total > 0) {
+            response += `🌱 **¡Excelente elección!** Estos productos no tienen sellos de advertencia nutricional, lo que significa que son más saludables.\n\n`;
+        }
+
         // Destacar ofertas si las hay
         if (summary.onOfferCount > 0) {
             response += `🔥 **¡Hay productos en oferta!** Revisa los precios con descuento.\n\n`;
@@ -220,8 +259,15 @@ Simplemente describe lo que buscas y yo te ayudo a encontrarlo en nuestra base d
         // Agregar consejos útiles
         response += `💡 **Consejos:**\n`;
         response += `• Puedes tocar cualquier producto para ver más detalles\n`;
-        const warningDescriptions = ["Alto en Calorías", "Alto en Grasas Saturadas", "Alto en Sodio", "Alto en Azúcares"];
-        response += `• Los productos con ⚠️ tienen sellos de advertencia nutricional. Por ejemplo: ${warningDescriptions.join(', ')}\n`;
+        
+        if (isHealthySearch) {
+            response += `• Estos productos son opciones más saludables para tu alimentación\n`;
+            response += `• Puedes agregar cualquier producto a tus listas de compras\n`;
+        } else {
+            const warningDescriptions = ["Alto en Calorías", "Alto en Grasas Saturadas", "Alto en Sodio", "Alto en Azúcares"];
+            response += `• Los productos con ⚠️ tienen sellos de advertencia nutricional. Por ejemplo: ${warningDescriptions.join(', ')}\n`;
+        }
+        
         if (summary.onOfferCount > 0) {
             response += `• Los precios en rojo indican ofertas especiales\n`;
         }
@@ -229,9 +275,7 @@ Simplemente describe lo que buscas y yo te ayudo a encontrarlo en nuestra base d
         response += `\n¿Te gustaría buscar algo más específico? 🛒`;
 
         return response;
-    };
-
-    const extractSearchQuery = (message: string): AIProductQuery => {
+    };const extractSearchQuery = (message: string): AIProductQuery => {
         const lowerMessage = message.toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, "").replace(/[^a-z0-9\s]/g, "");
 
         // Usar NLP para corregir y extraer términos de búsqueda
@@ -251,6 +295,50 @@ Simplemente describe lo que buscas y yo te ayudo a encontrarlo en nuestra base d
 
         // Detectar filtros en el mensaje
         const filters: AIProductQuery['filters'] = {};
+
+        // Detectar productos SIN sellos de advertencia (saludables)
+        if (lowerMessage.includes('sin sellos') || 
+            lowerMessage.includes('sin advertencia') || 
+            lowerMessage.includes('saludable') || 
+            lowerMessage.includes('saludables') ||
+            lowerMessage.includes('libre de sellos') ||
+            lowerMessage.includes('no tienen sellos') ||
+            lowerMessage.includes('sin etiquetas') ||
+            lowerMessage.includes('productos sanos') ||
+            lowerMessage.includes('productos naturales')) {
+            filters.hasWarnings = false;
+            
+            // Remover términos relacionados con sellos de los términos de búsqueda
+            const warningTerms = ['sellos', 'advertencia', 'advertencias', 'etiquetas', 'sin', 'libre', 'de'];
+            warningTerms.forEach(term => {
+                const regex = new RegExp(`\\b${term}\\b`, 'gi');
+                searchTerms = searchTerms.replace(regex, '').trim();
+            });
+            
+            // Si quedó vacío después de limpiar, buscar todos los productos saludables
+            if (!searchTerms || searchTerms.trim().length === 0) {
+                searchTerms = 'productos';
+            }
+        }
+
+        // Detectar productos CON sellos de advertencia (para información)
+        if (lowerMessage.includes('con sellos') || 
+            lowerMessage.includes('con advertencia') ||
+            lowerMessage.includes('que tienen sellos') ||
+            lowerMessage.includes('con etiquetas')) {
+            filters.hasWarnings = true;
+            
+            // Remover términos relacionados con sellos de los términos de búsqueda
+            const warningTerms = ['sellos', 'advertencia', 'advertencias', 'etiquetas', 'con', 'que', 'tienen'];
+            warningTerms.forEach(term => {
+                const regex = new RegExp(`\\b${term}\\b`, 'gi');
+                searchTerms = searchTerms.replace(regex, '').trim();
+            });
+            
+            if (!searchTerms || searchTerms.trim().length === 0) {
+                searchTerms = 'productos';
+            }
+        }
 
         // Detectar ofertas
         if (lowerMessage.includes('oferta') || lowerMessage.includes('descuento') || lowerMessage.includes('rebaja') || lowerMessage.includes('barato')) {

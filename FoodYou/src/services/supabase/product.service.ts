@@ -276,8 +276,8 @@ export const ProductService = {
         )
       `);
 
-    // Aplicar filtros de búsqueda por texto
-    if (query) {
+    // Aplicar filtros de búsqueda por texto solo si hay términos específicos
+    if (query && query.trim() !== '' && query.toLowerCase() !== 'productos') {
       queryBuilder = queryBuilder.or(`name_vtex.ilike.%${query}%,name_okto.ilike.%${query}%,description_short_vtex.ilike.%${query}%`);
     }
 
@@ -290,7 +290,9 @@ export const ProductService = {
       queryBuilder = queryBuilder.eq('product_prices_unimarc.is_in_offer', true);
     }
 
-    const { data, error } = await queryBuilder.limit(50);
+    // Aumentar el límite cuando se buscan productos saludables (sin sellos)
+    const limit = filters?.hasWarnings === false ? 100 : 50;
+    const { data, error } = await queryBuilder.limit(limit);
 
     if (error) {
       console.error('Error searching products for AI:', error);
@@ -314,6 +316,46 @@ export const ProductService = {
         return hasWarnings === filters.hasWarnings;
       });
     }
+
+    return products;
+  },
+
+  /**
+   * Obtiene productos saludables (sin sellos de advertencia)
+   */
+  async getHealthyProducts(limit: number = 50): Promise<Producto[]> {
+    const { data, error } = await supabase
+      .from('products_unimarc')
+      .select(`
+        *,
+        brands_unimarc(name),
+        categories_unimarc(name, slug),
+        product_prices_unimarc(
+          price_current, 
+          price_list, 
+          is_in_offer, 
+          saving_text
+        ),
+        product_images_unimarc!left(image_url, is_primary),
+        product_warnings_unimarc(
+          warning_code,
+          warning_types_unimarc(description)
+        )
+      `)
+      .limit(limit);
+
+    if (error) {
+      console.error('Error fetching healthy products:', error);
+      throw error;
+    }
+
+    let products = this.transformProducts(data || []);
+
+    // Filtrar productos sin sellos de advertencia
+    products = products.filter(product => {
+      const hasWarnings = product.warnings && product.warnings.length > 0;
+      return !hasWarnings;
+    });
 
     return products;
   },

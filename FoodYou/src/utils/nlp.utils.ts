@@ -180,12 +180,54 @@ export class NLPUtils {
 
     return correctedWords.join(' ');
   }
-
   /**
    * Extrae términos de búsqueda corregidos
    */
   static extractCorrectedSearchTerms(message: string): string {
-    // Remover palabras comunes de búsqueda
+    // Detectar si la consulta es sobre productos saludables
+    const lowerMessage = message.toLowerCase();
+    const isHealthyQuery = lowerMessage.includes('sin sellos') || 
+                          lowerMessage.includes('sin advertencia') || 
+                          lowerMessage.includes('saludable') || 
+                          lowerMessage.includes('saludables') ||
+                          lowerMessage.includes('libre de sellos') ||
+                          lowerMessage.includes('no tienen sellos') ||
+                          lowerMessage.includes('sin etiquetas') ||
+                          lowerMessage.includes('productos sanos') ||
+                          lowerMessage.includes('productos naturales');
+
+    // Si es una consulta sobre productos saludables, no incluir términos relacionados con sellos
+    if (isHealthyQuery) {
+      // Remover palabras específicas de sellos y términos de búsqueda
+      const removeWords = [
+        'buscar', 'busca', 'busco', 'encuentro', 'encuentra', 'producto', 'productos',
+        'quiero', 'necesito', 'me puedes', 'puedes', 'mostrar', 'ver', 'dame',
+        'dime', 'cual', 'cuales', 'donde', 'como', 'que', 'hay', 'tiene',
+        'tengo', 'para', 'por', 'con', 'sin', 'de', 'del', 'la', 'las',
+        'el', 'los', 'un', 'una', 'unos', 'unas', 'y', 'o', 'pero',
+        // Palabras específicas de sellos que no deben incluirse en la búsqueda
+        'sellos', 'advertencia', 'advertencias', 'etiquetas', 'libre', 'sanos', 'naturales'
+      ];
+
+      let cleanedMessage = message.toLowerCase();
+      
+      // Remover palabras comunes y términos relacionados con sellos
+      removeWords.forEach(word => {
+        const regex = new RegExp(`\\b${word}\\b`, 'gi');
+        cleanedMessage = cleanedMessage.replace(regex, '').trim();
+      });
+
+      // Si después de limpiar queda vacío, devolver una cadena vacía para búsqueda general
+      if (!cleanedMessage || cleanedMessage.trim().length === 0) {
+        return '';
+      }
+
+      // Corregir el texto limpio
+      const correctedText = this.correctText(cleanedMessage);
+      return correctedText.trim();
+    }
+
+    // Para consultas normales, usar el método original
     const removeWords = [
       'buscar', 'busca', 'busco', 'encuentro', 'encuentra', 'producto', 'productos',
       'quiero', 'necesito', 'me puedes', 'puedes', 'mostrar', 'ver', 'dame',

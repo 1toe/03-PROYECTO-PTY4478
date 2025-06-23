@@ -136,11 +136,6 @@ const App: React.FC = () => {
                     <IonLabel>Mapa</IonLabel>
                   </IonTabButton>
 
-                  <IonTabButton tab="recommendations" href="/app/recommendations">
-                    <IonIcon icon={newspaper} />
-                    <IonLabel>Recomendar</IonLabel>
-                  </IonTabButton>
-
                   <IonTabButton tab="profile" href="/app/profile">
                     <IonIcon icon={person} />
                     <IonLabel>Perfil</IonLabel>
