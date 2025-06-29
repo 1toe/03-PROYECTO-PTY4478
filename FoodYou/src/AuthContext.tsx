@@ -1,28 +1,17 @@
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  ReactNode,
-} from 'react';
-import { User, Session } from '@supabase/supabase-js';
-import supabase from './utils/supabase';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import supabase, { User } from './utils/supabase';
 
 type AuthContextType = {
   user: User | null;
   loading: boolean;
-  login: (email: string, password: string, rememberMe?: boolean) => Promise<void>;
+  login: (email: string, password: string, rememberMe?: boolean) => Promise<any>;
   logout: () => Promise<void>;
-  register: (email: string, password: string, name: string) => Promise<void>;
+  register: (email: string, password: string, name: string) => Promise<any>;
 };
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 
-type AuthProviderProps = {
-  children: ReactNode;
-};
-
-export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -30,44 +19,60 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     let isMounted = true;
 
     const fetchInitialSession = async () => {
-      console.log('🔄 Inicio fetchInitialSession');
-      const { data: { session }, error } = await supabase.auth.getSession();
-      console.log('🟢 getSession resultado:', { session, error });
-
-      if (isMounted) {
-        setUser(session?.user ?? null);
-        setLoading(false);
+      try {
+        const { data: { session }, error } = await supabase.auth.getSession();
+        if (isMounted) {
+          if (error) {
+            console.error("Error al obtener sesión inicial:", error);
+          }
+          setUser(session?.user ?? null);
+        }
+      } catch (err) {
+        if (isMounted) {
+          console.error('Error no controlado al obtener sesión inicial:', err);
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
 
     fetchInitialSession();
 
-    const { data: authListener } = supabase.auth.onAuthStateChange((_event, session: Session | null) => {
+    const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
       if (!isMounted) return;
 
-      console.log('🔔 onAuthStateChange', _event, session);
-
-      // Evita interferir si aún no se ha terminado de cargar la sesión
-      if (_event !== 'INITIAL_SESSION') {
+      if (event === 'SIGNED_IN') {
+        setUser(session?.user ?? null);
+      } else if (event === 'SIGNED_OUT') {
+        setUser(null);
+        sessionStorage.removeItem('temporarySession');
+      } else if (event === 'TOKEN_REFRESHED') {
         setUser(session?.user ?? null);
       }
     });
 
     return () => {
       isMounted = false;
-      authListener.subscription.unsubscribe(); // ✅ esta línea ahora funciona
+      listener.subscription.unsubscribe();
     };
   }, []);
 
   const login = async (email: string, password: string, rememberMe: boolean = true) => {
-    setLoading(true);
     try {
+      if (!email?.trim() || !password?.trim()) {
+        throw new Error('Email y contraseña son requeridos');
+      }
+
       const { data, error } = await supabase.auth.signInWithPassword({
         email: email.trim(),
-        password: password.trim(),
+        password: password.trim()
       });
 
       if (error) throw error;
+
+      setUser(data.user);
 
       if (!rememberMe && data.session) {
         sessionStorage.setItem('temporarySession', 'true');
@@ -75,60 +80,39 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         sessionStorage.removeItem('temporarySession');
       }
 
-      setUser(data.user ?? null);
-    } finally {
-      setLoading(false);
+      return data;
+    } catch (error) {
+      console.error('Error en login:', error);
+      throw error;
     }
   };
 
   const logout = async () => {
-    setLoading(true);
-    try {
-      setUser(null);
-      sessionStorage.clear();
-      localStorage.clear();
+    setUser(null);
+    sessionStorage.clear();
+    localStorage.clear();
 
-      await supabase.auth.signOut();
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error('Error en logout:', error);
       window.location.href = '/login';
-    } catch (e) {
-      console.error('Error al cerrar sesión', e);
-      window.location.href = '/login';
-    } finally {
-      setLoading(false);
+      throw error;
     }
+    window.location.href = '/login';
   };
 
-  // Nuevo registro extendido
-  const register = async (email: string, password: string, name: string, weight?: number, height?: number, allergies?: string) => {
-    setLoading(true);
-    try {
-      // Registrar usuario en Supabase Auth
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: { name },
-        },
-      });
-      if (error) throw error;
-      // Si el registro fue exitoso, guardar datos adicionales en profiles
-      const userId = data.user?.id;
-      if (userId && weight && height) {
-        const { error: profileError } = await supabase
-          .from('profiles')
-          .upsert({
-            id: userId,
-            name,
-            peso: weight,
-            estatura: height,
-            alergias: allergies || null,
-            updated_at: new Date().toISOString(),
-          });
-        if (profileError) throw profileError;
+  const register = async (email: string, password: string, name: string) => {
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: { name }
       }
-    } finally {
-      setLoading(false);
-    }
+    });
+
+    if (error) throw error;
+
+    return data;
   };
 
   useEffect(() => {
@@ -144,6 +128,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     };
   }, []);
 
+
   return (
     <AuthContext.Provider value={{ user, loading, login, logout, register }}>
       {children}
@@ -151,8 +136,4 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   );
 };
 
-export const useAuth = (): AuthContextType => {
-  const context = useContext(AuthContext);
-  if (!context) throw new Error('useAuth debe usarse dentro de un AuthProvider');
-  return context;
-};
+export const useAuth = () => useContext(AuthContext);

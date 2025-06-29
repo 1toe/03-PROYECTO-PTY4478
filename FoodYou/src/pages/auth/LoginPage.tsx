@@ -11,7 +11,6 @@ import {
   IonButton,
   IonRow,
   IonCol,
-  IonCheckbox,
   IonText,
   IonAlert,
   IonLoading,
@@ -35,18 +34,16 @@ const LoginPage: React.FC = () => {
   const { loading: authLoading, user, login } = useAuth();
   const [present] = useIonToast();
 
+  useEffect(() => {
+    if (!authLoading && user) {
+      const from = location.state && (location.state as any).from;
+      const pathname = from?.pathname || '/app/home';
 
-  const from = location.state && (location.state as any).from;
-  const pathname = from?.pathname || '/app/home';
-
-useEffect(() => {
-  if (!authLoading && user) {
-    if (location.pathname !== pathname) {
-      console.log('✅ Usuario autenticado, redirigiendo a:', pathname);
-      history.replace(pathname);
+      if (location.pathname !== pathname) {
+        history.replace(pathname);
+      }
     }
-  }
-}, [authLoading, user, history, location.state, location.pathname]);
+  }, [authLoading, user, history, location.state, location.pathname]);
 
   useEffect(() => {
     const savedRememberMe = localStorage.getItem('rememberMe');
@@ -58,16 +55,6 @@ useEffect(() => {
   useEffect(() => {
     localStorage.setItem('rememberMe', JSON.stringify(rememberMe));
   }, [rememberMe]);
-
-  const handleEmailChange = (e: CustomEvent) => {
-    const value = e.detail.value || '';
-    setEmail(value);
-  };
-
-  const handlePasswordChange = (e: CustomEvent) => {
-    const value = e.detail.value || '';
-    setPassword(value);
-  };
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -81,7 +68,6 @@ useEffect(() => {
     }
 
     try {
-      console.log('🔄 Intentando login...');
       await login(email.trim(), password.trim(), rememberMe);
 
       present({
@@ -91,15 +77,12 @@ useEffect(() => {
       });
 
     } catch (error: any) {
-      console.error('❌ Error al iniciar sesión:', error);
+      console.error('Error al iniciar sesión:', error);
 
-      // Mensajes de error más específicos
       if (error.message?.includes('Invalid login') || error.message?.includes('invalid_credentials')) {
         setErrorMessage('Usuario o contraseña incorrectos');
       } else if (error.message?.includes('Email not confirmed')) {
         setErrorMessage('Email no confirmado. Por favor verifica tu bandeja de entrada.');
-      } else if (error.message?.includes('Too many requests')) {
-        setErrorMessage('Demasiados intentos. Espera unos minutos antes de intentar nuevamente.');
       } else {
         setErrorMessage(error.message || 'Error al iniciar sesión');
       }
@@ -108,17 +91,15 @@ useEffect(() => {
     }
   };
 
-
-if (authLoading && user) {
-  return (
-    <IonPage>
-      <IonContent>
-        <IonLoading isOpen={true} message="Verificando sesión..." />
-      </IonContent>
-    </IonPage>
-  );
-}
-
+  if (authLoading && !user) {
+    return (
+      <IonPage>
+        <IonContent>
+          <IonLoading isOpen={true} message="Verificando sesión..." />
+        </IonContent>
+      </IonPage>
+    );
+  }
 
   return (
     <IonPage>
@@ -135,7 +116,7 @@ if (authLoading && user) {
               <IonInput
                 type="email"
                 value={email}
-                onIonInput={handleEmailChange}
+                onIonInput={(e) => setEmail(e.detail.value || '')}
                 required
                 clearInput
               />
@@ -146,12 +127,11 @@ if (authLoading && user) {
               <IonInput
                 type="password"
                 value={password}
-                onIonInput={handlePasswordChange}
+                onIonInput={(e) => setPassword(e.detail.value || '')}
                 required
                 clearInput
               />
             </IonItem>
-
 
             {errorMessage && (
               <IonText color="danger" className="error-message">
@@ -196,4 +176,3 @@ if (authLoading && user) {
 };
 
 export default LoginPage;
-

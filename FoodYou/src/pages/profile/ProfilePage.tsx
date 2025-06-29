@@ -106,16 +106,6 @@ const ProfilePage: React.FC = () => {
               <IonLabel>Configuración de cuenta</IonLabel>
             </IonItem>
 
-            <IonItem button detail>
-              <IonIcon slot="start" icon={moon} />
-              <IonLabel>Tema oscuro</IonLabel>
-            </IonItem>
-
-            <IonItem button detail>
-              <IonIcon slot="start" icon={notifications} />
-              <IonLabel>Notificaciones</IonLabel>
-            </IonItem>
-
             <IonItem button onClick={() => setShowLogoutAlert(true)}>
               <IonIcon slot="start" icon={logOut} color="danger" />
               <IonLabel color="danger">Cerrar sesión</IonLabel>

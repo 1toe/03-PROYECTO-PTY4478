@@ -5,7 +5,9 @@ export class AuthService {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
-      options: { data: { name } }
+      options: {
+        data: { name }
+      }
     });
     if (error) throw error;
     return data;

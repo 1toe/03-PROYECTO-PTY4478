@@ -417,11 +417,14 @@ export const ListsService = {  /**
         .eq('is_active', true)
         .order('updated_at', { ascending: false })
         .limit(limit);
-      if (error) throw error;
+      if (error) {
+        console.error('Error al obtener listas recientes:', error);
+        throw error;
+      }
       return data || [];
     } catch (error) {
       console.error('Error al obtener listas recientes:', error);
-      return [];
+      throw error;
     }
   }
 };

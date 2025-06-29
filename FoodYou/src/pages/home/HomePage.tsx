@@ -43,9 +43,14 @@ const HomePage: React.FC = () => {
 
   // Refrescar datos
   const handleRefresh = async (event: any) => {
-    setTimeout(() => {
+    try {
+      const lists = await ListsService.getRecentLists(3);
+      setRecentLists(lists);
+    } catch (error) {
+      console.error('Error al cargar las listas:', error);
+    } finally {
       event.detail.complete();
-    },);
+    }
   };
 
   const handleRefreshRecentLists = async () => {
