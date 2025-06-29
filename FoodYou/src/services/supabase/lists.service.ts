@@ -40,15 +40,14 @@ export const ListsService = {  /**
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        // Redirige a login o muestra error
       }
 
-      console.log('🔄 Obteniendo listas para usuario:', user.id);
+      console.log('🔄 Obteniendo listas para usuario:', user?.id);
 
       const { data, error } = await supabase
         .from('user_lists')
         .select('*')
-        .eq('user_id', user.id)
+        .eq('user_id', user?.id)
         .eq('is_active', true)
         .order('updated_at', { ascending: false });
 
@@ -83,18 +82,18 @@ export const ListsService = {  /**
         // Redirige a login o muestra error
       }
       // LOG para comparar user.id y session.user.id
-      console.log('user.id:', user.id);
+      console.log('user.id:', user?.id);
       console.log('session.user.id:', session?.user.id);
-         console.log('🔄 Creando lista:', { name, description, user_id: user.id });
-         console.log("💡 Sesión activa:", session);
-         console.log(await supabase.auth.getSession());
+      console.log('🔄 Creando lista:', { name, description, user_id: user?.id });
+      console.log("💡 Sesión activa:", session);
+      console.log(await supabase.auth.getSession());
 
       const { data, error } = await supabase
         .from('user_lists')
         .insert({
           name,
           description,
-          user_id: user.id,
+          user_id: user?.id,
           item_count: 0,
           is_active: true
         })
@@ -144,7 +143,7 @@ export const ListsService = {  /**
           updated_at: new Date().toISOString()
         })
         .eq('id', listId)
-        .eq('user_id', user.id)
+        .eq('user_id', user?.id)
         .select()
         .single();
 
@@ -178,7 +177,7 @@ export const ListsService = {  /**
         .from('user_lists')
         .update({ is_active: false, updated_at: new Date().toISOString() })
         .eq('id', listId)
-        .eq('user_id', user.id);
+        .eq('user_id', user?.id);
 
       if (error) {
         console.error('Error al eliminar lista en Supabase:', error);
@@ -207,7 +206,7 @@ export const ListsService = {  /**
           user_lists!inner(user_id)
         `)
         .eq('list_id', listId)
-        .eq('user_lists.user_id', user.id)
+        .eq('user_lists.user_id', user?.id)
         .order('added_at', { ascending: false });
 
       if (error) {
@@ -237,7 +236,7 @@ export const ListsService = {  /**
         .from('user_lists')
         .select('id')
         .eq('id', listId)
-        .eq('user_id', user.id)
+        .eq('user_id', user?.id)
         .eq('is_active', true)
         .single();
 
@@ -311,7 +310,7 @@ export const ListsService = {  /**
         // Redirige a login o muestra error
       }
 
-      console.log('🔄 Actualizando item:', { itemId, updates, user_id: user.id });
+      console.log('🔄 Actualizando item:', { itemId, updates, user_id: user?.id });
 
       // Primero verificar que el item pertenece al usuario a través de su lista
       const { data: itemCheck, error: checkError } = await supabase
@@ -322,7 +321,7 @@ export const ListsService = {  /**
           user_lists!inner(user_id)
         `)
         .eq('id', itemId)
-        .eq('user_lists.user_id', user.id)
+        .eq('user_lists.user_id', user?.id)
         .single();
 
       if (checkError || !itemCheck) {
@@ -364,7 +363,7 @@ export const ListsService = {  /**
         // Redirige a login o muestra error
       }
 
-      console.log('🔄 Eliminando item:', { itemId, user_id: user.id });
+      console.log('🔄 Eliminando item:', { itemId, user_id: user?.id });
 
       // Primero verificar que el item pertenece al usuario a través de su lista
       const { data: itemCheck, error: checkError } = await supabase
@@ -375,7 +374,7 @@ export const ListsService = {  /**
           user_lists!inner(user_id)
         `)
         .eq('id', itemId)
-        .eq('user_lists.user_id', user.id)
+        .eq('user_lists.user_id', user?.id)
         .single();
 
       if (checkError || !itemCheck) {
