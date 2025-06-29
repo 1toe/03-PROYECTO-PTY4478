@@ -1,6 +1,6 @@
 .message-input-form {
   position: fixed;
-  bottom: 56px; /* Ajustado para dejar espacio para la barra de navegación inferior */
+  bottom: 56px;
   left: 0;
   right: 0;
   padding: 12px 16px;
@@ -49,6 +49,9 @@
   border-radius: 50%;
   box-shadow: 0 3px 10px rgba(255, 87, 51, 0.3);
   transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .send-button:hover {
@@ -77,5 +80,43 @@
 
 /* Ajuste para asegurar que el contenido del chat no quede oculto detrás del input */
 .chat-content {
-  padding-bottom: 108px; /* Espacio para el input y la barra de navegación */
+  padding-bottom: 120px; /* Espacio para el input y la barra de navegación */
+}
+
+/* Ajustes para dispositivos móviles */
+@media (max-width: 768px) {
+  .message-input-form {
+    padding: 8px 12px;
+  }
+  
+  .message-input-item {
+    --border-radius: 20px;
+    --min-height: 46px;
+  }
+  
+  .message-textarea {
+    --padding-top: 12px;
+    --padding-bottom: 12px;
+    font-size: 15px;
+  }
+  
+  .send-button {
+    min-width: 44px;
+    height: 44px;
+  }
+}
+
+@media (max-width: 480px) {
+  .message-input-form {
+    bottom: 50px;
+  }
+  
+  .message-input-item {
+    --border-radius: 18px;
+    --min-height: 42px;
+  }
+  
+  .message-textarea {
+    font-size: 14px;
+  }
 }

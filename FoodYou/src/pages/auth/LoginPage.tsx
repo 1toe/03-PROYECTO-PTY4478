@@ -129,7 +129,6 @@ const LoginPage: React.FC = () => {
                 value={password}
                 onIonInput={(e) => setPassword(e.detail.value || '')}
                 required
-                clearInput
               />
             </IonItem>
 

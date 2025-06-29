@@ -469,7 +469,7 @@ const ListsPage: React.FC = () => {
           onDidDismiss={() => setShowCreateAlert(false)}
           header="Crear Nueva Lista"
           inputs={[
-            { name: 'name', type: 'text', placeholder: 'Nombre de la lista (ej. Compras semanales)', attributes: { maxlength: 50 } },
+            { name: 'name', type: 'text', placeholder: 'Nombre de la lista', attributes: { maxlength: 50 } },
             { name: 'description', type: 'textarea', placeholder: 'Descripción (opcional)', attributes: { maxlength: 200 } }
           ]}
           buttons={[
