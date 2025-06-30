@@ -1,9 +1,8 @@
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = 'https://fxrrqmveykzrczypglbw.supabase.co';
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ4cnJxbXZleWt6cmN6eXBnbGJ3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc0OTkyNjEsImV4cCI6MjA2MzA3NTI2MX0.bKE1sojg8cjDjyhZLeVUgSRJbhTpNeTeRKC9kk-jBuo';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ4cnJxbXZleWt6cmN6eXBnbGJ3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc0OTkyNjEsImV4cCI6MjA2MzA3NTI2MX0.bKE1sojg8cjDjyhZLeVUgSRJbhTpNeTeRKC9kk-jBuo'; // Mantén tu token completo aquí
 
-// Configuración optimizada para persistencia de sesión
 const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
     autoRefreshToken: true,
@@ -28,42 +27,15 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey, {
         }
       }
     },
-    storageKey: 'supabase.auth.token',
-    debug: false 
+    storageKey: 'supabase.auth.token'
   },
   global: {
     headers: {
-      'apikey': supabaseAnonKey
-    }
-  },
-  db: {
-    schema: 'public'
-  },
-  realtime: {
-    params: {
-      eventsPerSecond: 10
+      apikey: supabaseAnonKey
     }
   }
 });
 
-// Función para verificar la conexión
-export const testConnection = async () => {
-  try {
-    const { data, error } = await supabase.from('profiles').select('count').limit(1);
-    if (error) {
-      console.log('🔍 Test de conexión - Error esperado si no hay tabla profiles:', error.message);
-    } else {
-      console.log('✅ Conexión a Supabase exitosa');
-    }
-    return true;
-  } catch (error) {
-    console.error('❌ Error de conexión a Supabase:', error);
-    return false;
-  }
-};
-
-// Exportar cliente y tipos
 export default supabase;
 export type { SupabaseClient } from '@supabase/supabase-js';
 export type { AuthResponse, User, Session } from '@supabase/supabase-js';
-

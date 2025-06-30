@@ -4,7 +4,7 @@ import supabase, { User } from './utils/supabase';
 type AuthContextType = {
   user: User | null;
   loading: boolean;
-  login: (email: string, password: string, rememberMe?: boolean) => Promise<any>;
+  login: (email: string, password: string) => Promise<any>;
   logout: () => Promise<void>;
   register: (email: string, password: string, name: string) => Promise<any>;
 };
@@ -16,71 +16,61 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    let isMounted = true;
-
     const fetchInitialSession = async () => {
       try {
         const { data: { session }, error } = await supabase.auth.getSession();
-        if (isMounted) {
-          if (error) {
-            console.error("Error al obtener sesión inicial:", error);
+        if (error) {
+          console.error('Error al obtener sesión inicial:', error);
+        }
+
+        if (session) {
+          const { data: { user }, error: userError } = await supabase.auth.getUser();
+          if (userError) {
+            console.error('Error al obtener usuario:', userError);
           }
-          setUser(session?.user ?? null);
+          setUser(user ?? null);
+        } else {
+          setUser(null);
         }
       } catch (err) {
-        if (isMounted) {
-          console.error('Error no controlado al obtener sesión inicial:', err);
-        }
+        console.error('Error inesperado al cargar sesión:', err);
+        setUser(null);
       } finally {
-        if (isMounted) {
-          setLoading(false);
-        }
+        setLoading(false);
       }
     };
 
     fetchInitialSession();
 
-    const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
-      if (!isMounted) return;
-
-      if (event === 'SIGNED_IN') {
-        setUser(session?.user ?? null);
-      } else if (event === 'SIGNED_OUT') {
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session) {
+        supabase.auth.getUser().then(({ data: { user } }) => {
+          setUser(user ?? null);
+        });
+      } else {
         setUser(null);
-        sessionStorage.removeItem('temporarySession');
-      } else if (event === 'TOKEN_REFRESHED') {
-        setUser(session?.user ?? null);
       }
     });
 
     return () => {
-      isMounted = false;
       listener.subscription.unsubscribe();
     };
   }, []);
 
-  const login = async (email: string, password: string, rememberMe: boolean = true) => {
+  const login = async (email: string, password: string) => {
     try {
-      if (!email?.trim() || !password?.trim()) {
-        throw new Error('Email y contraseña son requeridos');
-      }
-
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { error } = await supabase.auth.signInWithPassword({
         email: email.trim(),
         password: password.trim()
       });
 
       if (error) throw error;
 
-      setUser(data.user);
+      const { data: { user }, error: userError } = await supabase.auth.getUser();
+      if (userError) throw userError;
 
-      if (!rememberMe && data.session) {
-        sessionStorage.setItem('temporarySession', 'true');
-      } else {
-        sessionStorage.removeItem('temporarySession');
-      }
-
-      return data;
+      setUser(user ?? null);
+      return user;
     } catch (error) {
       console.error('Error en login:', error);
       throw error;
@@ -88,15 +78,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const logout = async () => {
-    setUser(null);
-    sessionStorage.clear();
-    localStorage.clear();
-
     const { error } = await supabase.auth.signOut();
+    setUser(null);
     if (error) {
       console.error('Error en logout:', error);
-      window.location.href = '/login';
-      throw error;
     }
     window.location.href = '/login';
   };
@@ -114,20 +99,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     return data;
   };
-
-  useEffect(() => {
-    const handleBeforeUnload = () => {
-      if (sessionStorage.getItem('temporarySession') === 'true') {
-        supabase.auth.signOut();
-      }
-    };
-
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, []);
-
 
   return (
     <AuthContext.Provider value={{ user, loading, login, logout, register }}>
