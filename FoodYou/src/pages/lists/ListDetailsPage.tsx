@@ -255,7 +255,7 @@ const ListDetailsPage: React.FC = () => {
                   <IonLabel position="floating">Nombre del producto</IonLabel>
                   <IonInput
                     value={newItemName}
-                    onIonChange={e => setNewItemName(e.detail.value || '')}
+                    onIonInput={e => setNewItemName(e.detail.value || '')}
                     placeholder="Ej. Leche, Pan, Huevos..."
                   />
                 </IonItem>
@@ -265,7 +265,7 @@ const ListDetailsPage: React.FC = () => {
                   <IonInput
                     type="number"
                     value={newItemQuantity}
-                    onIonChange={e => setNewItemQuantity(parseInt(e.detail.value || '1', 10))}
+                    onIonInput={e => setNewItemQuantity(parseInt(e.detail.value || '1', 10))}
                     min={1}
                   />
                 </IonItem>

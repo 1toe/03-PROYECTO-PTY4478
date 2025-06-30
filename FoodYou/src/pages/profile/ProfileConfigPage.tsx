@@ -202,6 +202,41 @@ const ProfileConfigPage: React.FC = () => {
 
       <IonContent>
         <div className="profile-config-container">
+          {/* Card resumen de datos de perfil */}
+          <IonCard color="light" style={{ marginBottom: 24 }}>
+            <IonCardHeader>
+              <IonCardTitle>
+                <IonIcon icon={person} /> Resumen de tu perfil
+              </IonCardTitle>
+            </IonCardHeader>
+            <IonCardContent>
+              <IonList lines="none">
+                <IonItem>
+                  <IonLabel>
+                    <strong>Peso:</strong> {peso ? peso + ' kg' : 'No especificado'}
+                  </IonLabel>
+                </IonItem>
+                <IonItem>
+                  <IonLabel>
+                    <strong>Estatura:</strong> {estatura ? estatura + ' cm' : 'No especificada'}
+                  </IonLabel>
+                </IonItem>
+                {bmi && (
+                  <IonItem>
+                    <IonLabel>
+                      <strong>IMC:</strong> {bmi.toFixed(1)} ({bmiCategory})
+                    </IonLabel>
+                  </IonItem>
+                )}
+                <IonItem>
+                  <IonLabel>
+                    <strong>Alergias:</strong> {alergias.length > 0 ? alergias.join(', ') : 'Ninguna registrada'}
+                  </IonLabel>
+                </IonItem>
+              </IonList>
+            </IonCardContent>
+          </IonCard>
+
           {/* Información personal */}
           <IonCard>
             <IonCardHeader>

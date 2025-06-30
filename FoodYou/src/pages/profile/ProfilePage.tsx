@@ -22,6 +22,7 @@ import {
 import { logOut, settings, person, moon, notifications } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from '../../AuthContext';
+import { UserService } from '../../services/supabase/user.service';
 import applesImage from '../../assets/apples_pp.png';
 import './ProfilePage.css';
 
@@ -30,6 +31,12 @@ const ProfilePage: React.FC = () => {
   const [userEmail, setUserEmail] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showLogoutAlert, setShowLogoutAlert] = useState<boolean>(false);
+  const [profileData, setProfileData] = useState<any>(null);
+  const [showProfileCard, setShowProfileCard] = useState(false);
+  const [editProfile, setEditProfile] = useState(false);
+  const [editPeso, setEditPeso] = useState('');
+  const [editEstatura, setEditEstatura] = useState('');
+  const [editAlergias, setEditAlergias] = useState('');
 
   const history = useHistory();
   const { logout, user } = useAuth();
@@ -41,10 +48,21 @@ const ProfilePage: React.FC = () => {
       console.log('✅ Cargando perfil para usuario:', user.email);
       setUserName(user.user_metadata?.name || 'Usuario');
       setUserEmail(user.email || '');
+      // Cargar datos nutricionales
+      UserService.getUserProfile(user.id).then((data) => {
+        setProfileData(data);
+        setEditPeso(data?.peso ? String(data.peso) : '');
+        setEditEstatura(data?.estatura ? String(data.estatura) : '');
+        setEditAlergias(data?.alergias ? data.alergias : '');
+      });
     } else {
       console.log('❌ No hay usuario en el contexto');
       setUserName('');
       setUserEmail('');
+      setProfileData(null);
+      setEditPeso('');
+      setEditEstatura('');
+      setEditAlergias('');
     }
   }, [user]);
 
@@ -76,6 +94,28 @@ const ProfilePage: React.FC = () => {
     }
   };
 
+  const handleSaveProfile = async () => {
+    if (!user) return;
+    setIsLoading(true);
+    try {
+      const updates = {
+        peso: editPeso ? parseFloat(editPeso) : null,
+        estatura: editEstatura ? parseFloat(editEstatura) : null,
+        alergias: editAlergias
+      };
+      await UserService.updateUserProfile(user.id, updates);
+      presentToast({ message: 'Perfil actualizado', duration: 2000, color: 'success' });
+      setEditProfile(false);
+      // Refrescar datos
+      const updated = await UserService.getUserProfile(user.id);
+      setProfileData(updated);
+    } catch (e) {
+      presentToast({ message: 'Error al actualizar perfil', duration: 2000, color: 'danger' });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <IonPage>
       <IonHeader>
@@ -90,7 +130,8 @@ const ProfilePage: React.FC = () => {
           </IonToolbar>
         </IonHeader>
 
-        <div className="profile-container">          <IonCard className="profile-card">
+        <div className="profile-container">
+          <IonCard className="profile-card">
             <div className="profile-avatar">
               <img src={applesImage} alt="Perfil" />
             </div>
@@ -101,7 +142,7 @@ const ProfilePage: React.FC = () => {
           </IonCard>
 
           <IonList>
-            <IonItem button detail>
+            <IonItem button detail onClick={() => setShowProfileCard(!showProfileCard)}>
               <IonIcon slot="start" icon={settings} />
               <IonLabel>Configuración de cuenta</IonLabel>
             </IonItem>
@@ -111,6 +152,69 @@ const ProfilePage: React.FC = () => {
               <IonLabel color="danger">Cerrar sesión</IonLabel>
             </IonItem>
           </IonList>
+
+          {showProfileCard && profileData && (
+            <IonCard color="light" style={{ marginTop: 16 }}>
+              <IonCardHeader>
+                <IonCardTitle>
+                  <IonIcon icon={person} /> Resumen de tu perfil
+                </IonCardTitle>
+              </IonCardHeader>
+              <IonCardContent>
+                {!editProfile ? (
+                  <IonList lines="none">
+                    <IonItem>
+                      <IonLabel>
+                        <strong>Peso:</strong> {profileData.peso ? profileData.peso + ' kg' : 'No especificado'}
+                      </IonLabel>
+                    </IonItem>
+                    <IonItem>
+                      <IonLabel>
+                        <strong>Estatura:</strong> {profileData.estatura ? profileData.estatura + ' m' : 'No especificada'}
+                      </IonLabel>
+                    </IonItem>
+                    {profileData.peso && profileData.estatura && (
+                      <IonItem>
+                        <IonLabel>
+                          <strong>IMC:</strong> {((profileData.peso / ((profileData.estatura) ** 2)).toFixed(1))}
+                        </IonLabel>
+                      </IonItem>
+                    )}
+                    <IonItem>
+                      <IonLabel>
+                        <strong>Alergias:</strong> {profileData.alergias ? profileData.alergias : 'Ninguna registrada'}
+                      </IonLabel>
+                    </IonItem>
+                  </IonList>
+                ) : (
+                  <IonList lines="none">
+                    <IonItem>
+                      <IonLabel position="stacked">Peso (kg)</IonLabel>
+                      <input type="number" value={editPeso} onChange={e => setEditPeso(e.target.value)} placeholder="Ej: 70" min="20" max="300" style={{width:'100%'}} />
+                    </IonItem>
+                    <IonItem>
+                      <IonLabel position="stacked">Estatura (m)</IonLabel>
+                      <input type="number" step="0.01" value={editEstatura} onChange={e => setEditEstatura(e.target.value)} placeholder="Ej: 1.70" min="1" max="2.5" style={{width:'100%'}} />
+                    </IonItem>
+                    <IonItem>
+                      <IonLabel position="stacked">Alergias</IonLabel>
+                      <input type="text" value={editAlergias} onChange={e => setEditAlergias(e.target.value)} placeholder="Ej: Gluten, Lactosa" style={{width:'100%'}} />
+                    </IonItem>
+                  </IonList>
+                )}
+                <div style={{display:'flex',gap:8,marginTop:16}}>
+                  {!editProfile ? (
+                    <IonButton expand="block" onClick={()=>setEditProfile(true)} color="primary">Editar</IonButton>
+                  ) : (
+                    <>
+                      <IonButton expand="block" onClick={handleSaveProfile} color="success" disabled={isLoading}>Guardar</IonButton>
+                      <IonButton expand="block" onClick={()=>setEditProfile(false)} color="medium" disabled={isLoading}>Cancelar</IonButton>
+                    </>
+                  )}
+                </div>
+              </IonCardContent>
+            </IonCard>
+          )}
         </div>
 
         <IonAlert

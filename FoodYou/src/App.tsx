@@ -15,6 +15,7 @@ import ListsPage from './pages/lists/ListsPage';
 import ListDetailsPage from './pages/lists/ListDetailsPage';
 import RecommendationsPage from './pages/recommendations/RecommendationsPage';
 import PrivateRoute from './components/PrivateRoute';
+import ProfileConfigPage from './pages/profile/ProfileConfigPage';
 
 import { home, map, person, list, newspaper, chatbubbles } from 'ionicons/icons';
 
@@ -106,6 +107,7 @@ const App: React.FC = () => {
                 <PrivateRoute exact path="/app/map" component={MapPage} />
                 <PrivateRoute exact path="/app/chat" component={ChatPage} />
                 <PrivateRoute exact path="/app/profile" component={ProfilePage} />
+                <PrivateRoute exact path="/app/profile/config" component={ProfileConfigPage} />
                 <PrivateRoute exact path="/app/lists" component={ListsPage} />
                 <PrivateRoute exact path="/app/lists/create" component={ListDetailsPage} />
                 <PrivateRoute exact path="/app/lists/edit/:id" component={ListDetailsPage} />
