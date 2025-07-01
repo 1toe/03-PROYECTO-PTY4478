@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   IonPage,
   IonContent,
@@ -13,7 +13,7 @@ import {
   IonLoading
 } from '@ionic/react';
 import { arrowBack } from 'ionicons/icons';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import './Auth.css';
 import { useAuth } from '../../AuthContext';
 import logoImage from '../../assets/logo.png';
@@ -27,26 +27,8 @@ const RegisterPage: React.FC = () => {
   const [allergies, setAllergies] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [redirected, setRedirected] = useState(false); // Nuevo estado para evitar redirecciones múltiples
+  const { loading: authLoading, register } = useAuth();
   const history = useHistory();
-  const location = useLocation();
-  const { loading: authLoading, user, register } = useAuth();
-
-  // Agregar useEffect para manejar redirección después del registro
-  useEffect(() => {
-    if (!authLoading && user && !redirected) {
-      console.log('RegisterPage: Usuario registrado y autenticado, redirigiendo');
-      setRedirected(true);
-      history.replace('/app/home');
-    }
-  }, [authLoading, user, history, redirected]);
-
-  // Resetear redirected cuando no hay usuario
-  useEffect(() => {
-    if (!user) {
-      setRedirected(false);
-    }
-  }, [user]);
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -69,6 +51,12 @@ const RegisterPage: React.FC = () => {
       const result = await register(email, password, name, weight, height, allergies);
       console.log('RegisterPage: Resultado del registro:', result);
 
+      // Espera breve para que AuthContext actualice el usuario
+      await new Promise(res => setTimeout(res, 200));
+
+      // ✅ Redirige forzando recarga completa
+      window.location.href = '/app/home';
+
     } catch (error: any) {
       console.error('RegisterPage: Error detallado al registrar:', error);
 
@@ -89,7 +77,6 @@ const RegisterPage: React.FC = () => {
   return (
     <IonPage>
       <IonContent className="ion-padding">
-        {/* Aquí se usa authLoading del AuthContext */}
         <IonLoading isOpen={authLoading} message="Verificando sesión..." />
 
         <div className="back-button-container">
@@ -143,6 +130,7 @@ const RegisterPage: React.FC = () => {
                 step="0.1"
               />
             </IonItem>
+
             <IonItem>
               <IonLabel position="stacked">Estatura (cm)</IonLabel>
               <IonInput
@@ -153,6 +141,7 @@ const RegisterPage: React.FC = () => {
                 step="0.1"
               />
             </IonItem>
+
             <IonItem>
               <IonLabel position="stacked">Alergias (opcional)</IonLabel>
               <IonInput

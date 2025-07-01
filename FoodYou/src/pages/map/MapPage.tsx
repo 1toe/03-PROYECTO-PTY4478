@@ -274,12 +274,7 @@ const MapPage: React.FC = () => {
             </div>
           )}
 
-          <div className="map-controls">
-            <IonButton onClick={getLocation} disabled={loading}>
-              <IonIcon slot="start" icon={locate} />
-              {location ? 'Actualizar ubicación' : 'Obtener ubicación'}
-            </IonButton>
-          </div>
+          
         </div>
 
         <IonLoading isOpen={loading} message="Obteniendo tu ubicación..." />
