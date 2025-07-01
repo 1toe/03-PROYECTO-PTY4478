@@ -17,7 +17,8 @@ import {
   IonList,
   IonAlert,
   IonLoading,
-  useIonToast
+  useIonToast,
+  IonInput
 } from '@ionic/react';
 import { logOut, settings, person, moon, notifications } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
@@ -188,17 +189,39 @@ const ProfilePage: React.FC = () => {
                   </IonList>
                 ) : (
                   <IonList lines="none">
-                    <IonItem>
+                    <IonItem color="light">
                       <IonLabel position="stacked">Peso (kg)</IonLabel>
-                      <input type="number" value={editPeso} onChange={e => setEditPeso(e.target.value)} placeholder="Ej: 70" min="20" max="300" style={{width:'100%'}} />
+                      <IonInput
+                        type="number"
+                        value={editPeso}
+                        onIonInput={e => setEditPeso((e.target as HTMLInputElement).value)}
+                        placeholder="Ej: 70"
+                        min="20"
+                        max="300"
+                        style={{ background: 'var(--ion-color-light)', color: 'var(--ion-color-dark)' }}
+                      />
                     </IonItem>
-                    <IonItem>
+                    <IonItem color="light">
                       <IonLabel position="stacked">Estatura (m)</IonLabel>
-                      <input type="number" step="0.01" value={editEstatura} onChange={e => setEditEstatura(e.target.value)} placeholder="Ej: 1.70" min="1" max="2.5" style={{width:'100%'}} />
+                      <IonInput
+                        type="number"
+                        step="0.01"
+                        value={editEstatura}
+                        onIonInput={e => setEditEstatura((e.target as HTMLInputElement).value)}
+                        placeholder="Ej: 1.70"
+                        min="1"
+                        max="2.5"
+                        style={{ background: 'var(--ion-color-light)', color: 'var(--ion-color-dark)' }}
+                      />
                     </IonItem>
-                    <IonItem>
+                    <IonItem color="light">
                       <IonLabel position="stacked">Alergias</IonLabel>
-                      <input type="text" value={editAlergias} onChange={e => setEditAlergias(e.target.value)} placeholder="Ej: Gluten, Lactosa" style={{width:'100%'}} />
+                      <IonInput
+                        value={editAlergias}
+                        onIonInput={e => setEditAlergias((e.detail as any).value)}
+                        placeholder="Ej: Gluten, Lactosa"
+                        style={{ background: 'var(--ion-color-light)', color: 'var(--ion-color-dark)' }}
+                      />
                     </IonItem>
                   </IonList>
                 )}
@@ -217,26 +240,26 @@ const ProfilePage: React.FC = () => {
           )}
         </div>
 
+        <IonLoading isOpen={isLoading} message={'Por favor, espere...'} />
         <IonAlert
           isOpen={showLogoutAlert}
           onDidDismiss={() => setShowLogoutAlert(false)}
           header={'Cerrar sesión'}
-          message={'¿Estás seguro que deseas cerrar tu sesión?'}
+          message={'¿Estás seguro de que deseas cerrar sesión?'}
           buttons={[
             {
               text: 'Cancelar',
-              role: 'cancel'
+              role: 'cancel',
+              cssClass: 'secondary',
+              handler: () => {
+                console.log('Cancelar cierre de sesión');
+              }
             },
             {
-              text: 'Sí, cerrar sesión',
-              handler: handleLogout
+              text: 'Confirmar',
+              handler: () => handleLogout()
             }
           ]}
-        />
-
-        <IonLoading
-          isOpen={isLoading}
-          message={'Cerrando sesión...'}
         />
       </IonContent>
     </IonPage>

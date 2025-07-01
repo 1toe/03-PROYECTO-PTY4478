@@ -51,7 +51,7 @@ const RegisterPage: React.FC = () => {
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!name || !email || !password || !weight || !height) {
+    if (!name || !email || !password) {
       setErrorMessage('Por favor completa todos los campos obligatorios');
       return;
     }
@@ -66,7 +66,7 @@ const RegisterPage: React.FC = () => {
 
     try {
       console.log('RegisterPage: Intentando registrar:', { email, name, weight, height, allergies });
-      const result = await register(email, password, name, parseFloat(weight), parseFloat(height), allergies);
+      const result = await register(email, password, name, weight, height, allergies);
       console.log('RegisterPage: Resultado del registro:', result);
 
     } catch (error: any) {
@@ -139,9 +139,8 @@ const RegisterPage: React.FC = () => {
                 type="number"
                 value={weight}
                 onIonChange={e => setWeight(e.detail.value!)}
-                required
                 min={0}
-                step={0.1}
+                step="0.1"
               />
             </IonItem>
             <IonItem>
@@ -150,9 +149,8 @@ const RegisterPage: React.FC = () => {
                 type="number"
                 value={height}
                 onIonChange={e => setHeight(e.detail.value!)}
-                required
                 min={0}
-                step={0.1}
+                step="0.1"
               />
             </IonItem>
             <IonItem>

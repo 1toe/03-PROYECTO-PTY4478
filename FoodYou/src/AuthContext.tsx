@@ -6,7 +6,7 @@ type AuthContextType = {
   loading: boolean;
   login: (email: string, password: string) => Promise<any>;
   logout: () => Promise<void>;
-  register: (email: string, password: string, name: string) => Promise<any>;
+  register: (email: string, password: string, name: string, peso?: string, estatura?: string, alergias?: string) => Promise<any>;
 };
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
@@ -86,7 +86,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     window.location.href = '/login';
   };
 
-  const register = async (email: string, password: string, name: string) => {
+  const register = async (email: string, password: string, name: string, peso?: string, estatura?: string, alergias?: string) => {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -96,6 +96,28 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     });
 
     if (error) throw error;
+
+    // Esperar a que el registro en profiles exista antes de actualizar
+    if (data.user) {
+      const updates: any = {};
+      if (peso) updates.peso = parseFloat(peso);
+      if (estatura) updates.estatura = parseFloat(estatura);
+      if (alergias !== undefined && alergias !== null) updates.alergias = alergias.trim();
+      if (Object.keys(updates).length > 0) {
+        let retries = 0;
+        let profileExists = false;
+        while (retries < 10 && !profileExists) {
+          const { data: profile } = await supabase.from('profiles').select('id').eq('id', data.user.id).single();
+          if (profile) {
+            profileExists = true;
+            await supabase.from('profiles').update(updates).eq('id', data.user.id);
+          } else {
+            await new Promise(res => setTimeout(res, 400));
+            retries++;
+          }
+        }
+      }
+    }
 
     return data;
   };
