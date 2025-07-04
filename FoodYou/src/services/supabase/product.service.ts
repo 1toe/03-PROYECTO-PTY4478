@@ -278,7 +278,24 @@ export const ProductService = {
 
     // Aplicar filtros de búsqueda por texto solo si hay términos específicos
     if (query && query.trim() !== '' && query.toLowerCase() !== 'productos') {
-      queryBuilder = queryBuilder.or(`name_vtex.ilike.%${query}%,name_okto.ilike.%${query}%,description_short_vtex.ilike.%${query}%`);
+      // Sanitizar la consulta para evitar problemas con caracteres especiales
+      // Eliminar caracteres problemáticos para SQL y Supabase
+      const sanitizedQuery = query.replace(/[,;'"\\%_:@<>(){}[\]|=+*&^$#!?¿¡]/g, ' ').trim();
+      
+      if (sanitizedQuery) {
+        try {
+          // Construir la consulta de forma segura usando múltiples or concatenados
+          queryBuilder = queryBuilder
+            .or(`name_vtex.ilike.%${sanitizedQuery}%`)
+            .or(`name_okto.ilike.%${sanitizedQuery}%`)
+            .or(`description_short_vtex.ilike.%${sanitizedQuery}%`);
+        } catch (e) {
+          console.warn('Error al crear consulta de búsqueda, usando fallback:', e);
+          // Fallback: buscar solo por el primer término si hay problemas
+          const firstTerm = sanitizedQuery.split(' ')[0];
+          queryBuilder = queryBuilder.ilike('name_vtex', `%${firstTerm}%`);
+        }
+      }
     }
 
     // Aplicar filtros adicionales

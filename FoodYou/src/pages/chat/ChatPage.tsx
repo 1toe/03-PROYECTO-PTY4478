@@ -1,5 +1,7 @@
 import React from 'react';
-import { IonPage } from '@ionic/react';
+import { IonPage, IonFab, IonFabButton, IonIcon } from '@ionic/react';
+import { logoGoogle } from 'ionicons/icons';
+import { useHistory } from 'react-router-dom';
 import ChatInterface from '../../components/chat/ChatInterface';
 import './ChatPage.css';
 

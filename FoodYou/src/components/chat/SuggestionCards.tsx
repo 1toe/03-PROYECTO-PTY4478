@@ -35,14 +35,6 @@ const SuggestionCards: React.FC<SuggestionCardsProps> = ({ onSuggestionClick }) 
       category: 'offers'
     },
     {
-      id: 'healthy-products',
-      title: 'Productos Saludables',
-      description: 'Sin sellos de advertencia',
-      query: 'buscar productos sin sellos de advertencia',
-      icon: nutritionOutline,
-      category: 'nutrition'
-    },
-    {
       id: 'condiments',
       title: 'Condimentos',
       description: 'Salsas, aderezos y especias',

@@ -1,0 +1,39 @@
+WITH products_without_warnings AS (
+  SELECT p.ean, p.name_vtex
+  FROM products_unimarc p
+  WHERE NOT EXISTS (
+    SELECT 1 
+    FROM product_warnings_unimarc w 
+    WHERE w.product_ean = p.ean
+  )
+  ORDER BY RANDOM()
+  LIMIT 3
+),
+random_ingredients AS (
+  SELECT id, name
+  FROM ingredients_unimarc
+  ORDER BY RANDOM()
+  LIMIT 9
+),
+product_ingredient_pairs AS (
+  SELECT 
+    p.ean AS product_ean,
+    p.name_vtex AS product_name,
+    ri.id AS ingredient_id,
+    ri.name AS ingredient_name,
+    ROW_NUMBER() OVER (PARTITION BY p.ean ORDER BY ri.id) AS ingredient_num
+  FROM products_without_warnings p
+  CROSS JOIN random_ingredients ri
+),
+filtered_pairs AS (
+  SELECT *
+  FROM product_ingredient_pairs
+  WHERE ingredient_num <= 3
+)
+SELECT 
+  product_ean,
+  product_name,
+  STRING_AGG(ingredient_name, ', ') AS ingredient_name
+FROM filtered_pairs
+GROUP BY product_ean, product_name
+ORDER BY product_ean;

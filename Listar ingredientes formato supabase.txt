@@ -1,0 +1,34 @@
+WITH random_products AS (
+  SELECT ean, name_vtex
+  FROM products_unimarc
+  ORDER BY RANDOM()
+  LIMIT 3
+),
+random_ingredients AS (
+  SELECT id, name
+  FROM ingredients_unimarc
+  ORDER BY RANDOM()
+  LIMIT 9
+),
+product_ingredient_pairs AS (
+  SELECT 
+    rp.ean AS product_ean,
+    rp.name_vtex AS product_name,
+    ri.id AS ingredient_id,
+    ri.name AS ingredient_name,
+    ROW_NUMBER() OVER (PARTITION BY rp.ean ORDER BY ri.id) AS ingredient_num
+  FROM random_products rp
+  CROSS JOIN random_ingredients ri
+),
+filtered_pairs AS (
+  SELECT *
+  FROM product_ingredient_pairs
+  WHERE ingredient_num <= 3
+)
+SELECT 
+  product_ean,
+  product_name,
+  STRING_AGG(ingredient_name, ', ') AS ingredient_name
+FROM filtered_pairs
+GROUP BY product_ean, product_name
+ORDER BY product_ean;

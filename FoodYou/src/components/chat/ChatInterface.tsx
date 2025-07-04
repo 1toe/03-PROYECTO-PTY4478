@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import {
   IonContent,
   IonHeader,
@@ -7,8 +7,11 @@ import {
   IonButton,
   IonSpinner,
   IonToast,
-  IonButtons
+  IonButtons,
+  IonBadge,
+  IonIcon
 } from '@ionic/react';
+import { logoGoogle } from 'ionicons/icons';
 import { Message, SenderRole, GroundingMetadata, GroundingChunk } from '../../types/chat.types';
 import ChatMessageBubble from './ChatMessageBubble';
 import MessageInput from './MessageInput';
@@ -17,6 +20,7 @@ import SuggestionCards from './SuggestionCards';
 import ChatStarterPhrases from './ChatStarterPhrases';
 import { ResetChatIcon, AlertTriangleIcon } from './Icons';
 import { useAIWithProducts } from '../../hooks/useAIWithProducts';
+import { geminiService } from '../../services/ai/gemini.service';
 import './ChatInterface.css';
 
 interface ChatInterfaceProps {
@@ -35,8 +39,10 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ title = "Chat IA" }) => {
 
   // Verificar API key
   const apiKeyMissing = !import.meta.env.VITE_GEMINI_API_KEY;
+  
+  // Estado de Gemini habilitado
+  const isGeminiEnabled = geminiService.isConfigured();
 
-  // Mensaje inicial
   const initializeChat = useCallback(() => {
     setMessages([{
       id: 'initial-bot-message',
@@ -75,7 +81,16 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ title = "Chat IA" }) => {
       timestamp: new Date(),
     };
 
-    setMessages(prevMessages => [...prevMessages, userMessage]);
+    // Filtrar cualquier mensaje de bienvenida inicial antes de agregar el mensaje del usuario
+    setMessages(prevMessages => {
+      // Si solo hay un mensaje y es el inicial de bienvenida, lo reemplazamos
+      if (prevMessages.length === 1 && prevMessages[0].id === 'initial-bot-message') {
+        return [userMessage];
+      }
+      // De lo contrario, agregamos el mensaje al historial
+      return [...prevMessages, userMessage];
+    });
+    
     setInputValue('');
 
     try {
@@ -118,6 +133,14 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ title = "Chat IA" }) => {
         <IonToolbar color="primary">
           <IonTitle>{title}</IonTitle>
           <IonButtons slot="end">
+            {isGeminiEnabled && (
+              <div className="gemini-badge">
+                <IonBadge color="light">
+                  <IonIcon icon={logoGoogle} className="gemini-icon" />
+                  Gemini
+                </IonBadge>
+              </div>
+            )}
             <IonButton fill="clear" onClick={clearChat}>
               <ResetChatIcon />
             </IonButton>
@@ -151,7 +174,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ title = "Chat IA" }) => {
           {isLoading && (
             <div className="loading-message">
               <IonSpinner name="dots" />
-              <span>La IA está pensando...</span>
+              <span>{isGeminiEnabled ? 'Gemini está pensando...' : 'La IA está pensando...'}</span>
             </div>
           )}
         </div>

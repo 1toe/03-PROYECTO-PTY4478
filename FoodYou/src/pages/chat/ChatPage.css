@@ -61,6 +61,15 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
+.chat-page .simple-chat-fab {
+  margin-bottom: 60px; /* Espacio para evitar superposición con el tab bar */
+}
+
+.chat-page ion-fab-button[color="tertiary"] {
+  --ion-color-tertiary: #4285F4; /* Color de Google */
+  --ion-color-tertiary-contrast: #ffffff;
+}
+
 /* Mejoras responsive */
 @media (max-width: 768px) {
   .chat-page .messages-container {
