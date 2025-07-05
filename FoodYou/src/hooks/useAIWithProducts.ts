@@ -87,49 +87,20 @@ Parece que hubo un error técnico al procesar tu consulta. Esto puede ocurrir cu
             try {
                 result = await AIProductService.searchProductsForAI(query);
             } catch (searchError) {
-                console.warn('Error en la búsqueda inicial, intentando con términos simplificados:', searchError);
-
-                // Si falla, intentar con una consulta simplificada
-                // 1. Extraer solo la primera palabra significativa
-                let simplifiedTerm = message
-                    .replace(/[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]/g, ' ')  // Mantener solo letras, números y espacios
-                    .split(' ')
-                    .filter(word => word.length > 3)[0] || '';      // Primera palabra con más de 3 letras
-
-                // 2. Si no hay palabras significativas, intentar con un enfoque diferente
-                if (!simplifiedTerm) {
-                    // Extraer la palabra más larga que podría ser relevante
-                    simplifiedTerm = message
-                        .replace(/[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]/g, ' ')
-                        .split(' ')
-                        .reduce((longest, current) =>
-                            current.length > longest.length ? current : longest, '');
-                }
-
-                // 3. Si aún así no hay términos, usar un término genérico
-                if (!simplifiedTerm || simplifiedTerm.length < 2) {
-                    simplifiedTerm = 'productos';
-                }
-
-                console.log('Intentando búsqueda con término simplificado:', simplifiedTerm);
-
-                query = {
-                    query: simplifiedTerm,
-                    limit: 20
+                console.warn('Error en la búsqueda inicial:', searchError);
+                
+                // No intentar con términos más generales
+                // Usar un resultado vacío para que Gemini genere una respuesta personalizada
+                result = {
+                    products: [],
+                    summary: {
+                        total: 0,
+                        categories: [],
+                        priceRange: { min: 0, max: 0 },
+                        onOfferCount: 0,
+                        withWarningsCount: 0
+                    }
                 };
-
-                // Intentar nuevamente con el término simplificado
-                try {
-                    result = await AIProductService.searchProductsForAI(query);
-                } catch (secondError) {
-                    console.error('Error en segunda búsqueda, usando término genérico:', secondError);
-                    // Último recurso: buscar productos en general
-                    query = {
-                        query: 'productos',
-                        limit: 20
-                    };
-                    result = await AIProductService.searchProductsForAI(query);
-                }
             }
 
             if (result.products.length === 0) {

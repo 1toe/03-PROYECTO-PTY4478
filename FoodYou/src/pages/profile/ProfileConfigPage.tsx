@@ -38,8 +38,8 @@ import {
 } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from '../../AuthContext';
-import { UserService, UserProfile } from '../../services/supabase/user.service';
-import './ProfileConfigPage.css';
+import { UserService, UserProfile } from '../../services/supabase/user.service'; // 
+import './ProfileConfigPage.css'; 
 
 const ProfileConfigPage: React.FC = () => {
   const [profile, setProfile] = useState<UserProfile>({} as UserProfile);

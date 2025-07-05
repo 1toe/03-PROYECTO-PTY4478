@@ -29,8 +29,6 @@ export interface Producto {
   saving_text?: string;
   image_url?: string;
   warnings?: ProductWarning[];
-
-  // Para compatibilidad con componentes existentes
   id?: string;
   nombre_producto?: string;
   marca?: string;

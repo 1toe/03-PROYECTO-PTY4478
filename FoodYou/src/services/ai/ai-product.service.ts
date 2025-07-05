@@ -133,61 +133,17 @@ export const AIProductService = {  /**
             query.filters
           );
           
-          // Si no se encontró nada, intentar con búsquedas alternativas
+          // No intentamos con búsquedas alternativas simplificadas,
+          // ya que preferimos usar Gemini para generar respuestas personalizadas cuando no hay resultados
           if (products.length === 0) {
-            // 1. Normalizar y limpiar la consulta
-            const cleanQuery = query.query
-              .normalize("NFD")
-              .replace(/[\u0300-\u036f]/g, "") // eliminar acentos
-              .replace(/[^a-z0-9\s]/gi, ' ')   // mantener solo letras, números y espacios
-              .replace(/\s+/g, ' ')            // reemplazar múltiples espacios por uno
-              .trim()
-              .toLowerCase();
-            
-            // 2. Separar en palabras clave y filtrar palabras cortas/comunes
-            const stopWords = ['el', 'la', 'los', 'las', 'un', 'una', 'unos', 'unas', 'de', 'del', 'para', 'por', 'con', 'sin', 'y', 'o', 'que'];
-            const keywords = cleanQuery.split(' ')
-              .filter(word => word.length > 2 && !stopWords.includes(word));
-            
-            // 3. Si hay palabras clave, probar con la más larga/relevante
-            if (keywords.length > 0) {
-              // Ordenar por longitud, asumiendo que las palabras más largas son más específicas
-              keywords.sort((a, b) => b.length - a.length);
-              
-              console.log(`Intentando búsqueda alternativa con término: ${keywords[0]}`);
-              const altProducts = await ProductService.searchProductsForAI(
-                keywords[0],
-                query.filters
-              );
-              
-              if (altProducts.length > 0) {
-                products = altProducts;
-                console.log(`Búsqueda alternativa exitosa: ${altProducts.length} productos encontrados`);
-              }
-            }
+            console.log(`No se encontraron productos para "${query.query}". No se intentarán términos más generales.`);
           }
         } catch (searchError) {
           console.error('Error en la búsqueda principal:', searchError);
           
-          // Intentar con un enfoque más simple si falla la búsqueda compleja
-          const simpleTerm = query.query
-            .replace(/[^\w\sáéíóúÁÉÍÓÚñÑ]/g, ' ')
-            .split(' ')
-            .filter(word => word.length > 3)[0];
-            
-          if (simpleTerm) {
-            console.log(`Búsqueda de recuperación con término simple: ${simpleTerm}`);
-            products = await ProductService.searchProductsForAI(
-              simpleTerm,
-              query.filters
-            );
-          } else {
-            // Si no podemos extraer un término simple, usar "productos" como fallback
-            products = await ProductService.searchProductsForAI(
-              'productos',
-              query.filters
-            );
-          }
+          // No intentar con términos simplificados, mantener la lista de productos vacía
+          // para que el nivel superior use Gemini para generar una respuesta personalizada
+          products = [];
         }
       }
 

@@ -12,8 +12,9 @@ import {
   addOutline, trashOutline, shareOutline, saveOutline, closeOutline
 } from 'ionicons/icons';
 import { ListsService, UserList, ListItem } from '../../services/supabase/lists.service';
-import './ListDetailsPage.css';
+import { Producto } from '../../services/supabase/product.service';
 
+import './ListDetailsPage.css';
 const ListDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const history = useHistory();
@@ -207,11 +208,21 @@ const ListDetailsPage: React.FC = () => {
                       onIonChange={() => toggleItemCompletion(item.id)}
                     />
                     {/* Mini display de imagen */}
-                    {(item.product_image || item.url_imagen || item.image_url) ? (
+                    {item.product_image ? (
                       <img
-                        src={item.product_image || item.url_imagen || item.image_url}
+                        src={item.product_image}
                         alt={item.product_name || `Producto ${item.product_ean}`}
                         style={{ width: 40, height: 40, objectFit: 'cover', borderRadius: 8, marginRight: 12 }}
+                        onError={() => {
+                          // Si la imagen falla al cargar, reemplazarla con un icono de caja
+                          // usando un método de estado para evitar manipulación directa del DOM
+                          const updatedItems = [...items];
+                          const index = updatedItems.findIndex(i => i.id === item.id);
+                          if (index !== -1) {
+                            updatedItems[index] = { ...updatedItems[index], product_image: '' };
+                            setItems(updatedItems);
+                          }
+                        }}
                       />
                     ) : (
                       <div style={{ width: 40, height: 40, background: '#eee', borderRadius: 8, marginRight: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>

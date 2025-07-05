@@ -68,7 +68,7 @@ const LoginPage: React.FC = () => {
     }
 
     try {
-      await login(email.trim(), password.trim(), rememberMe);
+      await login(email.trim(), password.trim());
 
       present({
         message: 'Inicio de sesión exitoso',
