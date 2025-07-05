@@ -194,7 +194,7 @@ const ProfilePage: React.FC = () => {
                       <IonInput
                         type="number"
                         value={editPeso}
-                        onIonInput={e => setEditPeso((e.target as HTMLInputElement).value)}
+                        onIonInput={e => setEditPeso(e.detail.value || '')}
                         placeholder="Ej: 70"
                         min="20"
                         max="300"
@@ -207,7 +207,7 @@ const ProfilePage: React.FC = () => {
                         type="number"
                         step="0.01"
                         value={editEstatura}
-                        onIonInput={e => setEditEstatura((e.target as HTMLInputElement).value)}
+                        onIonInput={e => setEditEstatura(e.detail.value || '')}
                         placeholder="Ej: 1.70"
                         min="1"
                         max="2.5"

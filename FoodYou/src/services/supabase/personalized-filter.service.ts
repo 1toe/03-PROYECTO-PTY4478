@@ -80,9 +80,9 @@ export class PersonalizedFilterService {
         const productAllergens = product.allergens || [];
         const productIngredients = product.ingredients || [];
 
-        return !userPreferences.alergias!.some(allergen =>
-          productAllergens.some(pa => pa.toLowerCase().includes(allergen.toLowerCase())) ||
-          productIngredients.some(ing => ing.toLowerCase().includes(allergen.toLowerCase()))
+        return !userPreferences.alergias!.some((allergen: string) =>
+          productAllergens.some((pa: string) => pa.toLowerCase().includes(allergen.toLowerCase())) ||
+          productIngredients.some((ing: string) => ing.toLowerCase().includes(allergen.toLowerCase()))
         );
       });
 
@@ -221,9 +221,9 @@ export class PersonalizedFilterService {
 
       // Aumentar puntuación si no tiene alérgenos del usuario
       if (userPreferences.alergias && userPreferences.alergias.length > 0) {
-        const hasUserAllergens = userPreferences.alergias.some(allergen =>
-          product.allergens?.some(pa => pa.toLowerCase().includes(allergen.toLowerCase())) ||
-          product.ingredients?.some(ing => ing.toLowerCase().includes(allergen.toLowerCase()))
+        const hasUserAllergens = userPreferences.alergias.some((allergen: string) =>
+          product.allergens?.some((pa: string) => pa.toLowerCase().includes(allergen.toLowerCase())) ||
+          product.ingredients?.some((ing: string) => ing.toLowerCase().includes(allergen.toLowerCase()))
         );
 
         if (!hasUserAllergens) {

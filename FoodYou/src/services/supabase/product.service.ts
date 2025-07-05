@@ -39,6 +39,10 @@ export interface Producto {
   peso_gramos?: number;
   descripcion?: string;
   en_oferta?: boolean;
+
+  // Nuevos campos
+  ingredients?: string[];
+  allergens?: string[];
 }
 
 export interface ProductWarning {
@@ -431,7 +435,11 @@ export const ProductService = {
         categoria: item.categories_unimarc?.name || item.category_vtex_id,
         peso_gramos: item.size_value_okto || null,
         descripcion: item.description_short_vtex || item.description_long_okto || '',
-        en_oferta: item.product_prices_unimarc?.is_in_offer || false
+        en_oferta: item.product_prices_unimarc?.is_in_offer || false,
+
+        // Nuevos campos
+        ingredients: item.ingredients || [],
+        allergens: item.allergens || []
       };
     });
   }
