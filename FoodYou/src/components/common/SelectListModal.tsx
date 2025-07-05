@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
     IonModal, IonHeader, IonToolbar, IonTitle, IonContent,
     IonList, IonItem, IonLabel, IonButton, IonIcon,
-    IonSpinner, IonToast, IonCheckbox, IonNote
+    IonSpinner, IonToast, IonCheckbox, IonNote, IonInput
 } from '@ionic/react';
 import { closeOutline, listOutline } from 'ionicons/icons';
 import { ListsService, UserList } from '../../services/supabase/lists.service';
@@ -22,14 +22,17 @@ const SelectListModal: React.FC<SelectListModalProps> = ({
     onProductAdded
 }) => {
     const [userLists, setUserLists] = useState<UserList[]>([]);
-    const [loading, setLoading] = useState(false); const [selectedLists, setSelectedLists] = useState<Set<number>>(new Set());
+    const [loading, setLoading] = useState(false);
+    const [selectedLists, setSelectedLists] = useState<Set<number>>(new Set());
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
+    const [productQuantity, setProductQuantity] = useState(1);
 
     useEffect(() => {
         if (isOpen) {
             loadUserLists();
             setSelectedLists(new Set());
+            setProductQuantity(1);
         }
     }, [isOpen]);
 
@@ -68,11 +71,12 @@ const SelectListModal: React.FC<SelectListModalProps> = ({
 
             for (const listId of selectedLists) {
                 const productName = product.nombre_producto || product.name_vtex || product.name_okto || '';
-                await ListsService.addProductToList(listId, productEan, 1, undefined, productName);
+                await ListsService.addProductToList(listId, productEan, productQuantity, undefined, productName);
                 if (onProductAdded) {
                     onProductAdded(listId, product);
                 }
-            } const listNames = userLists
+            }
+            const listNames = userLists
                 .filter(list => selectedLists.has(list.id))
                 .map(list => list.name);
 
@@ -162,6 +166,31 @@ const SelectListModal: React.FC<SelectListModalProps> = ({
                                     </IonItem>
                                 ))}
                             </IonList>
+
+                            <div style={{ padding: '16px', display: 'flex', alignItems: 'center', gap: 12 }}>
+                                <IonLabel position="stacked" style={{ marginBottom: 0 }}>Cantidad</IonLabel>
+                                <IonButton
+                                    size="small"
+                                    onClick={() => setProductQuantity(q => Math.max(1, q - 1))}
+                                    style={{ minWidth: 32 }}
+                                >
+                                    -
+                                </IonButton>
+                                <IonInput
+                                    type="number"
+                                    min={1}
+                                    value={productQuantity}
+                                    onIonInput={e => setProductQuantity(Math.max(1, parseInt(e.detail.value || '1', 10)))}
+                                    style={{ maxWidth: 60, textAlign: 'center' }}
+                                />
+                                <IonButton
+                                    size="small"
+                                    onClick={() => setProductQuantity(q => q + 1)}
+                                    style={{ minWidth: 32 }}
+                                >
+                                    +
+                                </IonButton>
+                            </div>
 
                             <div style={{ padding: '16px' }}>
                                 <IonButton
