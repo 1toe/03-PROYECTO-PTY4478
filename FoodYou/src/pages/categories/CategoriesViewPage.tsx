@@ -17,10 +17,16 @@ import {
   IonIcon,
   IonSegment,
   IonSegmentButton,
-  IonLabel
+  IonLabel,
+  IonMenu,
+  IonMenuButton,
+  IonList,
+  IonItem,
+  IonContent as IonMenuContent,
+  IonButtons
 } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
-import { gridOutline, listOutline, trendingUpOutline } from 'ionicons/icons';
+import { gridOutline, listOutline, trendingUpOutline, menuOutline } from 'ionicons/icons';
 import { CategoryService, Categoria } from '../../services/supabase/category.service';
 import { ProductService } from '../../services/supabase/product.service';
 import CategoryCard from '../../components/category/CategoryCard';
@@ -31,6 +37,7 @@ interface CategoryWithCount extends Categoria {
 }
 
 const CategoriesViewPage: React.FC = () => {
+  console.log('CATEGORIES VIEW PAGE RENDER');
   const history = useHistory();
   const [categories, setCategories] = useState<CategoryWithCount[]>([]);
   const [filteredCategories, setFilteredCategories] = useState<CategoryWithCount[]>([]);
@@ -230,20 +237,67 @@ const CategoriesViewPage: React.FC = () => {
   };
 
   return (
-    <IonPage>
+    <IonPage id="main-content">
+      <div style={{background: 'yellow', color: 'black', fontSize: 24, fontWeight: 'bold', zIndex: 99999, padding: 16, position: 'relative'}}>
+        PRUEBA FUERA DE IONCONTENT
+        <button style={{marginLeft: 16, fontSize: 20}} onClick={() => alert('Funciona!')}>BOTÓN FUERA</button>
+      </div>
+      <IonMenu side="start" menuId="categoriesMenu" contentId="main-content">
+        <IonHeader>
+          <IonToolbar color="primary">
+            <IonTitle>Categorías</IonTitle>
+          </IonToolbar>
+        </IonHeader>
+        <IonMenuContent>
+          <IonList>
+            {categories.map((category) => (
+              <IonItem button key={category.category_vtex_id} onClick={() => { handleCategoryClick(category); document.querySelector('ion-menu')?.close(); }}>
+                {category.name}
+              </IonItem>
+            ))}
+          </IonList>
+        </IonMenuContent>
+      </IonMenu>
+
       <IonHeader>
         <IonToolbar color="primary">
+          {/* Se elimina el botón de menú de la barra superior para evitar duplicidad */}
           <IonTitle>Categorías</IonTitle>
         </IonToolbar>
       </IonHeader>
 
-      <IonContent>
+      <IonContent id="main-content">
+        <div style={{background: 'yellow', color: 'black', fontSize: 24, fontWeight: 'bold', zIndex: 99999, padding: 16}}>
+          PRUEBA FUERA DEL HEADER
+          <button style={{marginLeft: 16, fontSize: 20}} onClick={() => alert('Funciona!')}>BOTÓN FUERA</button>
+        </div>
         <IonRefresher slot="fixed" onIonRefresh={handleRefresh}>
           <IonRefresherContent />
         </IonRefresher>
 
         <div className="categories-header">
-          <div className="search-section">
+          <div className="search-section" style={{ display: 'flex', alignItems: 'center', gap: 8, border: '4px solid red', zIndex: 9999 }}>
+            <IonButton
+              fill="clear"
+              size="large"
+              aria-label="Abrir menú de categorías"
+              onClick={() => (document.querySelector('ion-menu#categoriesMenu') as any)?.open?.()}
+              style={{
+                color: '#fff',
+                background: '#e74c3c',
+                minWidth: 40,
+                minHeight: 40,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: 8,
+                zIndex: 9999
+              }}
+            >
+              <IonIcon icon={menuOutline} style={{ fontSize: 32, color: '#fff', background: 'transparent' }} />
+              <span style={{ color: '#fff', marginLeft: 8, fontWeight: 'bold' }}>MENÚ</span>
+            </IonButton>
+            <button style={{ background: 'yellow', color: 'black', fontWeight: 'bold', marginLeft: 8, padding: 8, border: '2px solid black', zIndex: 9999 }} onClick={() => alert('Botón HTML visible')}>BOTÓN HTML</button>
             <IonSearchbar
               placeholder="Buscar categorías..."
               value={searchText}

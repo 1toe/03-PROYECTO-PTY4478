@@ -31,9 +31,12 @@ import {
   IonFabButton,
   IonToast,
   IonActionSheet,
-  IonAlert
+  IonAlert,
+  IonMenu,
+  IonList,
+  IonItem
 } from '@ionic/react';
-import { add, listOutline, storefront, pricetag, warning, flame, ellipsisVertical, trash, create, eye, refreshOutline } from 'ionicons/icons';
+import { add, listOutline, storefront, pricetag, warning, flame, ellipsisVertical, trash, create, eye, refreshOutline, menuOutline } from 'ionicons/icons';
 import { useLocation, useHistory } from 'react-router-dom';
 import { CategoryService, Categoria } from '../../services/supabase/category.service';
 import { Producto, ProductService } from '../../services/supabase/product.service';
@@ -581,13 +584,30 @@ const ListsPage: React.FC = () => {
 
   return (
     <IonPage>
+      <IonMenu side="start" menuId="categoriesMenu" contentId="lists-main-content">
+        <IonHeader>
+          <IonToolbar color="primary">
+            <IonTitle>Categorías</IonTitle>
+          </IonToolbar>
+        </IonHeader>
+        <IonContent>
+          <IonList>
+            {categories.map((category) => (
+              <IonItem button key={category.category_vtex_id} onClick={() => { setSelectedCategory(category.category_vtex_id); (document.querySelector('ion-menu#categoriesMenu') as any)?.close?.(); }}>
+                {category.display_name || category.name}
+              </IonItem>
+            ))}
+          </IonList>
+        </IonContent>
+      </IonMenu>
+
       <IonHeader>
         <IonToolbar color="primary">
           <IonTitle>Listas y Categorías</IonTitle>
         </IonToolbar>
       </IonHeader>
 
-      <IonContent>
+      <IonContent id="lists-main-content">
         <IonRefresher slot="fixed" onIonRefresh={handleRefresh}>
           <IonRefresherContent />
         </IonRefresher>
@@ -601,7 +621,9 @@ const ListsPage: React.FC = () => {
               <IonLabel>CATEGORÍAS</IonLabel>
             </IonSegmentButton>
           </IonSegment>
-        </div>        <div className="search-bar">
+        </div>
+        <div className="search-bar" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          {/* Eliminar el botón de menú lateral, solo dejar la barra de búsqueda */}
           <IonSearchbar
             placeholder={segment === 'lists' ? "Buscar en mis listas" : "Buscar productos"}
             value={searchText}

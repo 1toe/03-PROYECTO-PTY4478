@@ -26,14 +26,20 @@ import {
   IonBackButton,
   IonButtons,
   IonText,
-  IonToast
+  IonToast,
+  IonMenu,
+  IonMenuButton,
+  IonList,
+  IonItem,
+  IonContent as IonMenuContent
 } from '@ionic/react';
-import { useParams } from 'react-router-dom';
-import { listOutline, pricetag, arrowBack } from 'ionicons/icons';
+import { useParams, useHistory } from 'react-router-dom';
+import { listOutline, pricetag, arrowBack, menuOutline } from 'ionicons/icons';
 import { CategoryService } from '../../services/supabase/category.service';
 import { Producto, ProductService } from '../../services/supabase/product.service';
 import { filterUniqueProducts } from '../../utils/product.utils';
 import SelectListModal from '../../components/common/SelectListModal';
+import { Categoria } from '../../services/supabase/category.service';
 
 const formatPrice = (price: number): string => {
   return new Intl.NumberFormat('es-CL', {
@@ -49,6 +55,7 @@ interface CategoryPageParams {
 }
 const CategoryPage: React.FC = () => {
   const { categoryId } = useParams<CategoryPageParams>();
+  const history = useHistory();
   const [products, setProducts] = useState<Producto[]>([]);
   const [categoryName, setCategoryName] = useState<string>('');
   const [searchText, setSearchText] = useState('');
@@ -58,17 +65,20 @@ const CategoryPage: React.FC = () => {
   const [hasMoreData, setHasMoreData] = useState(true);
   const pageSize = 10;
 
-
   const [showSelectListModal, setShowSelectListModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Producto | null>(null);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
+  const [categories, setCategories] = useState<Categoria[]>([]);
 
   useEffect(() => {
     if (categoryId) {
       loadCategoryInfo();
       resetProductsAndLoad();
     }
+
+    // Cargar todas las categorías para el menú lateral
+    CategoryService.getAllCategories().then((cats) => setCategories(cats));
   }, [categoryId]);
 
   const loadCategoryInfo = async () => {
@@ -263,13 +273,35 @@ const CategoryPage: React.FC = () => {
   };
 
   return (
-    <IonPage>
+    <IonPage id="main-content">
+      <IonMenu side="start" menuId="categoriesMenu" contentId="main-content">
+        <IonHeader>
+          <IonToolbar color="primary">
+            <IonTitle>Categorías</IonTitle>
+          </IonToolbar>
+        </IonHeader>
+        <IonMenuContent>
+          <IonList>
+            {categories.map((cat) => (
+              <IonItem button key={cat.category_vtex_id} onClick={() => { history.push(`/app/category/${cat.category_vtex_id}`); document.querySelector('ion-menu')?.close(); }}>{cat.name}</IonItem>
+            ))}
+          </IonList>
+        </IonMenuContent>
+      </IonMenu>
+
       <IonHeader>
         <IonToolbar color="primary">
           <IonButtons slot="start">
-            <IonBackButton defaultHref="/app/lists" />
+            <IonMenuButton menu="categoriesMenu" autoHide={false} />
           </IonButtons>
-          <IonTitle>{categoryName}</IonTitle>
+          <IonSearchbar
+            placeholder="Buscar productos..."
+            value={searchText}
+            onIonChange={handleSearch}
+            debounce={300}
+            style={{ flex: 1 }}
+          />
+          <IonTitle style={{ display: 'none' }}>{categoryName || 'Categoría'}</IonTitle>
         </IonToolbar>
       </IonHeader>
 
@@ -277,15 +309,6 @@ const CategoryPage: React.FC = () => {
         <IonRefresher slot="fixed" onIonRefresh={handleRefresh}>
           <IonRefresherContent />
         </IonRefresher>
-
-        <div className="search-bar">
-          <IonSearchbar
-            placeholder="Buscar productos en esta categoría"
-            value={searchText}
-            onIonChange={handleSearch}
-            debounce={500}
-          />
-        </div>
 
         <div className="products-container">
           {renderProducts()}        </div>
